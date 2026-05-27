@@ -19,17 +19,17 @@
 
 Komari 的双机部署架构：
 - **本地机器**（开发机/维护机）— 文件修改后不自动生效
-- **波兰主控**（31.58.51.127:46748）— 通过 cloudflared 隧道 → Cloudflare → stat.357561.xyz 实际提供公网服务
+- **波兰主控**（<荷兰_IP>:46748）— 通过 cloudflared 隧道 → Cloudflare → stat.357561.xyz 实际提供公网服务
 - 请求链路：`浏览器 → Cloudflare → cloudflared tunnel → 波兰主控:25774 → Python proxy → /opt/komari/data/theme/index.html`
 
 **验证方法：**
 ```bash
 # 比较两台机器的文件大小即可快速判断是否一致
 wc -c /opt/komari/data/theme/index.html
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 "wc -c /opt/komari/data/theme/index.html"
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> "wc -c /opt/komari/data/theme/index.html"
 
 # 或直接对比关键行
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
   "grep -o 'node-name\">[^<]*<' /opt/komari/data/theme/index.html | head -3"
 ```
 
@@ -37,7 +37,7 @@ ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
 ```bash
 scp -P 46748 -i ~/.ssh/hermes_admin \
   /opt/komari/data/theme/index.html \
-  root@31.58.51.127:/opt/komari/data/theme/index.html
+  root@<荷兰_IP>:/opt/komari/data/theme/index.html
 ```
 
 ⚠️ **但 SCP 同步可能仍然不够！** 如果远程机器跑的是 komari 直连（native 模式，无 galaxy-proxy），komari 使用的是内嵌主题，不读磁盘文件。必须切换架构：部署 galaxy-proxy.py 替代 komari 直接服务端口。详见 `komari-server-ops` 技能中「从 native 模式切换到 proxy 模式」。
@@ -164,16 +164,16 @@ grep -o 'node-name">[^<]*<' /opt/komari/data/theme/index.html | head -3
 # 2. 同步到远程（如果架构是双机）
 scp -P 46748 -i ~/.ssh/hermes_admin \
   /opt/komari/data/theme/index.html \
-  root@31.58.51.127:/opt/komari/data/theme/index.html
+  root@<荷兰_IP>:/opt/komari/data/theme/index.html
 
 # 2b. ⚠️ 验证远程机监听的是 python3（proxy）还是 komari
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
   "ss -tlnp | grep 25774"
 # → python3: proxy 模式，SCP 同步后应该立即生效
 # → komari: native 模式，需要切换架构！
 
 # 3. 确认远程文件同步成功
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
   "wc -c /opt/komari/data/theme/index.html"
 
 # 4. 通过本地 proxy 验证
@@ -241,7 +241,7 @@ ss -tlnp | grep 25774
 # 检查方法：
 # 1. 查 cloudflared 在哪台机器上运行
 ps aux | grep cloudflared
-# → ssh ... root@31.58.51.127 "cloudflared tunnel --url ..." — 远程机
+# → ssh ... root@<荷兰_IP> "cloudflared tunnel --url ..." — 远程机
 
 # 2. 查 Python proxy 在哪台机器上运行
 ps aux | grep galaxy-proxy
@@ -253,13 +253,13 @@ dig +short stat.357561.xyz
 # Cloudflare → cloudflared tunnel → 远程机 → 远程机上的 proxy 或 komari
 
 # 4. 验证远程机端口谁在监听
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
   "ss -tlnp | grep 25774"
 # → python3 → 读磁盘，SCP 同步即可
 # → komari  → 内嵌主题，需部署 galaxy-proxy
 
 # 5. 验证远程机的文件内容
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
   "grep -o 'node-name\">[^<]*<' /opt/komari/data/theme/index.html | head -3"
 ```
 

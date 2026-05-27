@@ -46,7 +46,7 @@
 
 由于 LXC 容器无 systemd，proxy 由用户手动 `nohup python3 ... &` 启动。
 ```
-sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@31.58.51.127 "kill PID; sleep 1"
+sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@<荷兰_IP> "kill PID; sleep 1"
 # 然后用 Hermes 的 background=true 启动新进程
 ```
 

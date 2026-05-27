@@ -9,7 +9,7 @@ Agent 实时指标数据不上报。面板显示 13 台机器"在线"但全部 C
 3. 看 agent 日志 `journalctl -u komari-agent` → `Failed to connect to WebSocket: 400 Bad Request: missing required Host header`
 4. 看 agent 建立的 socket 连接 → 连到了 Cloudflare IP（162.159.153.2:443），不是直接到主控
 5. 确认链路：Agent → Cloudflare CDN → cloudflared 隧道 → localhost:45774 → socat → localhost:25774 → galaxy-proxy → komari server:25776
-6. 确认 HTTP 通但 WebSocket 不通：直接 curl WebSocket upgrade 到 31.58.51.127:45774 返回 400
+6. 确认 HTTP 通但 WebSocket 不通：直接 curl WebSocket upgrade 到 <荷兰_IP>:45774 返回 400
 
 ## 根因
 galaxy-proxy.py 的 `_ws()` 方法：

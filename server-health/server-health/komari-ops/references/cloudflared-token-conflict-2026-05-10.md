@@ -1,7 +1,7 @@
 # Cloudflared Token 冲突 + stat.357561.xyz 404 排查
 
 **日期**：2026-05-10
-**服务器**：56idc-la（Alpine，107.172.231.70:42185）
+**服务器**：56idc-la（Alpine，<洛杉矶2_IP>:42185）
 
 ---
 
@@ -26,18 +26,18 @@ v1.2.0 在数据库里存了自己的 tunnel token，但旧 cloudflared 进程�
 
 ```bash
 # 1. 确认 cloudflared 进程和日志
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 'ps aux | grep cloudflared | grep -v grep'
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 'tail -20 /var/log/cloudflared.err'
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> 'ps aux | grep cloudflared | grep -v grep'
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> 'tail -20 /var/log/cloudflared.err'
 # 应有 "Registered tunnel connection" × 4（connIndex 0-3）
 
 # 2. 对比两个 token
 # init script token:
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 "grep -o 'token [^'\'']*' /etc/init.d/cloudflared"
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "grep -o 'token [^'\'']*' /etc/init.d/cloudflared"
 # DB token:
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 "sqlite3 /opt/komari/data/komari.db 'SELECT value FROM configs WHERE key=\"cloudflare_tunnel_token\";'"
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "sqlite3 /opt/komari/data/komari.db 'SELECT value FROM configs WHERE key=\"cloudflare_tunnel_token\";'"
 
 # 3. 本地 Host header 测试
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 "curl -s -H 'Host: stat.357561.xyz' http://127.0.0.1:25774/ | grep -o 'video.src = [^;]*'"
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "curl -s -H 'Host: stat.357561.xyz' http://127.0.0.1:25774/ | grep -o 'video.src = [^;]*'"
 # 返回带 siteInfo.videoUrl 的行 = 本地 tunnel 通
 
 # 4. 公网测试

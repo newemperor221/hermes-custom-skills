@@ -12,7 +12,7 @@
   ↓
 cloudflared tunnel (从 ccs-la2 SSH 到波兰 Master 执行)
   ↓
-Poland Master (31.58.51.127) → komari server :25774
+Poland Master (<荷兰_IP>) → komari server :25774
   ↓
 /opt/komari/data/theme/GalaxyGlass/dist/index.html ← 自定义首页！
 ```
@@ -70,7 +70,7 @@ bash deploy.sh
 ```
 
 deploy.sh 实际操作：
-1. `scp index.html root@31.58.51.127:/tmp/index-static.html`
+1. `scp index.html root@<荷兰_IP>:/tmp/index-static.html`
 2. `ssh` 到波兰，执行：
    - `rm -rf /opt/komari/data/theme/GalaxyGlass/dist/`（清理旧文件）
    - `cp /tmp/index-static.html /opt/komari/data/theme/GalaxyGlass/dist/index.html`
@@ -80,10 +80,10 @@ deploy.sh 实际操作：
 ```bash
 scp -P 46748 -i ~/.ssh/hermes_admin \
   ~/galaxy-glass/index.html \
-  root@31.58.51.127:/opt/komari/data/theme/GalaxyGlass/dist/index.html
+  root@<荷兰_IP>:/opt/komari/data/theme/GalaxyGlass/dist/index.html
 
 # 验证
-ssh -p 46748 -i ~/.ssh/hermes_admin root@31.58.51.127 \
+ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
   "curl -s http://127.0.0.1:25774/ | wc -c"
 ```
 

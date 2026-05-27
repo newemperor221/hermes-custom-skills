@@ -4,18 +4,18 @@
 
 | 节点 | IP | SSH端口 | 用户 | 密码 | Token | 系统 |
 |------|-----|---------|------|------|-------|------|
-| 56idc-la | 107.172.231.70 | 42185 | root | Y@BU1%wmP#xFs8bK | 56idc-la-token | Alpine/LXC |
+| 56idc-la | <洛杉矶2_IP> | 42185 | root | Y@BU1%wmP#xFs8bK | 56idc-la-token | Alpine/LXC |
 | 将军鸡 | 2001:470:e2db:100:: | 27589 | root | qr2j%tgez2ys | 207c22bb50597a5b27e72e57c66f3cd9 | Debian |
-| Dedirock | 155.94.180.55 | 58193 | root | Y@BU1%wmP#xFs8bK | dedirock-token | Debian |
-| acck-东京 | 156.231.141.232 | 47283 | root | 4561834 | acck-tokyo-token | Debian |
-| acck-香港 | 45.192.192.210 | 47632 | root | 4561834 | acck-hk-token | Debian |
-| akile-东京 | 154.83.94.183 | 62174 | root | 4561834 | akile-tokyo-token | Debian |
-| racknerd-纽约 | 172.245.159.219 | 27391 | root | 4561834 | racknerd-ny-token | Debian |
-| ccs-洛杉矶1 | 23.95.201.153 | 47283 | root | 4561834 | ccs-la1-token | Debian |
-| ccs-洛杉矶2 | 198.46.147.71 | 43827 | woioeow | 4561834 | ccs-la2-token | Debian |
-| hostvds-堪萨斯 | 45.39.12.227 | 63841 | root | 4561834 | hostvds-ks-token | Debian |
-| yecaoyun-香港 | 38.55.198.243 | 62839 | root | 4561834 | yecaoyun-hk-token | Debian |
-| racknerd-亚特兰大 | 23.95.218.144 | 53621 | woioeow | 4561834 | racknerd-atlanta-token | Debian |
+| Dedirock | <旧Master_IP> | 58193 | root | Y@BU1%wmP#xFs8bK | dedirock-token | Debian |
+| acck-东京 | <东京_IP> | 47283 | root | 4561834 | acck-tokyo-token | Debian |
+| acck-香港 | <acck香港_IP> | 47632 | root | 4561834 | acck-hk-token | Debian |
+| akile-东京 | <akile东京_IP> | 62174 | root | 4561834 | akile-tokyo-token | Debian |
+| racknerd-纽约 | <纽约_IP> | 27391 | root | 4561834 | racknerd-ny-token | Debian |
+| ccs-洛杉矶1 | <洛杉矶1_IP> | 47283 | root | 4561834 | ccs-la1-token | Debian |
+| ccs-洛杉矶2 | <运维本机_IP> | 43827 | woioeow | 4561834 | ccs-la2-token | Debian |
+| hostvds-堪萨斯 | <KS_IP> | 63841 | root | 4561834 | hostvds-ks-token | Debian |
+| yecaoyun-香港 | <香港_IP> | 62839 | root | 4561834 | yecaoyun-hk-token | Debian |
+| racknerd-亚特兰大 | <亚特兰大_IP> | 53621 | woioeow | 4561834 | racknerd-atlanta-token | Debian |
 
 ## 安装命令模板（token 必须用下方正确值，不要用旧值）
 

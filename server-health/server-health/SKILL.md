@@ -52,7 +52,7 @@ server-health --json              # 输出 JSON 格式
 
 **绝对禁止在这类机器上跑任何本地数据库服务。** SQLite WAL、MySQL、PostgreSQL、MongoDB 等在 1.2G 磁盘上都会爆。
 
-**56idc-la（107.172.231.70）当前状态（2026-05-12）：**
+**56idc-la（<洛杉矶2_IP>）当前状态（2026-05-12）：**
 - SSH 端口: 42185
 - OS: Alpine Linux v3.22
 - 磁盘: 991M 总量，16M 已用（2%），~975M 剩余
@@ -276,11 +276,11 @@ docker system df  # 查看回收效果
 - If must scan: `-T5 --top-ports 5` with 5s timeout, not aggressive full scans
 
 ### Known SSH Ports (don't scan, just use)
-- Buffalo (172.245.159.219):27391
-- Los Angeles-1 (155.94.180.55):58193
-- Los Angeles-2 (23.95.201.153):47283
-- Santa Clara (45.39.12.227):63841
-- Atlanta (23.95.218.144):23
+- Buffalo (<纽约_IP>):27391
+- Los Angeles-1 (<旧Master_IP>):58193
+- Los Angeles-2 (<洛杉矶1_IP>):47283
+- Santa Clara (<KS_IP>):63841
+- Atlanta (<亚特兰大_IP>):23
 
 ---
 
@@ -290,7 +290,7 @@ docker system df  # 查看回收效果
 - 纽约 fail2ban 需要配置 `backend = systemd` 才能正常工作
 - health.py 的 `ufw status` 在未安装 UFW 的机器上会返回 "command not found"，需手动安装后重跑
 
-## 56idc（107.172.231.70）磁盘精简记录
+## 56idc（<洛杉矶2_IP>）磁盘精简记录
 
 **初始状态**：1.2G LXC，731M 已用（64%）
 **目标**：保留 SSH + cloudflared + Komari agent，删除所有无用包
@@ -388,7 +388,7 @@ rm -rf /tmp/locale_keep
 - `references/cpu-interrupt-storm.md` — CPU 中断风暴诊断（适用于 cloudflared + LXC 环境的高负载现象）
 - `references/lxc-vs-kvm-probes.md` — LXC vs KVM 探针选型对比（邻居干扰显示方式、磁盘类型判断、选型建议）
 
-## Komari Server 维护（在 DediRock 母机 155.94.180.55）
+## Komari Server 维护（在 DediRock 母机 <旧Master_IP>）
 
 ### auto_discovery_key 告警修复
 日志持续报 `unmarshal config failed key=auto_discovery_key error=invalid character 'E' looking for beginning of value`。

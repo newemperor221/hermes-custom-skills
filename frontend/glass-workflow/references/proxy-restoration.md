@@ -21,27 +21,27 @@ cloudflared → galaxy-proxy.py(:25774) → komari(:25776)
 ```bash
 scp -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -P 10425 \
   ~/glass/galaxy-proxy.py \
-  root@140.245.97.144:/opt/komari/data/theme/
+  root@<新加坡_IP>:/opt/komari/data/theme/
 ```
 
 ### 2. 停 komari server 并改端口
 
 ```bash
-ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@140.245.97.144 \
+ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@<新加坡_IP> \
   'pkill -f "komari server"'
 ```
 
 ### 3. 启动 komari 在 25776
 
 ```bash
-ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@140.245.97.144 \
+ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@<新加坡_IP> \
   'cd /opt/komari && nohup ./komari server -l :25776 -d /opt/komari/data/komari.db > /tmp/komari.log 2>&1 &'
 ```
 
 ### 4. 启动 proxy 在 25774
 
 ```bash
-ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@140.245.97.144 \
+ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@<新加坡_IP> \
   'cd /opt/komari/data/theme && nohup python3 galaxy-proxy.py > /tmp/proxy.log 2>&1 &'
 ```
 
@@ -49,7 +49,7 @@ ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@140.245.97.
 
 ```bash
 # 检查端口
-ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@140.245.97.144 \
+ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@<新加坡_IP> \
   "ss -tlnp | grep -E '2577[46]'"
 # 应看到: 25774 → python3 (proxy), 25776 → komari
 
@@ -77,4 +77,4 @@ galaxy-proxy.py 在以下情况下丢失：
 - 服务器重装（LXC 重建）
 - 手动清理 `/opt/komari/data/theme/`
 
-**当前服务器：** 新加坡主控 `140.245.97.144:10425`，proxy 文件在本地 `~/glass/galaxy-proxy.py`。
+**当前服务器：** 新加坡主控 `<新加坡_IP>:10425`，proxy 文件在本地 `~/glass/galaxy-proxy.py`。

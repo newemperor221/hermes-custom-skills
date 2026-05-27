@@ -42,11 +42,11 @@ cd /home/woioeow/galaxy-glass/nextjs
 npm run build
 
 # 2. Upload to server
-tar czf - -C out . | sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@31.58.51.127 \
+tar czf - -C out . | sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@<荷兰_IP> \
   'rm -rf /opt/komari/data/theme/* && cd /opt/komari/data/theme && tar xzf -'
 
 # 3. Fix SPA routing for /detail
-sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@31.58.51.127 \
+sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@<荷兰_IP> \
   'mkdir -p /opt/komari/data/theme/detail && cp /opt/komari/data/theme/detail.html /opt/komari/data/theme/detail/index.html'
 
 # 4. Restart proxy

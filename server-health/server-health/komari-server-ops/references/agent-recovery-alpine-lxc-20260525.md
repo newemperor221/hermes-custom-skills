@@ -6,7 +6,7 @@ Two Alpine LXC nodes (Taiwan GCP + Singapore isvoro) had Komari agent processes 
 
 ## Taiwan (无聊云测试 | 台湾)
 
-- **IP**: 35.189.164.32
+- **IP**: <台湾_IP>
 - **SSH**: port 43590, root/password
 - **Arch**: x86_64
 - **OS**: Alpine Linux 3.17 LXC
@@ -19,7 +19,7 @@ Two Alpine LXC nodes (Taiwan GCP + Singapore isvoro) had Komari agent processes 
 
 ## Singapore (isvoro | 新加坡)
 
-- **IP**: 140.245.97.144
+- **IP**: <新加坡_IP>
 - **SSH**: port **10425** (non-standard), root/password (jZmogE2tU94HJibt)
 - **Arch**: **ARM64 (aarch64)**
 - **OS**: Alpine Linux 3.17 LXC

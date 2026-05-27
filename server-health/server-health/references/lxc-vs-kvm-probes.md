@@ -74,4 +74,4 @@ lsblk -d -o NAME,ROTA,SIZE
 ### IPv6-only 探针
 → **LXC 首选**
 理由：IPv6 NAT 一般在 LXC 环境更常见且便宜（如 56idc 玩具 LXC 提供 HE IPv6 Tunnel）
-注意：需要从有 IPv6 的中转机跳转 SSH（如通过 DediRock 155.94.180.55）
+注意：需要从有 IPv6 的中转机跳转 SSH（如通过 DediRock <旧Master_IP>）

@@ -15,9 +15,9 @@ import hmac, hashlib, time, urllib.request, ssl
 
 CHAT_ID = "<CHAT_ID>"  # 从 /opt/ip_sentinel_master/master.conf 获取
 agents = [
-    ("acck-tokyo", "156.231.141.232", 33020),
-    ("yecaoyun-hk", "38.55.198.243", 42387),
-    ("ccs-la1", "23.95.201.153", 30910),
+    ("acck-tokyo", "<东京_IP>", 33020),
+    ("yecaoyun-hk", "<香港_IP>", 42387),
+    ("ccs-la1", "<洛杉矶1_IP>", 30910),
 ]
 
 ctx = ssl._create_unverified_context()
@@ -35,7 +35,7 @@ for name, ip, port in agents:
 
 ## 执行位置
 - 签名必须在 **Master 所在服务器** 生成（需要 CHAT_ID 作为 PSK）
-- 当前 Master：56idc-la (107.172.231.70:42185)
+- 当前 Master：56idc-la (<洛杉矶2_IP>:42185)
 - Agent 连接可用性：Master 可以访问所有 Agent 的 Agent Port（非 SSH Port）
 
 ## Alpine 远程执行 Python 的陷阱

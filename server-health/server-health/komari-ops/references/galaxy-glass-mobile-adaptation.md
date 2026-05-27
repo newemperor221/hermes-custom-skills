@@ -109,7 +109,7 @@ function render() {
 git push（GitHub）+ scp（56idc-la）两步独立，缺一不可：
 ```bash
 git push origin main
-sshpass -p 'Y@BU1%wmP#xFs8bK' scp -P 42185 /local/index.html root@107.172.231.70:/data/theme/GalaxyGlass/dist/index.html
+sshpass -p 'Y@BU1%wmP#xFs8bK' scp -P 42185 /local/index.html root@<洛杉矶2_IP>:/data/theme/GalaxyGlass/dist/index.html
 ```
 
 ## 回滚

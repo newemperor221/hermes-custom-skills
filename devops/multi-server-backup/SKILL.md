@@ -50,9 +50,9 @@ SSH_PORT=48256
 
 # VPS 列表: "标签 IP:端口 远程路径"
 VPS_LIST="
-hk    38.55.198.243   /etc/sing-box /etc/nginx /root/.hermes
-tokyo 156.231.141.232 /etc/sing-box /etc/nginx /root/.hermes
-la    23.95.201.153   /etc/sing-box /etc/nginx /root/.hermes
+hk    <香港_IP>   /etc/sing-box /etc/nginx /root/.hermes
+tokyo <东京_IP> /etc/sing-box /etc/nginx /root/.hermes
+la    <洛杉矶1_IP>   /etc/sing-box /etc/nginx /root/.hermes
 "
 
 echo "=== rsync 备份 $(date) ==="

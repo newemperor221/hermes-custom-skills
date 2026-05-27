@@ -130,7 +130,7 @@ EOF
 ### 2. Komari 探针
 ```bash
 # Debian — 从 56idc-la 获取 agent
-sshpass -p '...' ssh root@107.172.231.70 "cat /opt/komari/agent" > /opt/komari/agent
+sshpass -p '...' ssh root@<洛杉矶2_IP> "cat /opt/komari/agent" > /opt/komari/agent
 chmod +x /opt/komari/agent
 
 # Alpine — 同样适用（komari agent 是静态编译二进制）

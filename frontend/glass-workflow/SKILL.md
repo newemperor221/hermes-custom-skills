@@ -884,7 +884,7 @@ curl -sL -o Inter-400.ttf "https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeH
 
 **步骤 2：上传到 VPS**
 ```bash
-scp -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -P 46748 Inter-*.ttf root@31.58.51.127:/opt/komari/data/theme/fonts/
+scp -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -P 46748 Inter-*.ttf root@<荷兰_IP>:/opt/komari/data/theme/fonts/
 ```
 
 **步骤 3：修改 galaxy-proxy.py**（关键）
@@ -941,7 +941,7 @@ Glass 部署在 **新加坡** 主控服务器上：
 
 | 服务器 | IP | 端口 | 角色 |
 |--------|-----|------|------|
-| **新加坡主控** | `140.245.97.144` | `10425` | galaxy-proxy.py + komari 后端 + cloudflared |
+| **新加坡主控** | `<新加坡_IP>` | `10425` | galaxy-proxy.py + komari 后端 + cloudflared |
 
 - deploy.sh 已更新指向新加坡
 - SSH 使用 `~/.ssh/user_key` 密钥
@@ -954,7 +954,7 @@ Glass 部署在 **新加坡** 主控服务器上：
 确认部署到的是最新版本，用以下命令检查 font 相关行：
 
 ```bash
-ssh -o StrictHostKeyChecking=no -i ~/.ssh/user_key -p 10425 root@140.245.97.144 "grep -c '@font-face' /opt/komari/data/theme/index.html"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/user_key -p 10425 root@<新加坡_IP> "grep -c '@font-face' /opt/komari/data/theme/index.html"
 ```
 
 关键检查项：
@@ -1079,10 +1079,10 @@ python3 -c "
 import base64
 with open('index.html', 'rb') as f:
     print(base64.b64encode(f.read()).decode())
-" | ssh -p 10425 root@140.245.97.144 "base64 -d > /opt/komari/data/theme/Glass/dist/index.html"
+" | ssh -p 10425 root@<新加坡_IP> "base64 -d > /opt/komari/data/theme/Glass/dist/index.html"
 
 # 验证
-ssh -p 10425 root@140.245.97.144 "ls -lh /opt/komari/data/theme/Glass/dist/index.html"
+ssh -p 10425 root@<新加坡_IP> "ls -lh /opt/komari/data/theme/Glass/dist/index.html"
 ```
 
 **注意**：路径区分大小写。服务器上用 `Glass`（大写 G），不是 `glass`。

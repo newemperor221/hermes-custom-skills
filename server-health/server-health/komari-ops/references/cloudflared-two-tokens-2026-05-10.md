@@ -42,10 +42,10 @@ Cloudflare Dashboard 端 tunnel 路由配置只关联了一个 token（init scri
 grep -o 'token [^'\'']*' /etc/init.d/cloudflared
 
 # 看数据库里的 token
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 \
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
   "sqlite3 /opt/komari/data/komari.db 'SELECT value FROM configs WHERE key=\"cloudflare_tunnel_token\";'"
 
 # 验证 tunnel 本地连通
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 \
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
   "curl -s -H 'Host: stat.357561.xyz' http://127.0.0.1:25774/" | head -c 200
 ```

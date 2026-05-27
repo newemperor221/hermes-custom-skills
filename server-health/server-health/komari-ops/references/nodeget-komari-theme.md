@@ -2,8 +2,8 @@
 
 ## 项目路径
 - 本地：`/tmp/nodeget-komari-theme/dist/index.html`
-- 部署：`root@107.172.231.70:/opt/komari/data/theme/NodeGetGlass/dist/index.html`
-- 部署命令：`scp -P 52137 /tmp/nodeget-komari-theme/dist/index.html root@107.172.231.70:/opt/komari/data/theme/NodeGetGlass/dist/index.html`
+- 部署：`root@<洛杉矶2_IP>:/opt/komari/data/theme/NodeGetGlass/dist/index.html`
+- 部署命令：`scp -P 52137 /tmp/nodeget-komari-theme/dist/index.html root@<洛杉矶2_IP>:/opt/komari/data/theme/NodeGetGlass/dist/index.html`
 
 ## 布局容器
 - 全局宽度：`max-width: 1124px`，`.container` 类

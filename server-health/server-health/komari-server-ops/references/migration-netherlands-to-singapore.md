@@ -1,12 +1,12 @@
 # Migration: Netherlands → Singapore (2026-05-25)
 
 ## Source
-- **Host**: 无聊云 | 阿姆斯特丹 (31.58.51.127:46748)
+- **Host**: 无聊云 | 阿姆斯特丹 (<荷兰_IP>:46748)
 - **Arch**: x86_64, Alpine 3.22.2, 488MB RAM, 1GB disk
 - **Keys**: hermes_admin SSH key
 
 ## Target
-- **Host**: isvoro | 新加坡 (140.245.97.144:10425)
+- **Host**: isvoro | 新加坡 (<新加坡_IP>:10425)
 - **Arch**: ARM64 (aarch64), Alpine 3.17, 23GB RAM (LXC host), 1GB disk
 - **Auth**: root password (stored in memory)
 
@@ -45,10 +45,10 @@ cd /opt/komari/data
 tar czf /tmp/komari-data.tar.gz komari.db komari.db-shm komari.db-wal secret.key theme/
 
 # SCP via local machine as intermediate
-scp -P 46748 root@31.58.51.127:/tmp/komari-data.tar.gz /tmp/
-scp -P 46748 root@31.58.51.127:/opt/komari/galaxy-proxy.py /tmp/
-sshpass -p 'PASSWORD' scp -P 10425 /tmp/komari-data.tar.gz root@140.245.97.144:/tmp/
-sshpass -p 'PASSWORD' scp -P 10425 /tmp/galaxy-proxy.py root@140.245.97.144:/opt/komari/
+scp -P 46748 root@<荷兰_IP>:/tmp/komari-data.tar.gz /tmp/
+scp -P 46748 root@<荷兰_IP>:/opt/komari/galaxy-proxy.py /tmp/
+sshpass -p 'PASSWORD' scp -P 10425 /tmp/komari-data.tar.gz root@<新加坡_IP>:/tmp/
+sshpass -p 'PASSWORD' scp -P 10425 /tmp/galaxy-proxy.py root@<新加坡_IP>:/opt/komari/
 
 # On target
 cd /opt/komari && tar xzf /tmp/komari-data.tar.gz -C /opt/komari/data/

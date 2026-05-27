@@ -90,14 +90,14 @@ mkdir -p /opt/komari/data/theme
 # 2. 传输修改后的 index.html
 # 方法 A：通过 SSH 管道
 cat galaxy-beautified.html | sshpass -p 'OX8w$nE9A%tfqb6v' ssh \
-  -p 46748 root@31.58.51.127 "cat > /opt/komari/data/theme/index.html"
+  -p 46748 root@<荷兰_IP> "cat > /opt/komari/data/theme/index.html"
 
 # 方法 B：先传到 DediRock 再 scp 到 Poland Master
 # （不推荐，多一跳）
 
 # 3. 传输代理脚本
 cat galaxy-proxy.py | sshpass -p 'OX8w$nE9A%tfqb6v' ssh \
-  -p 46748 root@31.58.51.127 "cat > /opt/komari/galaxy-proxy.py"
+  -p 46748 root@<荷兰_IP> "cat > /opt/komari/galaxy-proxy.py"
 
 # 4. 确保代理脚本中后端地址正确
 sed -i 's|http://localhost:25774|http://localhost:25776|g' \

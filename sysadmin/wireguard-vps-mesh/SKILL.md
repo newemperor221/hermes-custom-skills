@@ -60,9 +60,9 @@ chmod 600 /etc/wireguard/private.key
 
 ```
 VPS      | 公网 IP:端口       | 私网 IP    | 公钥
-LA       | 23.95.201.153:51820 | 10.0.0.1   | <la-pubkey>
-香港     | 38.55.198.243:51820 | 10.0.0.2   | <hk-pubkey>
-东京     | 156.231.141.232:51820|10.0.0.3   | <tokyo-pubkey>
+LA       | <洛杉矶1_IP>:51820 | 10.0.0.1   | <la-pubkey>
+香港     | <香港_IP>:51820 | 10.0.0.2   | <hk-pubkey>
+东京     | <东京_IP>:51820|10.0.0.3   | <tokyo-pubkey>
 ```
 
 ### 3. 配置每台 VPS 的 wg0.conf
@@ -86,14 +86,14 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT
 # 香港 VPS
 [Peer]
 PublicKey = <hk-pubkey>
-Endpoint = 38.55.198.243:51820
+Endpoint = <香港_IP>:51820
 AllowedIPs = 10.0.0.2/32
 PersistentKeepalive = 25
 
 # 东京 VPS
 [Peer]
 PublicKey = <tokyo-pubkey>
-Endpoint = 156.231.141.232:51820
+Endpoint = <东京_IP>:51820
 AllowedIPs = 10.0.0.3/32
 PersistentKeepalive = 25
 ```
@@ -110,14 +110,14 @@ MTU = 1420
 # LA VPS
 [Peer]
 PublicKey = <la-pubkey>
-Endpoint = 23.95.201.153:51820
+Endpoint = <洛杉矶1_IP>:51820
 AllowedIPs = 10.0.0.1/32
 PersistentKeepalive = 25
 
 # 东京 VPS
 [Peer]
 PublicKey = <tokyo-pubkey>
-Endpoint = 156.231.141.232:51820
+Endpoint = <东京_IP>:51820
 AllowedIPs = 10.0.0.3/32
 PersistentKeepalive = 25
 ```

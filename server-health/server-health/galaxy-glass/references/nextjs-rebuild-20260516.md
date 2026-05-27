@@ -14,7 +14,7 @@
 ```
 用户浏览器 → stat.357561.xyz
   → Cloudflare CDN (tunnel)
-  → galaxy-proxy.py (波兰主控 31.58.51.127:25774)
+  → galaxy-proxy.py (波兰主控 <荷兰_IP>:25774)
   → 静态文件: /opt/komari/data/theme/
   → API 代理: /api/* → localhost:25776 (Komari panel)
 ```

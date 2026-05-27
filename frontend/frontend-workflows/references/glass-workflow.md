@@ -711,7 +711,7 @@ curl -sL -o Inter-400.ttf "https://fonts.gstatic.com/s/inter/v20/UcCO3FwrK3iLTeH
 
 **步骤 2：上传到 VPS**
 ```bash
-scp -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -P 46748 Inter-*.ttf root@31.58.51.127:/opt/komari/data/theme/fonts/
+scp -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -P 46748 Inter-*.ttf root@<荷兰_IP>:/opt/komari/data/theme/fonts/
 ```
 
 **步骤 3：修改 galaxy-proxy.py**（关键）
@@ -769,7 +769,7 @@ Glass 部署在 **两个** VPS 上：
 | 服务器 | IP | 组件 | 部署方式 |
 |--------|-----|------|---------|
 | **CCS LA** (本地) | N/A | galaxy-proxy.py + komari 后端 | 直接 `cp` 到 `/opt/komari/data/theme/` |
-| **波兰主控** | `31.58.51.127:46748` | galaxy-proxy.py + cloudflared | `scp` 到 `/tmp/` 再 `cp` |
+| **波兰主控** | `<荷兰_IP>:46748` | galaxy-proxy.py + cloudflared | `scp` 到 `/tmp/` 再 `cp` |
 
 - CCS LA 的 proxys 转发 API 到本地 komari 后端（:25776），但 komari 可能不监听该端口（502）
 - 波兰主控的 proxy 转发 API 到实际运行的 komari 后端，所有 agent 数据在波兰主控处理
@@ -783,14 +783,14 @@ CCS LA 的 proxy 是 **独立副本**，与波兰主控的不同之处：
 
 **修改 proxy 或添加 static 文件时，两台都需要更新**。CCS LA 可以直接 `cp`，波兰主控需要通过 SSH。
 - **部署目标**：`/opt/komari/data/theme/index.html`（直接在 theme 根目录，不需要 Glass/dist 子目录）
-- **SSH**：`ssh -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -p 46748 root@31.58.51.127`
+- **SSH**：`ssh -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -p 46748 root@<荷兰_IP>`
 - **SCP**：先上传到 `/tmp/index-glass.html`，再 `cp` 到目标位置
 ### 部署后验证（必做！）
 
 确认部署到的是最新版本，用以下命令检查 font 相关行：
 
 ```bash
-ssh -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -p 46748 root@31.58.51.127 "sed -n '10,55p' /opt/komari/data/theme/index.html"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/hermes_admin -p 46748 root@<荷兰_IP> "sed -n '10,55p' /opt/komari/data/theme/index.html"
 ```
 
 关键检查项：
@@ -948,7 +948,7 @@ var v=document.getElementById('bg-video');JSON.stringify({
 
 2. **确认 proxy 在运行**
    ```bash
-   ssh -i ~/.ssh/hermes_admin -p 46748 root@31.58.51.127 "ss -tlnp | grep 25774"
+   ssh -i ~/.ssh/hermes_admin -p 46748 root@<荷兰_IP> "ss -tlnp | grep 25774"
    # → python3 在监听 ✅   |  空 → proxy 挂了，kill + nohup 重启
    ```
    ⚠️ 杀掉 proxy 时 cloudflared 隧道可能因后端断开而挂掉，需检查 `rc-service cloudflared status` 并重启。

@@ -103,6 +103,6 @@ getFiltered() → renderCard() / renderRow()
 
 | 位置 | 路径 |
 |------|------|
-| 服务器 | `root@107.172.231.70:/opt/komari/data/theme/GalaxyGlass/dist/` |
+| 服务器 | `root@<洛杉矶2_IP>:/opt/komari/data/theme/GalaxyGlass/dist/` |
 | GitHub | `https://github.com/newemperor221/nodeget-galaxy-glass` |
 | 访问地址 | `http://stat.357561.xyz` |

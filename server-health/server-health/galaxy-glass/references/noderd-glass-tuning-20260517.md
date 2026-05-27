@@ -22,8 +22,8 @@
 ```bash
 cd /home/woioeow/galaxy-glass-next && npm run build
 tar czf /tmp/gg-deploy.tar.gz -C out .
-sshpass -p 'OX8w$nE9A%tfqb6v' scp -P 46748 /tmp/gg-deploy.tar.gz root@31.58.51.127:/tmp/
-sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@31.58.51.127 \
+sshpass -p 'OX8w$nE9A%tfqb6v' scp -P 46748 /tmp/gg-deploy.tar.gz root@<荷兰_IP>:/tmp/
+sshpass -p 'OX8w$nE9A%tfqb6v' ssh -p 46748 root@<荷兰_IP> \
   "cd /opt/komari/data/theme && rm -rf * && tar xzf /tmp/gg-deploy.tar.gz && rm /tmp/gg-deploy.tar.gz"
 # 无需重启 proxy（rm -rf * 保留目录 inode → cwd 有效）
 ```

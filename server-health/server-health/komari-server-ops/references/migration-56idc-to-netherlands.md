@@ -1,8 +1,8 @@
 # Komari 面板 + IP Sentinel 迁移实录 — 56idc-la → 荷兰机
 
 **日期：** 2026-05-12
-**源：** 56idc-la (107.172.231.70) — Alpine 3.22 LXC
-**目标：** 荷兰机 (31.58.51.127) — Alpine 3.22 LXC（波兰机房，AS214481 Wojciech Czapkowicz）
+**源：** 56idc-la (<洛杉矶2_IP>) — Alpine 3.22 LXC
+**目标：** 荷兰机 (<荷兰_IP>) — Alpine 3.22 LXC（波兰机房，AS214481 Wojciech Czapkowicz）
 **SSH：** root/OX8w$nE9A%tfqb6v :46748
 **耗时：** ~15分钟
 
@@ -42,16 +42,16 @@ tar xzf /tmp/ip-sentinel-migrate.tar.gz -C /opt/
 
 ### 更新所有 Agent endpoint（共 9 台）
 旧: `https://stat.357561.xyz`
-新: `http://31.58.51.127:45774`
+新: `http://<荷兰_IP>:45774`
 
 对所有 server 执行:
 ```bash
 # systemd:
-sed -i "s|https://stat.357561.xyz|http://31.58.51.127:45774|g" /etc/systemd/system/komari-agent.service
+sed -i "s|https://stat.357561.xyz|http://<荷兰_IP>:45774|g" /etc/systemd/system/komari-agent.service
 systemctl daemon-reload && systemctl restart komari-agent
 
 # openrc:
-sed -i "s|https://stat.357561.xyz|http://31.58.51.127:45774|g" /etc/init.d/komari-agent
+sed -i "s|https://stat.357561.xyz|http://<荷兰_IP>:45774|g" /etc/init.d/komari-agent
 rc-service komari-agent restart
 ```
 
@@ -71,6 +71,6 @@ sqlite3 /opt/komari/data/komari.db "SELECT name, last_active FROM clients;"
 
 ## 迁移后结果
 
-**荷兰机：** Komari 面板 http://31.58.51.127:45774 + ip_sentinel webhook :42186 + tg_master
+**荷兰机：** Komari 面板 http://<荷兰_IP>:45774 + ip_sentinel webhook :42186 + tg_master
 **56idc-la：** 仅剩 komari-agent，内存从 45MB → 16MB
 **面板节点数：** 12 台已接入

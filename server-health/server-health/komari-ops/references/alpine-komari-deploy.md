@@ -6,7 +6,7 @@ komari 1.2.0（May）在 Alpine Linux 3.22.2 LXC 上**稳定运行**（hash:567d
 
 ## 环境
 
-- 服务器：107.172.231.70（**Alpine Linux 3.22.2**，LXC 容器，SSH 42185）
+- 服务器：<洛杉矶2_IP>（**Alpine Linux 3.22.2**，LXC 容器，SSH 42185）
 - SSH 密码：`Y@BU1%wmP#xFs8bK`
 komari 版本：1.2.0（working，43MB，May）
 - komari 端口：25774
@@ -46,7 +46,7 @@ nohup /opt/komari/komari server -l :25774 -d /opt/komari/data/komari.db > /var/l
 ### 1. 下载 komari 1.1.9
 
 ```bash
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP>
 mkdir -p /opt/komari/data
 cd /tmp
 curl -fsSL https://github.com/komari-monitor/komari/releases/download/1.1.9/komari-linux-amd64 -o komari

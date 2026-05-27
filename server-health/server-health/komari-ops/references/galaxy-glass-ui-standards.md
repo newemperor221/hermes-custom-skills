@@ -33,7 +33,7 @@ unzip -l /tmp/gg-theme.zip
 
 # 4. 部署
 sshpass -p 'Y@BU1%wmP#xFs8bK' scp -o StrictHostKeyChecking=no -P 42185 \
-  /tmp/gg-theme.zip root@107.172.231.70:/tmp/
+  /tmp/gg-theme.zip root@<洛杉矶2_IP>:/tmp/
 
 # 5. GitHub release（tag 已存在则先删重建）
 gh release delete v1.2.0 --repo newemperor221/galaxy-glass -y 2>/dev/null || true

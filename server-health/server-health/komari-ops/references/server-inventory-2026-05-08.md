@@ -4,19 +4,19 @@
 
 | 节点 | 地址 | SSH端口 | 用户 | 密码/密钥 | 系统 | komari端口 | 备注 |
 |------|------|---------|------|----------|------|-----------|------|
-| 56idc-la | 107.172.231.70 | 42185 | root | Y@BU1%wmP#xFs8bK | Alpine 3.22 LXC | 25774 | komari server + cloudflared + agent |
+| 56idc-la | <洛杉矶2_IP> | 42185 | root | Y@BU1%wmP#xFs8bK | Alpine 3.22 LXC | 25774 | komari server + cloudflared + agent |
 | 将军鸡 | 2001:470:e2db:100:: | 27589 | root | qr2j%tgez2ys | Debian | - | IPv6 only，网络不通 |
-| Dedirock | 155.94.180.55 | 58193 | root | (key) | Debian | - | 可跳将军鸡 |
-| ccs-la2 | 198.46.147.71 | 43827 | woioeow | 4561834 | Debian | 25774 | komari server 旧版已撤 |
-| racknerd-atlanta | 23.95.218.144 | 53621 | woioeow | 4561834 | Debian | - | sudo |
-| nosla-hk | 38.76.170.83 | 27691 | root | (key) | Debian | - | |
-| acck-东京 | 156.231.141.232 | 47283 | root | (key) | Debian | - | |
-| acck-香港 | 45.192.192.210 | 47632 | root | (key) | Debian | - | |
-| akile-东京 | 154.83.94.183 | 62174 | root | (key) | Debian | - | |
-| racknerd-ny | 172.245.159.219 | 27391 | root | (key) | Debian | - | |
-| ccs-la1 | 23.95.201.153 | 47283 | root | (key) | Debian | - | |
-| hostvds-ks | 45.39.12.227 | 63841 | root | (key) | Debian | - | |
-| yecaoyun-hk | 38.55.198.243 | 62839 | root | (key) | Debian | - | |
+| Dedirock | <旧Master_IP> | 58193 | root | (key) | Debian | - | 可跳将军鸡 |
+| ccs-la2 | <运维本机_IP> | 43827 | woioeow | 4561834 | Debian | 25774 | komari server 旧版已撤 |
+| racknerd-atlanta | <亚特兰大_IP> | 53621 | woioeow | 4561834 | Debian | - | sudo |
+| nosla-hk | <nosla香港_IP> | 27691 | root | (key) | Debian | - | |
+| acck-东京 | <东京_IP> | 47283 | root | (key) | Debian | - | |
+| acck-香港 | <acck香港_IP> | 47632 | root | (key) | Debian | - | |
+| akile-东京 | <akile东京_IP> | 62174 | root | (key) | Debian | - | |
+| racknerd-ny | <纽约_IP> | 27391 | root | (key) | Debian | - | |
+| ccs-la1 | <洛杉矶1_IP> | 47283 | root | (key) | Debian | - | |
+| hostvds-ks | <KS_IP> | 63841 | root | (key) | Debian | - | |
+| yecaoyun-hk | <香港_IP> | 62839 | root | (key) | Debian | - | |
 
 ## komari token 列表
 

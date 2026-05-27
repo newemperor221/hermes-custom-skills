@@ -68,7 +68,7 @@ const regionMap = { '东京': 'jp', ..., '朝鲜': 'kp' };
 
 **上传方式**：scp 部署（不是 curl GitHub raw）：
 ```bash
-scp -P 42185 /local/index.html root@107.172.231.70:/data/theme/GalaxyGlass/dist/index.html
+scp -P 42185 /local/index.html root@<洛杉矶2_IP>:/data/theme/GalaxyGlass/dist/index.html
 ```
 
 **注意**：这个修复只对 GalaxyGlass 主题生效（因为只改了主题 JS，没有改 komari binary embed.FS）。如果你走的是 komari 内置主题的 `/` 根路径，还是要重新编译 binary。

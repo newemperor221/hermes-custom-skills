@@ -77,7 +77,7 @@ strings /opt/komari/agent | grep -i 'websocket\|handshake\|reconnect'
 
 ### B. Galaxy Proxy 端口映射失效
 
-**症状：** 客户端 agent 连接 `31.58.51.127:45774` 但 container 内 proxy 监听 `:25774`。
+**症状：** 客户端 agent 连接 `<荷兰_IP>:45774` 但 container 内 proxy 监听 `:25774`。
 
 **根因：** LXD host 的端口映射（`45774 → container:25774`）丢失。之前靠 socat 或 iptables 做映射。
 
@@ -136,7 +136,7 @@ sleep 2
 # 在客户端 VPS 上检查 agent 网络连接
 cat /proc/$(pgrep -f '/opt/komari/agent')/net/tcp | grep -v '00000000:0000' | head -10
 # 解码：将 hex IP 转十进制：
-# 7F333A1F = 127.51.58.31 → 31.58.51.127
+# 7F333A1F = 127.51.58.31 → <荷兰_IP>
 # B2CE = 45774
 # 06 = TIME_WAIT, 01 = ESTABLISHED
 
@@ -152,7 +152,7 @@ ss -tlnp 2>/dev/null || cat /proc/net/tcp6 | grep '01BB' | head -5  # 443 = Clou
   ↓ WebSocket /api/... （实时数据通道）
   ↓ cloudflared tunnel（代理出口）
   ↓
-31.58.51.127:45774 → socat → 127.0.0.1:25774 → galaxy-proxy.py
+<荷兰_IP>:45774 → socat → 127.0.0.1:25774 → galaxy-proxy.py
                                                        ↓
                                                  127.0.0.1:25776 → komari server
                                                                       ↓

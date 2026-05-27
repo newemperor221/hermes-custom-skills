@@ -79,5 +79,5 @@ git reset --hard origin/main
 git cherry-pick <your-commit>
 git push origin main
 # SCP 是独立步骤！
-scp -P 42185 detail.html root@107.172.231.70:/data/theme/GalaxyGlass/detail.html
+scp -P 42185 detail.html root@<洛杉矶2_IP>:/data/theme/GalaxyGlass/detail.html
 ```

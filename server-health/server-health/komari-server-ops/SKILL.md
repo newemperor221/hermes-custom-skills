@@ -242,18 +242,18 @@ dig +short stat.357561.xyz
 # → 104.21.x.x / 172.67.x.x = Cloudflare CDN（正确）
 
 # 2. cloudflared 隧道
-ssh -p 10425 root@140.245.97.144 "rc-service cloudflared status"
+ssh -p 10425 root@<新加坡_IP> "rc-service cloudflared status"
 # → cloudflared 进程必须在面板机上运行
 
 # 3. 本机各端口
-ssh -p 10425 root@140.245.97.144 "netstat -tlnp | grep -E '25774|25775|25776'"
+ssh -p 10425 root@<新加坡_IP> "netstat -tlnp | grep -E '25774|25775|25776'"
 
 # 4. 核心 API 测试
-ssh -p 10425 root@140.245.97.144 "curl -s -o /dev/null -w '%{http_code}' http://localhost:25774/"
+ssh -p 10425 root@<新加坡_IP> "curl -s -o /dev/null -w '%{http_code}' http://localhost:25774/"
 # → 200 表示整个链正常（cloudflared → tcp-proxy → galaxy-proxy/komari）
 
 # 5. 登录 API 测试
-ssh -p 10425 root@140.245.97.144 'curl -s -X POST http://localhost:25774/api/login \
+ssh -p 10425 root@<新加坡_IP> 'curl -s -X POST http://localhost:25774/api/login \
   -H "Content-Type: application/json" \
   -d "{\"username\":\"admin\",\"password\":\"密码在此\"}"'
 # → 返回 session_token = 登录 API 正常
@@ -575,7 +575,7 @@ ls -lh /opt/komari/galaxy-proxy.py
 # 服务端口 25774 (让 proxy 在这监听，cloudflared 连这个口)
 
 # 3. SSH 到远程服务器
-ssh -i ~/.ssh/hermes_admin -p 46748 root@31.58.51.127
+ssh -i ~/.ssh/hermes_admin -p 46748 root@<荷兰_IP>
 
 # 4. 停止 native komari 释放 25774
 kill $(ss -tlnp | grep ':25774 ' | grep -oP 'pid=\K[0-9]+')
@@ -728,7 +728,7 @@ pnpm run build
 bash deploy.sh
 
 # 4. 验证
-ssh -p 46748 root@31.58.51.127 "curl -s http://localhost:25774/ | grep -o 'astro-island' | wc -l"
+ssh -p 46748 root@<荷兰_IP> "curl -s http://localhost:25774/ | grep -o 'astro-island' | wc -l"
 ```
 
 ### Footer 站点运行时间始终显示 0 日
@@ -773,7 +773,7 @@ ls -lh /opt/komari/komari
 
 ```bash
 # 1. 确认数据库里有多少节点注册
-ssh -p 10425 root@140.245.97.144 \
+ssh -p 10425 root@<新加坡_IP> \
   "python3 -c '
 import json, urllib.request
 nodes = json.loads(urllib.request.urlopen(\"http://127.0.0.1:25776/api/nodes\").read())
@@ -781,12 +781,12 @@ print(f\"Nodes: {len(nodes.get(\\\"data\\\",[]))}\")
 '"
 
 # 2. 检查 records 表有多少 client 有数据
-ssh -p 10425 root@140.245.97.144 \
+ssh -p 10425 root@<新加坡_IP> \
   "sqlite3 /opt/komari/data/komari.db 'SELECT COUNT(DISTINCT client) FROM records;'"
 # → 如果远小于 clients 表行数 → 大部分 agent 没上报
 
 # 3. 抽样检查单个节点
-ssh -p 10425 root@140.245.97.144 \
+ssh -p 10425 root@<新加坡_IP> \
   "python3 -c '
 import json, urllib.request
 nodes = json.loads(urllib.request.urlopen(\"http://127.0.0.1:25776/api/nodes\").read())
@@ -901,8 +901,8 @@ timeout 3 nc -zv <IP> 43590 2>&1
 # 4. 已知非常规端口模式
 #    - 无聊云|洛杉矶 (56idc-la): 2222
 #    - 台湾 GCP VM: 43590（主）和 2222（iptables NAT 映射）
-#    - 荷兰主控 (31.58.51.127): 46748
-#    - 亚特兰大 (23.95.218.144): 53621 (woioeow 用户)
+#    - 荷兰主控 (<荷兰_IP>): 46748
+#    - 亚特兰大 (<亚特兰大_IP>): 53621 (woioeow 用户)
 
 # 5. 还不行就扫 top 20 端口
 for port in 22 2222 22222 443 80 8080 35776 43621 53621 58193 47283 63841 27391 42185 46748 43590; do
@@ -936,8 +936,8 @@ ssh -o StrictHostKeyChecking=no -p 43590 root@<IP>
 **查找方式：** 用 `memory` 工具查看，或搜 `session_search`。用户预期 Agent 自动保存所有管理的小鸡凭据。
 
 **已知密码认证节点：**
-- 台湾 GCP (35.189.164.32:43590, root/pwZv8%%crNf$$NFF)
-- 新加坡 isvoro (140.245.97.144:10425, root/jZmogE2tU94HJibt)
+- 台湾 GCP (<台湾_IP>:43590, root/pwZv8%%crNf$$NFF)
+- 新加坡 isvoro (<新加坡_IP>:10425, root/jZmogE2tU94HJibt)
 ```
 
 ### 状态判断矩阵（从主控 SSH 侧测试）
@@ -1067,19 +1067,19 @@ file /opt/komari/agent
 
 | 名称 | 区域 | IP | 特征 |
 |------|------|----|------|
-| 无聊云 \\| 洛杉矶 | 🇺🇸 US | 107.172.231.70 | **2222** | NAT VPS，小磁盘 ¥10/年 |
-| Acck \\| 东京 | 🇯🇵 JP | 156.231.141.232 | 22 | 9929 线路 ¥148.88/年 |
-| RackNerd \\| 纽约 | 🇺🇸 US | 172.245.159.219 | 22 | $10.6/年 |
-| ColoCrossing \\| 洛杉矶 | 🇺🇸 US | 23.95.201.153 | 22 | 右护法 $10/年 |
-| HostVDS \\| 堪萨斯 | 🇺🇸 US | 45.39.12.227 | 22 | $0.99/月 |
-| 野草云 \\| 香港 | 🇭🇰 HK | 38.55.198.243 | 22 | 主力节点 ¥297/3年 |
-| RackNerd \\| 亚特兰大 | 🇺🇸 US | 23.95.218.144 | 22 → **53621**（woioeow） | 大硬盘 $18.66/年 |
-| ColoCrossing \\| 洛杉矶2 | 🇺🇸 US | 198.46.147.71 | 22 | $29/年 |
-| DediRock \\| 洛杉矶 | 🇺🇸 US | 155.94.180.55 | 22 | cloudflared 隧道 $6.45/年 |
-| 无聊云 \\| 阿姆斯特丹 | 🇳🇱 NL | 31.58.51.127 | **46748** | **Komari 主控** ¥10/年 |
-| 无聊云测试 \\| 台湾 | 🇹🇼 TW | 35.189.164.32 | **43590**（主）/ 2222（NAT） | GCP 永久免费 Alpine LXC, 内网 10.171.50.145, 密码认证 |
-| isvoro \\| 首尔 | 🇰🇷 KR | 146.56.191.86 | 22 | ¥0.18/月, Agent 掉线, 密钥未知 |
-| isvoro \\| 新加坡 | 🇸🇬 SG | 140.245.97.144 | **10425** | ¥0.18/月, ARM64 Alpine LXC, **重装后密码已更新** |
+| 无聊云 \\| 洛杉矶 | 🇺🇸 US | <洛杉矶2_IP> | **2222** | NAT VPS，小磁盘 ¥10/年 |
+| Acck \\| 东京 | 🇯🇵 JP | <东京_IP> | 22 | 9929 线路 ¥148.88/年 |
+| RackNerd \\| 纽约 | 🇺🇸 US | <纽约_IP> | 22 | $10.6/年 |
+| ColoCrossing \\| 洛杉矶 | 🇺🇸 US | <洛杉矶1_IP> | 22 | 右护法 $10/年 |
+| HostVDS \\| 堪萨斯 | 🇺🇸 US | <KS_IP> | 22 | $0.99/月 |
+| 野草云 \\| 香港 | 🇭🇰 HK | <香港_IP> | 22 | 主力节点 ¥297/3年 |
+| RackNerd \\| 亚特兰大 | 🇺🇸 US | <亚特兰大_IP> | 22 → **53621**（woioeow） | 大硬盘 $18.66/年 |
+| ColoCrossing \\| 洛杉矶2 | 🇺🇸 US | <运维本机_IP> | 22 | $29/年 |
+| DediRock \\| 洛杉矶 | 🇺🇸 US | <旧Master_IP> | 22 | cloudflared 隧道 $6.45/年 |
+| 无聊云 \\| 阿姆斯特丹 | 🇳🇱 NL | <荷兰_IP> | **46748** | **Komari 主控** ¥10/年 |
+| 无聊云测试 \\| 台湾 | 🇹🇼 TW | <台湾_IP> | **43590**（主）/ 2222（NAT） | GCP 永久免费 Alpine LXC, 内网 10.171.50.145, 密码认证 |
+| isvoro \\| 首尔 | 🇰🇷 KR | <首尔_IP> | 22 | ¥0.18/月, Agent 掉线, 密钥未知 |
+| isvoro \\| 新加坡 | 🇸🇬 SG | <新加坡_IP> | **10425** | ¥0.18/月, ARM64 Alpine LXC, **重装后密码已更新** |
 
 ## 故障排查
 
@@ -1225,7 +1225,7 @@ timeout 3 bash -c 'exec 3<>/dev/tcp/127.0.0.1/25774; echo -e "GET /api/clients/r
 
 **现象：** stat.357561.xyz 页面能显示 GalaxyGlass 前端（导航栏、卡片视图），但统计栏显示 `0/0` 在线服务器，卡片区显示 "连接后端中" / "暂无节点"。
 
-**根因：** stat.357561.xyz 指向 Cloudflare CDN（DNS A 记录 → 104.21.x.x / 172.67.x.x），只承载静态前端文件。后端 Komari API 在荷兰机（31.58.51.127:25774 容器内，通过 NAT 端口 45774 暴露），二者之间没有 cloudflared 隧道连接，所以前端的 `/api/*` 请求无法到达后端。
+**根因：** stat.357561.xyz 指向 Cloudflare CDN（DNS A 记录 → 104.21.x.x / 172.67.x.x），只承载静态前端文件。后端 Komari API 在荷兰机（<荷兰_IP>:25774 容器内，通过 NAT 端口 45774 暴露），二者之间没有 cloudflared 隧道连接，所以前端的 `/api/*` 请求无法到达后端。
 
 **诊断步骤：**
 
@@ -1235,20 +1235,20 @@ dig +short stat.357561.xyz
 # → 104.21.x.x / 172.67.x.x → Cloudflare
 
 # 2. 确认后端面板实际能否访问（绕开前端，直接请求后端）
-curl -sI http://31.58.51.127:45774/
+curl -sI http://<荷兰_IP>:45774/
 # → 200 OK 表示后端运行正常
 
 # 3. 确认后端 API 响应（返回探针数据说明一切正常）
-curl -s http://31.58.51.127:45774/api/nodes | python3 -c "import json,sys; d=json.load(sys.stdin); print(f'{len(d[\"data\"])} 节点注册')"
+curl -s http://<荷兰_IP>:45774/api/nodes | python3 -c "import json,sys; d=json.load(sys.stdin); print(f'{len(d[\"data\"])} 节点注册')"
 
 # 4. 确认无 cloudflared 隧道
-ssh -p 46748 root@31.58.51.127 "rc-service cloudflared status 2>&1 || echo '未安装'"
+ssh -p 46748 root@<荷兰_IP> "rc-service cloudflared status 2>&1 || echo '未安装'"
 # → "unrecognized service" 或 "* status: stopped" → 无隧道
 ```
 
 **修复方案：**
 - 方案 A：在荷兰机上重新部署 cloudflared 隧道（推荐，保留 HTTPS 域名访问）
-- 方案 B：改 DNS A 记录直接指向荷兰机公网 IP（31.58.51.127），但面板无 HTTPS
+- 方案 B：改 DNS A 记录直接指向荷兰机公网 IP（<荷兰_IP>），但面板无 HTTPS
 - 方案 C：通过反向代理（Nginx + Let's Encrypt）暴露面板
 
 ### 离线节点深度诊断（从主控 SSH 侧排查）
@@ -1276,7 +1276,7 @@ sqlite3 /opt/komari/data/komari.db "SELECT uuid, name, ipv4, ipv6, updated_at FR
 | ✅ 通 | ✅ 通 | ✅ 通但无数据 | Agent 运行但连不上主控 | 检查 agent endpoint 配置 |
 
 **IPv6-only 节点特别注意事项：**
-- NAT 端口转发（如 `31.58.51.127:45774`）只对 IPv4 有效，IPv6 流量直通不走 NAT
+- NAT 端口转发（如 `<荷兰_IP>:45774`）只对 IPv4 有效，IPv6 流量直通不走 NAT
 - 从主控侧测试 IPv6 节点要用 `ping6`（Alpine 上 `ping` 默认 IPv4）
 - 测试端口：`nc -z <IPv6地址> <端口>` 或 `timeout 5 bash -c 'echo > /dev/tcp/<IPv6>/<port>'`（注意 Alpine busybox 的 `nc` 不支持 `-6` 选项）
 - 如果主控有公网 IPv6（检查 `ip addr show | grep inet6` 的 global 地址），可以直接访问节点 IPv6。主控的 link-local 地址（`fe80::`）不行
@@ -1284,7 +1284,7 @@ sqlite3 /opt/komari/data/komari.db "SELECT uuid, name, ipv4, ipv6, updated_at FR
 ### IPv6-Only 节点：用 cloudflared 隧道 URL 作为 Agent Endpoint
 
 当面板运行在 NAT VPS 上（如 荷兰鸡 LXC，只有 IPv4 内网地址），IPv6-only 的探针（如 将军鸡）无法直连面板：
-- NAT 端口转发（如 `31.58.51.127:45774`）只对 IPv4 有效
+- NAT 端口转发（如 `<荷兰_IP>:45774`）只对 IPv4 有效
 - 面板机上的公网 IPv6（如 `2a0f:85c1:840:2ce:1::8c`）可能路由不可达
 - SSH 跳板需要双栈机器
 
@@ -1337,10 +1337,10 @@ curl -s --connect-timeout 10 -X POST \
 
 ```bash
 # ❌ 不靠谱的判断方式
-ping -c 3 -W 5 23.95.201.153    # Request timeout → 不代表节点离线
+ping -c 3 -W 5 <洛杉矶1_IP>    # Request timeout → 不代表节点离线
 
 # ✅ 靠谱的判断方式：直接测 agent 端口或 API
-timeout 5 bash -c 'echo > /dev/tcp/23.95.201.153/35776' 2>/dev/null && echo "端口开" || echo "端口关"
+timeout 5 bash -c 'echo > /dev/tcp/<洛杉矶1_IP>/35776' 2>/dev/null && echo "端口开" || echo "端口关"
 # 或用主控面板 API 确认（绕过中间人）：
 curl -s --connect-timeout 5 http://主控IP:PORT/api/recent/<uuid> | python3 -c "import json,sys; d=json.load(sys.stdin).get('data',[]); print(f'有 {len(d)} 条数据' if d else '无上报')"
 ```
@@ -1416,7 +1416,7 @@ Komari 监控的节点 SSH 凭证存储在多个位置，按优先级查找：
 
 凭证示例（来自 tokens 文件）：
 ```
-56idc-la|c0b50033...|107.172.231.70|52137|root|4561834
+56idc-la|c0b50033...|<洛杉矶2_IP>|52137|root|4561834
 ```
 
 ⚠️ **凭证文件中的端口和密码可能已过期**（服务器重装、配置变更后会变）。连不上时需用户确认当前凭证。56idc 当前实际端口为 42185，密码非 token 文件中的 4561834。
@@ -1506,8 +1506,8 @@ rc-service ip-sentinel-master start
 
 迁移面板后，所有探针的 `-e` 参数必须更新指向新面板地址。按服务类型执行：
 
-⚠️ **NAT 端口仅对 IPv4 有效**：如果面板运行在 NAT VPS 上，NAT 端口转发（如 31.58.51.127:45774 → 内网 25774）只对 IPv4 流量生效。IPv6-only 的探针（如只有 IPv6 的 LXC 容器）连接 NAT 端口会失败。解决方法：
-- **IPv4 探针** → endpoint 用 `http://公网IP:NAT端口`（如 `http://31.58.51.127:45774`）
+⚠️ **NAT 端口仅对 IPv4 有效**：如果面板运行在 NAT VPS 上，NAT 端口转发（如 <荷兰_IP>:45774 → 内网 25774）只对 IPv4 流量生效。IPv6-only 的探针（如只有 IPv6 的 LXC 容器）连接 NAT 端口会失败。解决方法：
+- **IPv4 探针** → endpoint 用 `http://公网IP:NAT端口`（如 `http://<荷兰_IP>:45774`）
 - **IPv6 探针** → endpoint 用 `http://[容器IPv6地址]:实际服务端口`（如 `http://[2a0f:85c1:840:2ce:1::8c]:25774`），注意端口是服务的实际端口（25774）而非 NAT 映射端口，IPv6 地址要用方括号括起来
 - 可以用 `curl -6 http://[IPv6地址]:实际端口/` 先在探针上验证面板是否可达，再改 agent 配置
 
@@ -1726,13 +1726,13 @@ sqlite3 /opt/komari/data/komari.db "SELECT name, token FROM clients WHERE name L
 
 ```bash
 # 面板主页
-curl -sI http://31.58.51.127:45774/
+curl -sI http://<荷兰_IP>:45774/
 
 # 节点列表（所有注册节点）
-curl -s http://31.58.51.127:45774/api/nodes | python3 -m json.tool
+curl -s http://<荷兰_IP>:45774/api/nodes | python3 -m json.tool
 
 # 单个节点最新指标
-curl -s http://31.58.51.127:45774/api/recent/<uuid>
+curl -s http://<荷兰_IP>:45774/api/recent/<uuid>
 
 # 快速检查所有节点在线状态
 # 遍历 uuid 列表，看谁有/无数据
@@ -1754,8 +1754,8 @@ curl -s http://31.58.51.127:45774/api/recent/<uuid>
 ### 快速批量检查所有节点
 
 ```bash
-for uuid in $(curl -s http://31.58.51.127:45774/api/nodes | python3 -c "import json,sys; [print(n['uuid']) for n in json.load(sys.stdin)['data']]"); do
-  out=$(curl -s "http://31.58.51.127:45774/api/recent/$uuid")
+for uuid in $(curl -s http://<荷兰_IP>:45774/api/nodes | python3 -c "import json,sys; [print(n['uuid']) for n in json.load(sys.stdin)['data']]"); do
+  out=$(curl -s "http://<荷兰_IP>:45774/api/recent/$uuid")
   has=$(echo "$out" | python3 -c "import json,sys; d=json.load(sys.stdin).get('data',[]); print('✅ 有数据' if d else '⚠️ 无上报')")
   echo "$uuid: $has"
 done
@@ -1769,31 +1769,31 @@ done
 Komari 面板 + IP Sentinel 主控位于 波兰机（玩具波兰 LXC）。
 
 **架构变更（2026-05-13）：**
-- **Cloudflare tunnel 路由**：stat.357561.xyz 通过 DediRock（155.94.180.55）的 cloudflared tunnel 连接到波兰主控。DediRock 仅作为 tunnel connector，不直接提供面板服务
+- **Cloudflare tunnel 路由**：stat.357561.xyz 通过 DediRock（<旧Master_IP>）的 cloudflared tunnel 连接到波兰主控。DediRock 仅作为 tunnel connector，不直接提供面板服务
 - **Python 代理已部署**：`127.0.0.1:25774` 运行 Python 代理（监听 25774，将 API 透传给 komari 的 25776 端口），服务美化版 GalaxyGlass（14px 基准字体、stat 差异色调、卡片间距优化）。自定义 HTML 在 `/opt/komari/data/theme/index.html`，代理脚本在 `/opt/komari/galaxy-proxy.py`
 - **galaxy-glass 自动缩放** 已删除（不需要自动缩放，要缩放用字体基准调整）
 - **frontend-proxy** 已停止，由 Python 代理替代
 
 **架构变更（2026-05-25）：主控已迁移到新加坡**
 
-**新加坡主控（isvoro, 140.245.97.144:10425）：**
+**新加坡主控（isvoro, <新加坡_IP>:10425）：**
 - ARM64 Alpine 3.17 LXC，23GB 宿主机共享内存（~238MB 可用），1GB 磁盘
 - 面板服务：komari 后端 25776 + galaxy-proxy 25774 + cloudflared 隧道 + IP-Sentinel
 - 面板访问：`stat.357561.xyz`（cloudflared tunnel → galaxy-proxy:25774 → komari:25776）
 - SSH：root + 密码（存 memory）
 - 服务管理：`/etc/local.d/*.start`（Alpine OpenRC local 服务）
 
-**荷兰旧主控（31.58.51.127:46748）：**
+**荷兰旧主控（<荷兰_IP>:46748）：**
 - 已降级为纯监控节点，仅运行 komari-agent（指向 stat.357561.xyz）
 - 不再运行：komari server / galaxy-proxy / cloudflared / IP-Sentinel
 
-**56idc-la（107.172.231.70:42185）：**
+**56idc-la（<洛杉矶2_IP>:42185）：**
 - 已降级为纯探针节点，仅运行 komari-agent
 - SSH 密码：Y@BU1%wmP#xFs8bK（root 用户）
 - 不再运行：komari server / ip_sentinel / ip_sentinel_master / cloudflared
 
 **旧面板域名：**
-- mon.357561.xyz（DediRock LA 155.94.180.55）— 已废弃
-- stat.357561.xyz — 通过 DediRock cloudflared tunnel → Poland Master（31.58.51.127:45774）。GalaxyGlass 前端 + API 均正常工作（2026-05-13 验证）
+- mon.357561.xyz（DediRock LA <旧Master_IP>）— 已废弃
+- stat.357561.xyz — 通过 DediRock cloudflared tunnel → Poland Master（<荷兰_IP>:45774）。GalaxyGlass 前端 + API 均正常工作（2026-05-13 验证）
 
-**当前注册节点（2026-05-25 更新）：**\n\n| Name | Provider | Location | IP | Status |\n|------|----------|----------|----|--------|\n| `56idc-la` | 无聊云 | 洛杉矶 | 107.172.231.70:2222 | 在线 |\n| `acck-tokyo` | Acck | 东京 | 156.231.141.232:22 | 在线 |\n| `racknerd-ny` | RackNerd | 纽约 | 172.245.159.219:22 | 在线 |\n| `ccs-la1` | ColoCrossing | 洛杉矶 | 23.95.201.153:22 | 在线 |\n| `hostvds-ks` | HostVDS | 堪萨斯 | 45.39.12.227:22 | 在线 |\n| `yecaoyun-hk` | 野草云 | 香港 | 38.55.198.243:22 | 在线 |\n| `racknerd-atlanta` | RackNerd | 亚特兰大 | 23.95.218.144:53621 | 在线 |\n| `ccs-la2` | ColoCrossing | 洛杉矶2 | 198.46.147.71:22 | 在线 |\n| `dedirock` | DediRock | 洛杉矶 | 155.94.180.55:22 | 在线 |\n| `e8e37179` | 无聊云 | 阿姆斯特丹 | 31.58.51.127:46748 | 在线 |\n| `gcp-us` | GCP | 台湾 | 35.189.164.32:43590 | 在线 |\n| `isvoro-seoul` | isvoro | 首尔 | 146.56.191.86:22 | 无数据 |\n| `isvoro-sg` | isvoro | 新加坡 | 140.245.97.144:10425 | 在线 |\n\n**已删除：** 平壤（欢乐云，退款关闭）
+**当前注册节点（2026-05-25 更新）：**\n\n| Name | Provider | Location | IP | Status |\n|------|----------|----------|----|--------|\n| `56idc-la` | 无聊云 | 洛杉矶 | <洛杉矶2_IP>:2222 | 在线 |\n| `acck-tokyo` | Acck | 东京 | <东京_IP>:22 | 在线 |\n| `racknerd-ny` | RackNerd | 纽约 | <纽约_IP>:22 | 在线 |\n| `ccs-la1` | ColoCrossing | 洛杉矶 | <洛杉矶1_IP>:22 | 在线 |\n| `hostvds-ks` | HostVDS | 堪萨斯 | <KS_IP>:22 | 在线 |\n| `yecaoyun-hk` | 野草云 | 香港 | <香港_IP>:22 | 在线 |\n| `racknerd-atlanta` | RackNerd | 亚特兰大 | <亚特兰大_IP>:53621 | 在线 |\n| `ccs-la2` | ColoCrossing | 洛杉矶2 | <运维本机_IP>:22 | 在线 |\n| `dedirock` | DediRock | 洛杉矶 | <旧Master_IP>:22 | 在线 |\n| `e8e37179` | 无聊云 | 阿姆斯特丹 | <荷兰_IP>:46748 | 在线 |\n| `gcp-us` | GCP | 台湾 | <台湾_IP>:43590 | 在线 |\n| `isvoro-seoul` | isvoro | 首尔 | <首尔_IP>:22 | 无数据 |\n| `isvoro-sg` | isvoro | 新加坡 | <新加坡_IP>:10425 | 在线 |\n\n**已删除：** 平壤（欢乐云，退款关闭）

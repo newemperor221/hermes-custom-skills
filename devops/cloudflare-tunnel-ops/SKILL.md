@@ -16,14 +16,14 @@ description: Cloudflare Zero Trust Tunnel（cloudflared）全栈运维——tunn
 
 ### 服务分布
 
-**荷兰主控** (31.58.51.127:46748, Alpine LXC, `~/.ssh/hermes_admin` 密钥)
+**荷兰主控** (<荷兰_IP>:46748, Alpine LXC, `~/.ssh/hermes_admin` 密钥)
 | 子域名 | 后端服务 | 端口 |
 |--------|---------|------|
 | `stat.357561.xyz` | galaxy-proxy.py → Komari 面板 | `127.0.0.1:25774` → `127.0.0.1:25776` |
 | `drive.357561.xyz` | WebDAV 网盘 | 配置在 Zero Trust Dashboard |
 | `tz.357561.xyz` | 探针 | 配置在 Zero Trust Dashboard |
 
-**1c2.5g洛杉矶** (155.94.180.55:58193, Debian)
+**1c2.5g洛杉矶** (<旧Master_IP>:58193, Debian)
 | 子域名 | 后端服务 | 端口 |
 |--------|---------|------|
 | `ai.357561.xyz` | ds-free-api | `localhost:22217` |
@@ -274,7 +274,7 @@ nc -zv <PUBLIC_IP> 22 2>&1
 #     iptables -t nat -A PREROUTING -p tcp --dport <EXT_PORT> -j DNAT --to-destination :22
 ```
 
-**Real-world example:** Dutch VPS (31.58.51.127) used cloudflared tunnel to expose SSH on port 46748 (NAT → port 22). Deleting cloudflared cut SSH access completely because port 22 was not directly reachable from the internet. The only recovery path was the VPS provider's web console.
+**Real-world example:** Dutch VPS (<荷兰_IP>) used cloudflared tunnel to expose SSH on port 46748 (NAT → port 22). Deleting cloudflared cut SSH access completely because port 22 was not directly reachable from the internet. The only recovery path was the VPS provider's web console.
 
 ### Tunnel Independence from SSH (when SSH is NOT tunnel-dependent)
 

@@ -1,7 +1,7 @@
 # 节点安装记录 2026-05-08
 
 ## 当前 komari server
-- **Host**: 56idc-la (107.172.231.70:42185, root, Alpine + OpenRC)
+- **Host**: 56idc-la (<洛杉矶2_IP>:42185, root, Alpine + OpenRC)
 - **Panel**: https://stat.357561.xyz (cloudflared → localhost:20241 → komari :25774)
 - **cloudflared token**: `eyJhIjoiYzFkMTgwNGNiNTA3NGM2YTYwNGU1NDc0YjZjNTA4MTYiLCJ0IjoiYmE0ZThlYTctZThlMS00MTE1LTg0MGItNjRiODdlMTUyYjg1IiwicyI6IllqRmtOR1l6TW1VdE16WmlOUzAwWXpNNUxUZzBZakV0TldReU1qTTROakk1WWpFMSJ9`
 
@@ -9,18 +9,18 @@
 
 | 简称 | 地址 | SSH端口 | 用户 | 密码 | 系统 | Init | Agent token |
 |------|------|---------|------|------|------|------|-------------|
-| 56idc-la | 107.172.231.70 | 42185 | root | Y@BU1%wmP#xFs8bK | Debian+Alpine | OpenRC | 56idc-la-token |
+| 56idc-la | <洛杉矶2_IP> | 42185 | root | Y@BU1%wmP#xFs8bK | Debian+Alpine | OpenRC | 56idc-la-token |
 | 将军鸡 | 2001:470:e2db:100::5459:389:6b27 | 27589 | root | qr2j%tgez2ys | Debian | OpenRC | 207c22bb50597a5b27e72e57c66f3cd9 |
-| dedirock-洛杉矶 | 155.94.180.55 | 58193 | root | Y@BU1%wmP#xFs8bK | Debian | systemd | dedirock-token |
-| acck-东京 | 156.231.141.232 | 47283 | root | 4561834 | Debian | systemd | acck-tokyo-token |
-| acck-香港 | 45.192.192.210 | 47632 | root | 4561834 | Debian | systemd | acck-hk-token |
-| akile-东京 | 154.83.94.183 | 62174 | root | 4561834 | Debian | systemd | akile-tokyo-token |
-| racknerd-纽约 | 172.245.159.219 | 27391 | root | 4561834 | Debian | systemd | racknerd-ny-token |
-| ccs-洛杉矶1 | 23.95.201.153 | 47283 | root | 4561834 | Debian | systemd | ccs-la1-token |
-| ccs-洛杉矶2 | 198.46.147.71 | 43827 | woioeow | 4561834 | Debian | systemd | ccs-la2-token |
-| hostvds-堪萨斯 | 45.39.12.227 | 63841 | root | 4561834 | Debian | systemd | hostvds-ks-token |
-| racknerd-亚特兰大 | 23.95.218.144 | 53621 | woioeow | 4561834 | Debian | systemd | racknerd-atlanta-token |
-| yecaoyun-香港 | 38.55.198.243 | 62839 | root | 4561834 | Debian | systemd | yecaoyun-hk-token |
+| dedirock-洛杉矶 | <旧Master_IP> | 58193 | root | Y@BU1%wmP#xFs8bK | Debian | systemd | dedirock-token |
+| acck-东京 | <东京_IP> | 47283 | root | 4561834 | Debian | systemd | acck-tokyo-token |
+| acck-香港 | <acck香港_IP> | 47632 | root | 4561834 | Debian | systemd | acck-hk-token |
+| akile-东京 | <akile东京_IP> | 62174 | root | 4561834 | Debian | systemd | akile-tokyo-token |
+| racknerd-纽约 | <纽约_IP> | 27391 | root | 4561834 | Debian | systemd | racknerd-ny-token |
+| ccs-洛杉矶1 | <洛杉矶1_IP> | 47283 | root | 4561834 | Debian | systemd | ccs-la1-token |
+| ccs-洛杉矶2 | <运维本机_IP> | 43827 | woioeow | 4561834 | Debian | systemd | ccs-la2-token |
+| hostvds-堪萨斯 | <KS_IP> | 63841 | root | 4561834 | Debian | systemd | hostvds-ks-token |
+| racknerd-亚特兰大 | <亚特兰大_IP> | 53621 | woioeow | 4561834 | Debian | systemd | racknerd-atlanta-token |
+| yecaoyun-香港 | <香港_IP> | 62839 | root | 4561834 | Debian | systemd | yecaoyun-hk-token |
 
 ## 批量安装命令模板
 
@@ -54,7 +54,7 @@ rc-update add komari-agent default
 
 ## 数据库批量注册
 ```bash
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 "sqlite3 /opt/komari/data/komari.db \"
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "sqlite3 /opt/komari/data/komari.db \"
 INSERT OR IGNORE INTO clients (uuid, token, name, os, created_at, updated_at) VALUES
 ('56idc-la', '56idc-la-token', '56idc-la', 'Linux', datetime('now'), datetime('now')),
 ('jiangjunji', '207c22bb50597a5b27e72e57c66f3cd9', '将军鸡', 'Linux', datetime('now'), datetime('now')),

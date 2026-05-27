@@ -57,7 +57,7 @@ ss -tlnp | grep -E '4008[0-9]'
 grep TG_TOKEN /opt/ip_sentinel_master/master.conf
 
 # SSH 到所有可能运行过 IP-Sentinel 的服务器，查是否有残留
-for host in "31.58.51.127:46748" "140.245.97.144:10425" "其他可能的IP"; do
+for host in "<荷兰_IP>:46748" "<新加坡_IP>:10425" "其他可能的IP"; do
   ip=$(echo $host | cut -d: -f1)
   port=$(echo $host | cut -d: -f2)
   echo "=== $ip ==="
@@ -105,7 +105,7 @@ done
 
 **如果端口返回 `SSH-2.0-OpenSSH` banner：** 说明找到了 SSH 端口，尝试用用户密钥登录。
 
-**实战案例：** 107.172.231.70 的 SSH 端口是 50000 而不是默认的 22。端口扫描揭示了这台沉睡的 Master 服务器。
+**实战案例：** <洛杉矶2_IP> 的 SSH 端口是 50000 而不是默认的 22。端口扫描揭示了这台沉睡的 Master 服务器。
 
 如果步骤 3 没查到，但问题仍在，可能存在第三台你忘记了的服务器。检查方式：
 
@@ -128,9 +128,9 @@ curl -s "https://api.telegram.org/bot${TG_TOKEN}/getUpdates?offset=-1&limit=1"
 | Location | SSH | What was found | How discovered |
 |----------|-----|----------------|----------------|
 | **本机** (Hermes host) | local | systemd `ip-sentinel-agent-daemon` (ACTIVE+ENABLED) + 3 systemd timers + cron watchdog | `systemctl list-units` + `crontab -l` |
-| **新加坡** (140.245.97.144:10425) | 10425 | `/opt/ip_sentinel_master/` dir + cron | SSH check |
-| **荷兰** (31.58.51.127:46748) | 46748 | OpenRC residual dirs + stale cron | SSH check |
-| **无聊云洛杉矶** (107.172.231.70) | **42185** | **Two concurrent tg_master.sh processes!** + cron + both agent and master dirs | Port scan found port 50000 OpenSSH banner; actual SSH on 42185 |
+| **新加坡** (<新加坡_IP>:10425) | 10425 | `/opt/ip_sentinel_master/` dir + cron | SSH check |
+| **荷兰** (<荷兰_IP>:46748) | 46748 | OpenRC residual dirs + stale cron | SSH check |
+| **无聊云洛杉矶** (<洛杉矶2_IP>) | **42185** | **Two concurrent tg_master.sh processes!** + cron + both agent and master dirs | Port scan found port 50000 OpenSSH banner; actual SSH on 42185 |
 
 **Key takeaways:**
 1. **Do NOT iterate server-by-server.** Broom sweep ALL known servers first.

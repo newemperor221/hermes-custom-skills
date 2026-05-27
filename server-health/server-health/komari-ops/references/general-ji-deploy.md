@@ -35,7 +35,7 @@ chmod +x /opt/komari/agent
 
 ### 2. 在 56idc-la（komari server）上生成 token 并写入数据库
 ```bash
-ssh -p 52137 -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@107.172.231.70 \
+ssh -p 52137 -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no root@<洛杉矶2_IP> \
   "sqlite3 /opt/komari/data/komari.db \"INSERT INTO clients (uuid, token, name, os, created_at, updated_at) VALUES (lower(hex(randomblob(16))), '207c22bb50597a5b27e72e57c66f3cd9', '将军鸡', 'Alpine Linux', datetime('now'), datetime('now'));\""
 ```
 

@@ -328,7 +328,7 @@ curl -s --socks5 127.0.0.1:1080 https://www.google.com -o /dev/null -w "%{http_c
 
 ## 五、Atlanta 重置风险
 
-Atlanta (23.95.218.144) RackNerd VPS 会周期性重置。**会被清空**：UFW、fail2ban、sudoers、sing-box。**不受影响**：Docker、nginx 配置、Let's Encrypt、用户主目录。
+Atlanta (<亚特兰大_IP>) RackNerd VPS 会周期性重置。**会被清空**：UFW、fail2ban、sudoers、sing-box。**不受影响**：Docker、nginx 配置、Let's Encrypt、用户主目录。
 
 重建顺序：apt install ufw fail2ban → ufw allow → 重建 sing-box → 恢复 sudo NOPASSWD。
 

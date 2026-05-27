@@ -4,7 +4,7 @@
 
 | 时间 (UTC) | 事件 |
 |------------|------|
-| 5月16日 16:00 | **首次入侵** — 攻击者 165.154.155.174 (UCloud HK) 首次密码登录成功 (messages.0 日志确认，之前版本误记为 5月17日) |
+| 5月16日 16:00 | **首次入侵** — 攻击者 <攻击者IP> (UCloud HK) 首次密码登录成功 (messages.0 日志确认，之前版本误记为 5月17日) |
 | 5月17日 ~12-13 (文件时间) | 矿机配置文件 `.config.json` / `config.json` 被上传 |
 | 5月16日 16:00 ~ 5月18日 14:13 | **持续 46 小时** — 攻击者登录 **87 次** (33次在 messages.0 + 54次在 messages)，平均每 ~30 分钟一次。每次登录 2-3 个并发 SSH 会话、连接仅持续数秒（登录→检查→断开） |
 | 5月18日 13:01 | 上传 `free_proc.sh`（反竞争脚本）和最新版 `systemd` 矿机二进制 |
@@ -21,10 +21,10 @@
 
 | 节点 | IP | 端口 | 状态 |
 |------|-----|------|------|
-| 56idc 洛杉矶 | 107.172.231.70 | 42185 | 干净 ✅ |
-| GCP 台湾 | 35.189.164.32 | 43590 | 干净 ✅（刚重装） |
-| isvoro 首尔 | 146.56.191.86 | 10260 | 干净 ✅ |
-| isvoro 新加坡 | 140.245.97.144 | 10425 | 干净 ✅ |
+| 56idc 洛杉矶 | <洛杉矶2_IP> | 42185 | 干净 ✅ |
+| GCP 台湾 | <台湾_IP> | 43590 | 干净 ✅（刚重装） |
+| isvoro 首尔 | <首尔_IP> | 10260 | 干净 ✅ |
+| isvoro 新加坡 | <新加坡_IP> | 10425 | 干净 ✅ |
 | 将军鸡 | 2001:470:e2db:100:0:5459:389:6b27 | 22 | 已重装 ✅ |
 
 5 台均未发现矿机，但全部统一做了 SSH 密钥加固 + 禁用密码。
@@ -42,7 +42,7 @@
 
 ## 感染服务器详情
 
-- **机器**：无聊云 | 阿姆斯特丹（波兰主控），31.58.51.127:46748
+- **机器**：无聊云 | 阿姆斯特丹（波兰主控），<荷兰_IP>:46748
 - **OS**：Alpine Linux v3.22.2 LXC
 - **资源**：1核 488MB RAM，LXC 容器
 - **入口**：SSH root 密码认证（PermitRootLogin yes + PasswordAuthentication yes）
@@ -196,8 +196,8 @@ done
 ```bash
 # 全部已接受连接 IP 统计
 cat /var/log/messages | grep 'Accepted password' | sed 's/.*from //' | sed 's/ port.*//' | sort | uniq -c | sort -rn
-# 609 198.46.147.71     ← 运维本机（CCS LA2）
-#  84 165.154.155.174   ← 攻击者（UCloud HK）
+# 609 <运维本机_IP>     ← 运维本机（CCS LA2）
+#  84 <攻击者IP>   ← 攻击者（UCloud HK）
 # 0 次 Failed password → 说明不是暴力破解，是密码直接泄露
 ```
 
@@ -242,7 +242,7 @@ cat /var/log/messages | grep 'Accepted password' | sed 's/.*from //' | sed 's/ p
    - `PermitRootLogin prohibit-password`
    - 删除 `UsePAM no`（Alpine 不支持）
    - `/usr/sbin/sshd -t` 验证 → `rc-service sshd restart`
-4. iptables 封禁攻击者 IP：`iptables -A INPUT -s 165.154.155.174 -j DROP`
+4. iptables 封禁攻击者 IP：`iptables -A INPUT -s <攻击者IP> -j DROP`
 5. fail2ban 启动验证
 6. 矿池验证：Kryptex pool 搜钱包地址，确认 "systemp" worker 算力下降
 
@@ -254,7 +254,7 @@ ssh -o PasswordAuthentication=yes root@localhost "echo test"  # → Permission d
 ssh -o PreferredAuthentications=publickey root@localhost "echo OK"  # → OK
 
 # 验证 iptables 封禁
-iptables -L INPUT -n --line-numbers | grep DROP  # → 应有 DROP all -- 165.154.155.174
+iptables -L INPUT -n --line-numbers | grep DROP  # → 应有 DROP all -- <攻击者IP>
 
 # 验证 fail2ban
 fail2ban-client status sshd  # → Currently banned/Banned IP list
@@ -296,7 +296,7 @@ free -m             # used < 100MB
 
 ---
 
-## 攻击者机器侦察（165.154.155.174 端口扫描结果）
+## 攻击者机器侦察（<攻击者IP> 端口扫描结果）
 
 **扫描时间**：2026-05-18 13:47 UTC
 **工具**：nmap 7.93 TCP Connect 扫描 Top 1000 端口
@@ -321,4 +321,4 @@ ED25519: 375d 1891 08cf 4060 e451 2db9 6127 cd8f
 
 ### 结论
 
-一台 UCloud 香港的专用攻击跳板机：Ubuntu + OpenSSH 9.6p1 + Caddy 反代。同 IP 段 `165.154.206.139` 在 AbuseIPDB 有 13,463 次举报。
+一台 UCloud 香港的专用攻击跳板机：Ubuntu + OpenSSH 9.6p1 + Caddy 反代。同 IP 段 `<攻击跳板机_IP>` 在 AbuseIPDB 有 13,463 次举报。

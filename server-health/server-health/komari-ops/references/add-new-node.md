@@ -26,14 +26,14 @@ python3 -c "import secrets; print(secrets.token_hex(16))"
 ### 3. 查 Komari server 的 clients 表结构
 
 ```bash
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 \
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
   "sqlite3 /opt/komari/data/komari.db '.schema clients'"
 ```
 
 ### 4. 插入节点到 DB
 
 ```bash
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 \
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
   "sqlite3 /opt/komari/data/komari.db \"
   INSERT INTO clients (uuid, name, token, os, created_at, updated_at) VALUES
   ('<uuid>', '<节点名>', '<token>', 'Linux', datetime('now'), datetime('now'));
@@ -72,7 +72,7 @@ tail -20 /var/log/komari.log | grep <token>
 # 期望：200 POST /api/clients/uploadBasicInfo
 
 # DB 确认
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70 \
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
   "sqlite3 /opt/komari/data/komari.db \"select name, ipv4, ipv6, region from clients;\""
 ```
 

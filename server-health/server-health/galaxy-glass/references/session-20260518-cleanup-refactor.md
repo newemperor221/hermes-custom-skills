@@ -77,18 +77,18 @@ Old `var(--glass-bg)` CSS vars are kept as fallbacks.
 
 ## SSH Deploy Key
 
-`~/.ssh/hermes_admin` is the ONLY working auth method for `31.58.51.127:46748` (root).
+`~/.ssh/hermes_admin` is the ONLY working auth method for `<荷兰_IP>:46748` (root).
 `sshpass` password `OX8w$nE9A%tfqb6v` from `deploy.sh` is completely dead — server disabled password auth.
 
 Deploy flow:
 ```bash
 cd /home/woioeow/galaxy-glass/nextjs && npm run build && \
-cd out && tar czf - . | ssh -i ~/.ssh/hermes_admin -o StrictHostKeyChecking=no -p 46748 root@31.58.51.127 \
+cd out && tar czf - . | ssh -i ~/.ssh/hermes_admin -o StrictHostKeyChecking=no -p 46748 root@<荷兰_IP> \
   'rm -rf /opt/komari/data/theme && mkdir -p /opt/komari/data/theme && cd /opt/komari/data/theme && tar xzf -' && \
-ssh -i ~/.ssh/hermes_admin -o StrictHostKeyChecking=no -p 46748 root@31.58.51.127 \
+ssh -i ~/.ssh/hermes_admin -o StrictHostKeyChecking=no -p 46748 root@<荷兰_IP> \
   'cp /opt/komari/galaxy-proxy.py /opt/komari/data/theme/galaxy-proxy.py && pkill -f galaxy-proxy' && \
 sleep 2 && \
-ssh -i ~/.ssh/hermes_admin -o StrictHostKeyChecking=no -p 46748 root@31.58.51.127 \
+ssh -i ~/.ssh/hermes_admin -o StrictHostKeyChecking=no -p 46748 root@<荷兰_IP> \
   'cd /opt/komari/data/theme && python3 galaxy-proxy.py'
 ```
 

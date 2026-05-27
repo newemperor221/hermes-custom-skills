@@ -2,7 +2,7 @@
 
 ## 背景
 
-新加坡 isvoro (140.245.97.144:10425) 面板之前是三层代理架构：
+新加坡 isvoro (<新加坡_IP>:10425) 面板之前是三层代理架构：
 
 ```
 cloudflared → tcp-proxy:25774 → galaxy-proxy:25775 + komari:25776

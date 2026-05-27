@@ -54,8 +54,8 @@ EOF
 | 项目 | 值 |
 |------|-----|
 | 主机 | Acck 东京 |
-| IP | 156.231.141.232 |
-| SSH | root@156.231.141.232:47283 |
+| IP | <东京_IP> |
+| SSH | root@<东京_IP>:47283 |
 | OS | Debian 12 (bookworm) |
 | 代理 | sing-box VLESS+Reality |
 | 用途 | 核心翻墙节点 |

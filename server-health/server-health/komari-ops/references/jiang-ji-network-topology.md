@@ -3,10 +3,10 @@
 ## 当前架构（2026-05-08 重建后）
 
 **56idc-la（komari server 所在）**：
-- SSH：`sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@107.172.231.70`
+- SSH：`sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP>`
 - 系统：**Debian**（重装后不再是 Alpine），LXC 容器
 - komari server：`/opt/komari/komari server -l :25774`，监听 `tcp6 :::25774`
-- IPv4：107.172.231.70（NAT 映射端口 58461 → 容器 25774）
+- IPv4：<洛杉矶2_IP>（NAT 映射端口 58461 → 容器 25774）
 - IPv6：2001:470:d:7a4:1::a1（公网可路由，从 DediRock 可 ping 通）
 - cloudflared：已安装，服务模式，监听 localhost:20241，token 指向 stat.357561.xyz
 - 面板：stat.357561.xyz（cloudflared 隧道 → localhost:20241 → komari 25774）

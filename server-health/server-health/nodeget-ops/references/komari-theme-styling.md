@@ -10,8 +10,8 @@
 ## 部署命令
 
 ```bash
-scp -P 52137 /tmp/nodeget-komari-theme/dist/index.html root@107.172.231.70:/opt/komari/data/theme/NodeGetGlass/dist/index.html
-scp -P 52137 /tmp/nodeget-status-dist/dist/detail.html root@107.172.231.70:/opt/komari/data/theme/NodeGetGlass/dist/detail.html
+scp -P 52137 /tmp/nodeget-komari-theme/dist/index.html root@<洛杉矶2_IP>:/opt/komari/data/theme/NodeGetGlass/dist/index.html
+scp -P 52137 /tmp/nodeget-status-dist/dist/detail.html root@<洛杉矶2_IP>:/opt/komari/data/theme/NodeGetGlass/dist/detail.html
 ```
 
 ## 滚动透明 → 毛玻璃导航栏

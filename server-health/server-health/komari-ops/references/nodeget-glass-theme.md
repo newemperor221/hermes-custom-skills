@@ -64,7 +64,7 @@ NodeGetGlass/
 ## 安装
 
 1. 打包：`zip -r NodeGetGlass.zip NodeGetGlass/`
-2. 上传到服务器：`scp -P 52137 NodeGetGlass.zip root@107.172.231.70:/tmp/`
+2. 上传到服务器：`scp -P 52137 NodeGetGlass.zip root@<洛杉矶2_IP>:/tmp/`
 3. 解压到主题目录：`unzip -o /tmp/NodeGetGlass.zip -d /opt/komari/data/theme/`
 4. 后台切换主题
 
@@ -77,7 +77,7 @@ NodeGetGlass/
 video.src = '/assets/video/backdrop.mp4';
 ```
 文件路径：`/opt/komari/data/theme/<theme>/dist/assets/video/backdrop.mp4`
-上传：`scp -P 52137 video.mp4 root@107.172.231.70:/opt/komari/data/theme/<theme>/dist/assets/video/`
+上传：`scp -P 52137 video.mp4 root@<洛杉矶2_IP>:/opt/komari/data/theme/<theme>/dist/assets/video/`
 
 **方式 B：远程直链（绕过服务器存储）**
 ```html

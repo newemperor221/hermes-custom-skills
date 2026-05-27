@@ -283,7 +283,7 @@ AGENT_PORT="50000"             # Webhook 监听端口
 INSTALL_DIR="/opt/ip_sentinel"
 LOG_FILE="/opt/ip_sentinel/logs/sentinel.log"
 IP_PREF="4"                    # IPv4 优先
-PUBLIC_IP="107.172.231.70"    # 公网 IP（Agent 对外通信用）
+PUBLIC_IP="<洛杉矶2_IP>"    # 公网 IP（Agent 对外通信用）
 BIND_IP="0.0.0.0"             # 监听地址
 
 # 节点标识
@@ -1069,10 +1069,10 @@ bash /opt/ip_sentinel/core/tg_report.sh
 
 | Agent | IP | SSH 端口 | Webhook 端口 | OS | TG Token | 服务管理 | 状态 |
 |-------|-----|----------|-------------|-----|----------|---------|------|
-| **Master** (56idc-la) | 107.172.231.70 | **42185** (50000 also shows OpenSSH banner, likely NAT forward) | 42186 | Alpine 3.22 | 新（防送中） | OpenRC | ✅ 运行 |
-| **Acck 东京** | 156.231.141.232 | 22 | 33020 | Debian 12 | 新（防送中） | systemd | ✅ 运行 |
-| **野草云香港** | 38.55.198.243 | 22 | 42387 | (未确认) | 新（防送中） | systemd | ✅ 运行 |
-| **CC 洛杉矶1** | 23.95.201.153 | 22 | 30910 | Debian 12 | 新（防送中） | systemd | ✅ 运行 |
+| **Master** (56idc-la) | <洛杉矶2_IP> | **42185** (50000 also shows OpenSSH banner, likely NAT forward) | 42186 | Alpine 3.22 | 新（防送中） | OpenRC | ✅ 运行 |
+| **Acck 东京** | <东京_IP> | 22 | 33020 | Debian 12 | 新（防送中） | systemd | ✅ 运行 |
+| **野草云香港** | <香港_IP> | 22 | 42387 | (未确认) | 新（防送中） | systemd | ✅ 运行 |
+| **CC 洛杉矶1** | <洛杉矶1_IP> | 22 | 30910 | Debian 12 | 新（防送中） | systemd | ✅ 运行 |
 
 ⚠️ **SSH 端口不一定默认 22！** 某些 VPS 的 SSH 在奇怪端口上（如 50000）。用 `nc -zv IP PORT` 扫描常见端口，如果返回 `SSH-2.0-OpenSSH` banner 说明找到了 SSH 端口。
 
@@ -1090,7 +1090,7 @@ bash /opt/ip_sentinel/core/tg_report.sh
    ```
 3. **找到 SSH 端口后**，用用户密钥尝试登录查看
 
-**实战案例：** 107.172.231.70 的 SSH 端口是 50000（nc 返回 OpenSSH banner），而非默认 22。端口扫描揭示了一个隐藏的 Master 服务器，tg_master.sh 一直在那里轮询。
+**实战案例：** <洛杉矶2_IP> 的 SSH 端口是 50000（nc 返回 OpenSSH banner），而非默认 22。端口扫描揭示了一个隐藏的 Master 服务器，tg_master.sh 一直在那里轮询。
 
 所有 Agent 共享同一 TG Bot（@ip_sentinel_tg_bot / 防送中），各自独立发送战报。
 
@@ -1147,7 +1147,7 @@ for name, ip, port in agents:
         print(f"❌ {name}: {e}")
 ```
 
-**执行环境：** 签名由 Master 端生成（需要 `CHAT_ID` 作为 PSK），在 Master 所在服务器执行（56idc-la 107.172.231.70:42185）。
+**执行环境：** 签名由 Master 端生成（需要 `CHAT_ID` 作为 PSK），在 Master 所在服务器执行（56idc-la <洛杉矶2_IP>:42185）。
 
 ```bash
 # 1. 修改 config.conf

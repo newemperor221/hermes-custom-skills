@@ -2,7 +2,7 @@
 
 ## Scenario
 
-After migrating Komari backend from Netherlands (31.58.51.127) to Singapore (140.245.97.144), agents on 8+ nodes were still pointing to the OLD backend URL (`http://31.58.51.127:45774`), causing them to show 0% data on the panel.
+After migrating Komari backend from Netherlands (<荷兰_IP>) to Singapore (<新加坡_IP>), agents on 8+ nodes were still pointing to the OLD backend URL (`http://<荷兰_IP>:45774`), causing them to show 0% data on the panel.
 
 ## Diagnosis
 

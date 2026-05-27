@@ -148,10 +148,10 @@ rc-service sshd restart
 
 | 节点 | IP | SSH端口 | 架构 | Agent 版本 |
 |:-----|:--:|:-------:|:----:|:----------:|
-| 新加坡 isvoro | 140.245.97.144 | 10425 | aarch64-musl | Rust ✅ |
-| 荷兰 无聊云 | 31.58.51.127 | 46748 | x86_64-musl | Rust ✅ |
-| 无聊云洛杉矶 | 107.172.231.70 | 42185 | x86_64-musl | Rust ✅ |
-| 首尔 isvoro | 146.56.191.86 | 10260 | aarch64-musl | Rust ✅ |
+| 新加坡 isvoro | <新加坡_IP> | 10425 | aarch64-musl | Rust ✅ |
+| 荷兰 无聊云 | <荷兰_IP> | 46748 | x86_64-musl | Rust ✅ |
+| 无聊云洛杉矶 | <洛杉矶2_IP> | 42185 | x86_64-musl | Rust ✅ |
+| 首尔 isvoro | <首尔_IP> | 10260 | aarch64-musl | Rust ✅ |
 
 ## 磁盘布局参考
 

@@ -222,19 +222,19 @@ CSS 定义示例：
 cd ~/glass && tar czf /tmp/galaxy-deploy.tar.gz -C src index.html styles/ scripts/
 
 # 2. 上传
-sshpass -p 'PASSWORD' scp -P 46748 /tmp/galaxy-deploy.tar.gz root@31.58.51.127:/tmp/
+sshpass -p 'PASSWORD' scp -P 46748 /tmp/galaxy-deploy.tar.gz root@<荷兰_IP>:/tmp/
 
 # 3. 解压
-sshpass -p 'PASSWORD' ssh -p 46748 root@31.58.51.127 \
+sshpass -p 'PASSWORD' ssh -p 46748 root@<荷兰_IP> \
   "cd /opt/komari/data/theme && rm -f styles/*.css scripts/*.js index.html && tar xzf /tmp/galaxy-deploy.tar.gz && rm /tmp/galaxy-deploy.tar.gz"
 
 # 4. 重启代理（注意：用 < /dev/null > log 2>&1 & 而非 nohup，避免被工具拦截）
-sshpass -p 'PASSWORD' ssh -p 46748 root@31.58.51.127 \
+sshpass -p 'PASSWORD' ssh -p 46748 root@<荷兰_IP> \
   'cd /opt/komari && python3 galaxy-proxy.py < /dev/null > /tmp/galaxy-proxy.log 2>&1 &'
 
 # 5. 验证
 sleep 3
-sshpass -p 'PASSWORD' ssh -p 46748 root@31.58.51.127 \
+sshpass -p 'PASSWORD' ssh -p 46748 root@<荷兰_IP> \
   "ps aux | grep galaxy-proxy | grep -v grep; curl -sI http://127.0.0.1:25774/ | head -1"
 ```
 

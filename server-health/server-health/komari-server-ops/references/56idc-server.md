@@ -1,7 +1,7 @@
 # 56idc-la Komari 面板服务器
 
 ## 基本信息
-- **IP/端口**：107.172.231.70:42185
+- **IP/端口**：<洛杉矶2_IP>:42185
 - **SSH 用户**：root
 - **SSH 密码**：Y@BU1%wmP#xFs8bK
 - **系统**：Alpine Linux 3.22.2（LXC 容器）
