@@ -1,0 +1,11 @@
+#!/sbin/openrc-run
+# Komari Agent — Alpine OpenRC init script
+# Copy to /etc/init.d/komari-agent on target node, then:
+#   chmod +x /etc/init.d/komari-agent
+#   rc-update add komari-agent default
+#   rc-service komari-agent start
+
+command=/opt/komari/agent
+command_args="-e http://<SERVER_IP>:<SERVER_PORT> -t <NODE_TOKEN> --disable-web-ssh"
+command_background=true
+pidfile=/run/komari-agent.pid
