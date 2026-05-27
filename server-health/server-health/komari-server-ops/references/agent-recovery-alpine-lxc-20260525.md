@@ -12,7 +12,7 @@ Two Alpine LXC nodes (Taiwan GCP + Singapore isvoro) had Komari agent processes 
 - **OS**: Alpine Linux 3.17 LXC
 - **Issue**: Agent binary existed at `/opt/komari/agent` but process not running
 - **Recovery**:
-  1. `nohup /opt/komari/agent -e https://stat.357561.xyz -t gcp-us-agent > /opt/komari/agent.log 2>&1 &`
+  1. `nohup /opt/komari/agent -e https://<监控面板域名> -t gcp-us-agent > /opt/komari/agent.log 2>&1 &`
   2. Verified: logs showed `Basic info uploaded successfully` and `WebSocket connected`
   3. Set auto-start: wrote command to `/etc/local.d/komari.start`, `chmod +x`, `rc-update add local default`
   4. Actual token from panel: `gcp-us-agent`
@@ -27,12 +27,12 @@ Two Alpine LXC nodes (Taiwan GCP + Singapore isvoro) had Komari agent processes 
 - **Recovery**:
   1. Downloaded ARM64 binary: `wget -qO /tmp/agent https://github.com/komari-monitor/komari-agent/releases/latest/download/komari-agent-linux-arm64`
   2. Moved to `/opt/komari/agent`, `chmod +x`
-  3. Started: `nohup /opt/komari/agent -e https://stat.357561.xyz -t uJbWkMELxRA7TdawxjV6bi > /opt/komari/agent.log 2>&1 &`
+  3. Started: `nohup /opt/komari/agent -e https://<监控面板域名> -t uJbWkMELxRA7TdawxjV6bi > /opt/komari/agent.log 2>&1 &`
   4. Verified: same log checks as Taiwan
   5. Set auto-start: same OpenRC local.d method
 
 ## Authentication Notes
 
-- Panel login: admin / ybr52tlztwfr6b at stat.357561.xyz
+- Panel login: admin / ybr52tlztwfr6b at <监控面板域名>
 - To get agent token: Server → search node → click Install command button
 - The token is different for each node (not the same as display name)

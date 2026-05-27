@@ -157,7 +157,7 @@ function renderRow(n) {
 ```js
 const video = document.getElementById('bg-video');
 if (video) {
-  video.src = 'https://img.357561.xyz/wallpaper.mp4';
+  video.src = 'https://img.<用户域名>/wallpaper.mp4';
   video.style.opacity = '1';
 }
 ```

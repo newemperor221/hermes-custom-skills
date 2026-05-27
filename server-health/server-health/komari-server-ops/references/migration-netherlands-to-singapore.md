@@ -16,7 +16,7 @@
 |---------|------|-------------|
 | Komari backend | 25776 | Panel + API server |
 | galaxy-proxy | 25774 | Python static file proxy + API passthrough |
-| cloudflared tunnel | — | Tunnel to stat.357561.xyz |
+| cloudflared tunnel | — | Tunnel to <监控面板域名> |
 | IP-Sentinel webhook | 42186 | Webhook handler |
 | IP-Sentinel TG Master | — | Telegram bot controller |
 
@@ -132,7 +132,7 @@ chmod +x /opt/komari/agent
 # komari-agent-linux-amd64 is 11MB, has -e / -t flags
 
 # Start agent pointing to new panel via cloudflared tunnel URL
-nohup /opt/komari/agent -e https://stat.357561.xyz -t <TOKEN> --disable-web-ssh > /var/log/komari-agent.log 2>&1 &
+nohup /opt/komari/agent -e https://<监控面板域名> -t <TOKEN> --disable-web-ssh > /var/log/komari-agent.log 2>&1 &
 
 # Agent token found in komari DB: clients table (uuid, token, name, ipv4)
 sqlite3 /opt/komari/data/komari.db 'SELECT uuid, token, name, ipv4 FROM clients;'
@@ -150,6 +150,6 @@ pkill -f "tg_master|webhook"
 ### 9. Verify
 
 ```bash
-curl -sI https://stat.357561.xyz/  # Should return 200 via cloudflare
+curl -sI https://<监控面板域名>/  # Should return 200 via cloudflare
 # Browser: check all nodes online, data flowing
 ```

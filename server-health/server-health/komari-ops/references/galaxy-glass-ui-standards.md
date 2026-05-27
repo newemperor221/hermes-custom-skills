@@ -321,7 +321,7 @@ nodePromise.then(node => {
   curl -s http://127.0.0.1:25774/ | grep -c "v1.2.1"
   
   # 第2步：再通过 CF 验证（可能仍是旧版）
-  curl -s https://stat.357561.xyz/ | grep -c "v1.2.1"
+  curl -s https://<监控面板域名>/ | grep -c "v1.2.1"
   
   # 如果本地有新版但公网是旧版 → Cloudflare 缓存，让用户硬刷新
   ```
@@ -589,7 +589,7 @@ curl -s http://127.0.0.1:25774/ | grep -c 'sysinfo-grid'
 # 应 >0
 
 # 第2步：通过公网验证
-curl -s https://stat.357561.xyz/ | grep -c 'sysinfo-grid'
+curl -s https://<监控面板域名>/ | grep -c 'sysinfo-grid'
 # 如果第1步有但第2步无 → Cloudflare 缓存，让用户硬刷新
 ```
 

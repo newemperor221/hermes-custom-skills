@@ -6,7 +6,7 @@ tags: [glass, komari, build-pipeline, deployment, static-site, frontend]
 
 # Glass 工程化工作流
 
-> stat.357561.xyz 探针面板 · 纯静态单文件 · 零依赖
+> <监控面板域名> 探针面板 · 纯静态单文件 · 零依赖
 
 ## 前置要求
 
@@ -132,7 +132,7 @@ Cloudflare ─→ cloudflared tunnel ─→ 波兰主控 (<荷兰_IP>:25774) →
 **当前线上状态（2026-05-19，经用户多次确认）：komari 直接在 :25774 提供服务，使用其内嵌的 Glass 主题。**
 
 ```
-stat.357561.xyz → Cloudflare → cloudflared tunnel → 波兰主控 :25774 → komari 内嵌主题
+<监控面板域名> → Cloudflare → cloudflared tunnel → 波兰主控 :25774 → komari 内嵌主题
 ```
 
 **galaxy-proxy.py 已被用户明确拒绝。** 不要部署 galaxy-proxy 替代 komari 直接服务。
@@ -176,7 +176,7 @@ scp -i ~/.ssh/hermes_admin -P 46748 index.html root@<荷兰_IP>:/opt/komari/data
 ssh -i ~/.ssh/hermes_admin -P 46748 root@<荷兰_IP> "curl -s http://127.0.0.1:25774/ | head -c 200"
 
 # 5. 验证公网
-curl -sI https://stat.357561.xyz/
+curl -sI https://<监控面板域名>/
 ```
 
 **如果 galaxy-proxy 没在跑，从零部署：**
@@ -584,7 +584,7 @@ cd ~ && mv ~/旧名 ~/新名
 
 **调试步骤：**
 
-1. `curl -s https://stat.357561.xyz/ | grep -oP 'node-name">[^<]*'` — 检查 SSR 渲染结果
+1. `curl -s https://<监控面板域名>/ | grep -oP 'node-name">[^<]*'` — 检查 SSR 渲染结果
 2. `sed -n '31p' src/scripts/app.js | cat -v` — 查看模板源码，`cat -v` 显示转义字符的原始字节
 3. 特别检查 JS 字符串中的 `\\'`（反斜杠+单引号）→ 在 JS 字符串中产生一个字面量 `'`
 4. 特别检查 `\"` 和 `\\"` 多层转义 → 检查实际渲染的 HTML 属性
@@ -644,10 +644,10 @@ Komari 二进制的页面渲染分两层：
 
 ```bash
 # 1. 检查 SSR 渲染（首次加载）——可能干净
-curl -s https://stat.357561.xyz/ | grep -oP 'node-card-header">.*?</div></div>' | head -1
+curl -s https://<监控面板域名>/ | grep -oP 'node-card-header">.*?</div></div>' | head -1
 
 # 2. 检查 JS 模板（数据更新后使用）——bug 可能在这里
-curl -s https://stat.357561.xyz/ | grep -oP "renderCard.*?function" 
+curl -s https://<监控面板域名>/ | grep -oP "renderCard.*?function" 
 # 查找 renderCard 后面跟着的 HTML 拼接字符串
 
 # 3. 对比两者差异
@@ -808,7 +808,7 @@ clone.style.gridTemplateColumns = '1fr';  // 单列布局
 
     正确调试顺序：
     1. `curl http://localhost:25774/` — 本地代理
-    2. `curl https://stat.357561.xyz/` — 通过 Cloudflare
+    2. `curl https://<监控面板域名>/` — 通过 Cloudflare
     3. `ssh 波兰主控 "curl http://127.0.0.1:25774/"` — 远程服务器实际服务的版本
     4. 如果第 3 步和第 1 步结果不同 → 远程服务器文件未同步
     5. 如果第 2 步和第 3 步结果不同 → Cloudflare 缓存问题

@@ -45,21 +45,21 @@ sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
 **Debian**：
 ```bash
 sshpass -p 'PASSWORD' ssh -o StrictHostKeyChecking=no -p PORT USER@IP \
-  "wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sh -s -- -e https://stat.357561.xyz -t <TOKEN>"
+  "wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sh -s -- -e https://<监控面板域名> -t <TOKEN>"
 ```
 
 **Alpine**（sh 而非 bash）：
 ```bash
 sshpass -p 'PASSWORD' ssh -o StrictHostKeyChecking=no -p PORT USER@IP \
-  "curl -fsSL https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sh -s -- -e https://stat.357561.xyz -t <TOKEN>"
+  "curl -fsSL https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sh -s -- -e https://<监控面板域名> -t <TOKEN>"
 ```
 
 **⚠️ Debian systemd 安装后检查 ExecStart**：
 ```bash
 grep ExecStart /etc/systemd/system/komari-agent.service
-# 应该有：ExecStart=/opt/komari/agent -e https://stat.357561.xyz -t <TOKEN>
+# 应该有：ExecStart=/opt/komari/agent -e https://<监控面板域名> -t <TOKEN>
 # 修复：
-sed -i 's|ExecStart=/opt/komari/agent $|ExecStart=/opt/komari/agent -e https://stat.357561.xyz -t <TOKEN>|' \
+sed -i 's|ExecStart=/opt/komari/agent $|ExecStart=/opt/komari/agent -e https://<监控面板域名> -t <TOKEN>|' \
   /etc/systemd/system/komari-agent.service
 systemctl daemon-reload && systemctl restart komari-agent
 ```
@@ -82,5 +82,5 @@ sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
 - **字段名因版本而异** — 必须先 `.schema clients` 确认
 - **install.sh 用 bash vs sh** — Debian 用 bash，Alpine 用 sh
 - **ExecStart 缺少参数** — Debian systemd 安装后必须检查
-- **⚠️ agent 连 stat.357561.xyz 而非 IP** — Cloudflare CDN 不认原始 IP，必须用域名
+- **⚠️ agent 连 <监控面板域名> 而非 IP** — Cloudflare CDN 不认原始 IP，必须用域名
 - **token 用 `secrets.token_hex(16)`** — 保证 32 字符 hex，Komari server 验证 token 长度

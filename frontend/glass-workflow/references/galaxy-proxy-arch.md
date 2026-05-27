@@ -5,7 +5,7 @@
 **当前生产架构（2026-05-26 更新）**：
 
 ```
-stat.357561.xyz
+<监控面板域名>
     ↓ Cloudflare (orange cloud)
     ↓ cloudflared tunnel (Alpine, 端口无暴露)
     ↓

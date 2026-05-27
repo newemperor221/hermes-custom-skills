@@ -1,13 +1,13 @@
 ---
 name: web-perf-optimization
-description: 前端性能优化实战 — Lighthouse 自动化审核、Core Web Vitals 优化、缓存策略、图片懒加载、字体优化、CDN 预热。覆盖 stat.357561.xyz 等自托管站点。触发："性能优化"、"Lighthouse"、"页面慢"、"优化网站"、"Core Web Vitals"、"缓存"、"preload"、"懒加载"。
+description: 前端性能优化实战 — Lighthouse 自动化审核、Core Web Vitals 优化、缓存策略、图片懒加载、字体优化、CDN 预热。覆盖 <监控面板域名> 等自托管站点。触发："性能优化"、"Lighthouse"、"页面慢"、"优化网站"、"Core Web Vitals"、"缓存"、"preload"、"懒加载"。
 ---
 
 # Web 性能优化
 
 ## 适用场景
 
-- 自托管静态站点（stat.357561.xyz、GalaxyGlass 等）速度优化
+- 自托管静态站点（<监控面板域名>、GalaxyGlass 等）速度优化
 - Lighthouse / PageSpeed Insights 评分提升
 - Core Web Vitals（LCP、FID、INP、CLS）优化
 - 减少首屏加载时间
@@ -27,10 +27,10 @@ description: 前端性能优化实战 — Lighthouse 自动化审核、Core Web 
 
 ```bash
 # CLI Lighthouse（需要 Node.js）
-npx lighthouse https://stat.357561.xyz --view --chrome-flags="--headless"
+npx lighthouse https://<监控面板域名> --view --chrome-flags="--headless"
 
 # 输出 JSON 报告
-npx lighthouse https://stat.357561.xyz --output json --output-path ./lighthouse-report.json
+npx lighthouse https://<监控面板域名> --output json --output-path ./lighthouse-report.json
 
 # 在线
 # - https://pagespeed.web.dev/
@@ -151,10 +151,10 @@ location / {
 
 <!-- 预连接第三方源 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://img.357561.xyz">
+<link rel="dns-prefetch" href="https://img.<用户域名>">
 ```
 
-## 针对 stat.357561.xyz（nginx + 静态站）的优化清单
+## 针对 <监控面板域名>（nginx + 静态站）的优化清单
 
 1. ✅ WebP 替代 PNG
 2. ✅ 图片加 `loading="lazy"` + `width/height`
@@ -179,13 +179,13 @@ location / {
 
 ```bash
 # 1. 运行 Lighthouse
-npx lighthouse https://stat.357561.xyz --output json 2>/dev/null | jq '.categories.performance.score'
+npx lighthouse https://<监控面板域名> --output json 2>/dev/null | jq '.categories.performance.score'
 
 # 2. 检查缓存头
-curl -sI https://stat.357561.xyz/images/test.webp | grep -i "cache-control"
+curl -sI https://<监控面板域名>/images/test.webp | grep -i "cache-control"
 
 # 3. 检查是否启用 Brotli
-curl -sI -H "Accept-Encoding: br" https://stat.357561.xyz | grep -i "content-encoding"
+curl -sI -H "Accept-Encoding: br" https://<监控面板域名> | grep -i "content-encoding"
 
 # 4. 检查 LCP 元素（浏览器控制台）
 # 在页面中运行：

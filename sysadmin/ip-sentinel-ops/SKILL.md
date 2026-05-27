@@ -636,15 +636,15 @@ ps aux | grep -E 'tg_master|webhook|sentinel' | grep -v grep
 
 ```bash
 # 检查代理是否正常
-curl -sI "https://stat.357561.xyz/" | grep -q "200" && echo "Proxy OK" || echo "Proxy DEAD"
+curl -sI "https://<监控面板域名>/" | grep -q "200" && echo "Proxy OK" || echo "Proxy DEAD"
 
 # 检查 sentinel 路由（502 = webhook 未运行）
-curl -s "https://stat.357561.xyz/sentinel/nodes" 2>&1
+curl -s "https://<监控面板域名>/sentinel/nodes" 2>&1
 # error code: 502 → 后端 webhook 挂掉
 
 # 对比不同 sentinel 路径（全 502 = 整个 webhook 挂掉）
 for path in health status nodes; do
-  echo -n "$path: "; curl -s "https://stat.357561.xyz/sentinel/$path" 2>&1
+  echo -n "$path: "; curl -s "https://<监控面板域名>/sentinel/$path" 2>&1
 done
 ```
 
@@ -788,7 +788,7 @@ url = f'https://<IP>:<PORT>{req_path}?t={req_t}&sign={sign}'
 - ✅ **能做的**：发送消息（战报/告警）、附带 inline keyboard 按钮（点击回调被丢弃）
 - ❌ **不能做的**：处理用户命令（`/start`、`/panel`）、响应按钮回调、展示交互式面板
 
-如需交互面板，需额外搭建 TG Bot 后端（python-telegram-bot / aiogram），在独立端口监听，配置 TG webhook 指向该端口。也可以把 bot 菜单链接到已有面板（如 stat.357561.xyz）。
+如需交互面板，需额外搭建 TG Bot 后端（python-telegram-bot / aiogram），在独立端口监听，配置 TG webhook 指向该端口。也可以把 bot 菜单链接到已有面板（如 <监控面板域名>）。
 
 ### OTA 故障排查
 

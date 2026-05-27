@@ -1,6 +1,6 @@
 # 探针详情页设计模式（Detail Page）
 
-> stat.357561.xyz 服务器详情页的视觉设计模式
+> <监控面板域名> 服务器详情页的视觉设计模式
 > 来源: 2026 暗色仪表盘趋势研究 (Muzli, Dribbble, Dark Glassmorphism)
 > 最后更新: 2026-05-20（确立chart-header column布局 + 无坐标轴原则）
 

@@ -54,7 +54,7 @@ curl -v "http://127.0.0.1:25774/fonts/Inter-400.ttf" 2>&1 | grep -E "Content-Typ
 # 期望: Content-Type: font/ttf, Content-Length: 324820
 
 # 通过 Cloudflare（加 ?v=N 防缓存）
-curl -sI "https://stat.357561.xyz/fonts/Inter-400.ttf?v=1" -o /dev/null -w "CT: %{content_type}\n"
+curl -sI "https://<监控面板域名>/fonts/Inter-400.ttf?v=1" -o /dev/null -w "CT: %{content_type}\n"
 # 期望: CT: font/ttf
 ```
 

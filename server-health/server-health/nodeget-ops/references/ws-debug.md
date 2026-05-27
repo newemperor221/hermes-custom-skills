@@ -8,7 +8,7 @@ StatusShow 卡在"连接后端中…"，后端报错 `nodeget-server_list_all_ag
 ### 1. 确认前端部署平台
 ```bash
 # 查 DNS 解析，看是 Vercel 还是 CF Pages
-dig +short A stat.357561.xyz
+dig +short A <监控面板域名>
 # Vercel → 有 vercel-dns.com 后缀
 # CF Pages → 解析到 CF IP
 ```
@@ -16,7 +16,7 @@ dig +short A stat.357561.xyz
 ### 2. 确认服务端 WS 端口可达（从外网测试）
 ```bash
 # TCP 443 连通性
-timeout 5 bash -c 'echo >/dev/tcp/statapi.357561.xyz/443' && echo "TCP OK" || echo "TCP FAIL"
+timeout 5 bash -c 'echo >/dev/tcp/statapi.<用户域名>/443' && echo "TCP OK" || echo "TCP FAIL"
 
 # WebSocket 握手测试（Python）
 python3 << 'EOF'
@@ -38,7 +38,7 @@ def ws_handshake(host, port):
         resp += ssock.recv(4096)
     return resp.decode()
 
-resp = ws_handshake('statapi.357561.xyz', 443)
+resp = ws_handshake('statapi.<用户域名>', 443)
 print("101" in resp.split('\r\n')[0] and "WS OK" or "WS FAIL")
 EOF
 ```
@@ -57,9 +57,9 @@ EOF
 - Security Level 是否过高
 
 ### 5. 浏览器 Console 直接测 WS
-在 stat.357561.xyz 页面 F12 → Console：
+在 <监控面板域名> 页面 F12 → Console：
 ```js
-const ws = new WebSocket('wss://statapi.357561.xyz');
+const ws = new WebSocket('wss://statapi.<用户域名>');
 ws.onopen = () => console.log('WS OK');
 ws.onerror = (e) => console.log('WS FAIL', e);
 ```

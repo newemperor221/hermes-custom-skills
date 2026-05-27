@@ -1,7 +1,7 @@
 # Proxy + SvelteKit Module Import 调试记录
 
 ## 背景
-2026-05-16 SvelteKit 构建的 GalaxyGlass 部署到 stat.357561.xyz，通过 galaxy-proxy.py 代理 `_app/` 静态文件。浏览器白屏，SvelteKit 未初始化。
+2026-05-16 SvelteKit 构建的 GalaxyGlass 部署到 <监控面板域名>，通过 galaxy-proxy.py 代理 `_app/` 静态文件。浏览器白屏，SvelteKit 未初始化。
 
 ## 症状
 - 页面加载后空白，`<div style="display:contents">` 中只有原始 `<script>` 标签
@@ -19,7 +19,7 @@ fetch('/_app/immutable/entry/start.xxx.js').then(r => {
 结果：`200 application/javascript; charset=utf-8 nosniff` ✅
 
 ### 2. 排除 CORS/缓存
-- 同源（stat.357561.xyz），无 CSP 限制
+- 同源（<监控面板域名>），无 CSP 限制
 - `Cache-Control: no-cache, no-store, must-revalidate` → 浏览器不缓存
 - Cloudflare `cf-cache-status: BYPASS`
 
@@ -43,7 +43,7 @@ fetch('/_app/immutable/entry/start.xxx.js').then(r => {
 
 ## 验证方法（下一轮排查）
 
-1. **真实浏览器测试**：用户用自己的 Chrome/Firefox 打开 `stat.357561.xyz` 看是否正常
+1. **真实浏览器测试**：用户用自己的 Chrome/Firefox 打开 `<监控面板域名>` 看是否正常
 2. **禁用 Cloudflare 压缩**：在 Cloudflare Dashboard → Speed → Optimization → Brotli 关闭，或添加 `Accept-Encoding: identity` 策略
 3. **改用 `<script type="module" src="...">`**：测试非动态 import 方式
 4. **改用 text/javascript**：测试旧 MIME 类型兼容性

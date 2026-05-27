@@ -1,7 +1,7 @@
 # GalaxyGlass 卡片设计审计（2026-05-19）
 
 ## 审计方法
-1. `browser_navigate` → 加载 stat.357561.xyz
+1. `browser_navigate` → 加载 <监控面板域名>
 2. `browser_vision` with `annotate=true` → 获取精确元素尺寸（box 坐标）
 3. 读取源代码（render.js + CSS）分析元素生成逻辑
 4. 对比代码逻辑 vs 实际视觉呈现

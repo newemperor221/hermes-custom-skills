@@ -100,4 +100,4 @@ curl -s '/api/proxy/online-count?t=tab-b'  # -> 2
 - threading.Lock() 保护共享字典，Python GIL 不保证 dict 操作的原子性
 - 如果前端有 Service Worker 或 PWA，sessionStorage 在 SW 中不可用——建议在页面主线程中生成
 - 每次修改后必须告知用户硬刷新（Ctrl+F5）加载最新 JS/CSS
-- 完整项目案例见 galaxy-glass skill（stat.357561.xyz 面板，含前端 JS 模板、Python 代理层路由、CSS 样式统一等内容）
+- 完整项目案例见 galaxy-glass skill（<监控面板域名> 面板，含前端 JS 模板、Python 代理层路由、CSS 样式统一等内容）

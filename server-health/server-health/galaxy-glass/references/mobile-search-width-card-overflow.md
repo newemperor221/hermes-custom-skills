@@ -80,6 +80,6 @@ aria-label="搜索"
 | **Flexbox** | On the flex child (`.node-card > child`) | Flex items also default `min-width: auto`, but overflow control can propagate up |
 
 ## Verification
-- Hard refresh `stat.357561.xyz` on mobile viewport (480px / 639px)
+- Hard refresh `<监控面板域名>` on mobile viewport (480px / 639px)
 - Wait for all API data to load and `render()` to execute
 - Check: no horizontal scroll, stat cards don't overflow, search expands to ~100px with padding

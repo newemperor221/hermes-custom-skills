@@ -29,7 +29,7 @@ apk update && apk add curl bash wget
 
 ### 3. 在 admin 面板添加节点 + 获取安装命令
 
-1. 登录 https://stat.357561.xyz/admin （用户名 admin）
+1. 登录 https://<监控面板域名>/admin （用户名 admin）
 2. 点击 "Add" → 输入节点名称（如 "Oracle | 首尔" 或 "Oracle | 新加坡"）
 3. 新节点出现在列表最下方，点击该节点的 "Install command" 按钮
 4. 复制生成的安装命令（含唯一 token）
@@ -38,7 +38,7 @@ apk update && apk add curl bash wget
 
 ```bash
 # ⚠️ 复制面板生成的命令，不要手动拼 token！
-wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | bash -s -- -e https://stat.357561.xyz -t <TOKEN>
+wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | bash -s -- -e https://<监控面板域名> -t <TOKEN>
 ```
 
 **此脚本在 Alpine LXC 上工作正常**（会检测 init 系统为 OpenRC 并自动配置服务）。无需手动下载二进制。如果 Alpine 缺 wget，先 `apk add curl bash wget`。
@@ -47,7 +47,7 @@ wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/hea
 
 - admin 面板节点列表出现 IP 地址和版本号
 - `/api/nodes` 返回含新节点 uuid 的条目
-- 节点卡片出现在 stat.357561.xyz 主页
+- 节点卡片出现在 <监控面板域名> 主页
 
 ## 坑
 

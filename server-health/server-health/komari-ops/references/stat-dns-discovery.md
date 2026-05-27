@@ -1,4 +1,4 @@
-# stat.357561.xyz 部署架构确认 — 2026-05-04
+# <监控面板域名> 部署架构确认 — 2026-05-04
 
 ## 正确架构
 
@@ -6,7 +6,7 @@
 用户浏览器 → Cloudflare DNS (104.21.1.221) → cloudflared 隧道 → <洛杉矶2_IP>:45774 komari
 ```
 
-stat.357561.xyz **就是** 56idc 服务器上本地 komari 的 cloudflared 隧道出口。DNS 指向 Cloudflare 边缘 IP 是因为 cloudflared 隧道协议本身走 Cloudflare 基础设施，不代表部署在 Cloudflare Pages 上。
+<监控面板域名> **就是** 56idc 服务器上本地 komari 的 cloudflared 隧道出口。DNS 指向 Cloudflare 边缘 IP 是因为 cloudflared 隧道协议本身走 Cloudflare 基础设施，不代表部署在 Cloudflare Pages 上。
 
 ## 关键发现
 
@@ -23,8 +23,8 @@ ssh -p 52137 root@<洛杉矶2_IP> "curl -s localhost:45774/ | wc -c"
 ssh -p 52137 root@<洛杉矶2_IP> "curl -s localhost:25774/ | wc -c"
 # → 1940
 
-# 外部访问 stat.357561.xyz 返回 48199 字节（与 45774 接近，差异为 gzip）
-curl -s https://stat.357561.xyz/ | wc -c
+# 外部访问 <监控面板域名> 返回 48199 字节（与 45774 接近，差异为 gzip）
+curl -s https://<监控面板域名>/ | wc -c
 # → 48199
 
 # cloudflared 代理端口
@@ -42,7 +42,7 @@ ssh -p 52137 root@<洛杉矶2_IP> "ss -tlnp | grep komari"
 
 # 第二步：对比主题文件 hash
 ssh -p 52137 root@<洛杉矶2_IP> "md5sum /opt/komari/data/theme/NodeGetGlass/dist/index.html"
-curl -s https://stat.357561.xyz/ | md5sum
+curl -s https://<监控面板域名>/ | md5sum
 
 # 第三步：只有 hash 匹配才说明是同一份文件
 ```
@@ -66,7 +66,7 @@ curl -s https://stat.357561.xyz/ | md5sum
 
 ### 导航栏登录按钮
 
-在 navbar-actions 末尾添加，链接到 `https://stat.357561.xyz/admin`（注意不是 mon.357561.xyz）。
+在 navbar-actions 末尾添加，链接到 `https://<监控面板域名>/admin`（注意不是 mon.<用户域名>）。
 
 ### 诊断：字节数对比法
 
@@ -76,7 +76,7 @@ ssh -p 52137 root@<洛杉矶2_IP> "curl -s localhost:45774/ | wc -c"
 # → 48637（完整主题）
 
 # 外部隧道访问
-curl -s https://stat.357561.xyz/ | wc -c
+curl -s https://<监控面板域名>/ | wc -c
 # → 48199（gzip 压缩差异，正常）
 
 # 如果外部返回 ~1940：komari 端口已变，隧道还连着旧端口

@@ -1,6 +1,6 @@
 # GalaxyGlass Vanilla JS Squircle 实现记录
 
-> 2026-05-17 实施。将 `figma-squircle@1.1.0` 集成到纯 HTML/CSS/JS 的 GalaxyGlass 探针面板（stat.357561.xyz）。
+> 2026-05-17 实施。将 `figma-squircle@1.1.0` 集成到纯 HTML/CSS/JS 的 GalaxyGlass 探针面板（<监控面板域名>）。
 
 ## 背景
 
@@ -101,7 +101,7 @@ var d = el.querySelector('path').getAttribute('d');
 
 **问题：** 部署后浏览器加载的仍是旧版 `index.html`（无 `squircle.js` 引用），即使服务器文件已更新。
 
-**原因：** Cloudflare 边缘节点缓存了 HTML。`stat.357561.xyz` 通过 cloudflared 隧道访问，但 Cloudflare CDN 仍可能缓存。
+**原因：** Cloudflare 边缘节点缓存了 HTML。`<监控面板域名>` 通过 cloudflared 隧道访问，但 Cloudflare CDN 仍可能缓存。
 
 **修复：** 在 URL 后加查询参数强制回源：`?_cb=N` 或 `?_t=1`。浏览器硬刷新（`Ctrl+F5`/`Cmd+Shift+R`）也有效。
 

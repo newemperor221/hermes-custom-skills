@@ -20,7 +20,7 @@ ERR no more connections active and exiting
 4. 重新启动：`nohup cloudflared tunnel --no-autoupdate run --token TOKEN --url http://localhost:25774 > /tmp/cf.log 2>&1 &`
 5. 等待 8-12 秒让隧道完成 4 个 QUIC 连接注册
 6. 验证：`grep -c "Registered" /tmp/cf.log` → 应为 4
-7. 公网验证：`curl -s -o /dev/null -w "%{http_code}" https://stat.357561.xyz/` → 200
+7. 公网验证：`curl -s -o /dev/null -w "%{http_code}" https://<监控面板域名>/` → 200
 
 ## --url 标志 vs 无 --url
 

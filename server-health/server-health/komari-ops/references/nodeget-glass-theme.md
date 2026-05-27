@@ -81,7 +81,7 @@ video.src = '/assets/video/backdrop.mp4';
 
 **方式 B：远程直链（绕过服务器存储）**
 ```html
-video.src = 'https://img.357561.xyz/wallpaper.mp4';
+video.src = 'https://img.<用户域名>/wallpaper.mp4';
 ```
 直接在 `index.html` 的 JS 中写入远程 URL，不占用服务器磁盘。
 适合 56idc 这类极小磁盘（1.2G）的服务器。

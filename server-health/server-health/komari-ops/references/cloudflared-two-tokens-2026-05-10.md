@@ -9,13 +9,13 @@
 | `/etc/init.d/cloudflared` 脚本 | `eyJhIj...` (旧) | OpenRC init |
 | 数据库 `configs.cloudflare_tunnel_token` | `hmcSeFn...` (新) | v1.2.0 内置 |
 
-两个 token 不能共存，同时跑会导致 stat.357561.xyz 返回 HTTP 404。
+两个 token 不能共存，同时跑会导致 <监控面板域名> 返回 HTTP 404。
 
 ## 现象
 
 - cloudflared 进程活着（4个 LAX 连接）
 - `tail /var/log/cloudflared.err` 显示 "Registered tunnel connection" × 4
-- `curl https://stat.357561.xyz/` 返回 HTTP 404
+- `curl https://<监控面板域名>/` 返回 HTTP 404
 - TLS 握手正常，证书匹配
 
 ## 根因
@@ -47,5 +47,5 @@ sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
 
 # 验证 tunnel 本地连通
 sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> \
-  "curl -s -H 'Host: stat.357561.xyz' http://127.0.0.1:25774/" | head -c 200
+  "curl -s -H 'Host: <监控面板域名>' http://127.0.0.1:25774/" | head -c 200
 ```

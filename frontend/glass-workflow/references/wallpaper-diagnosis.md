@@ -8,7 +8,7 @@
 
 ### 第 0 步：确认你在看正确的页面
 
-Glass 主题在 `https://stat.357561.xyz/`（根路径），komari 内置 admin 在 `/admin`。**不要在 `/admin` 页面检查壁纸**——那是 komari 默认主题，没有 Glass 壁纸元素。
+Glass 主题在 `https://<监控面板域名>/`（根路径），komari 内置 admin 在 `/admin`。**不要在 `/admin` 页面检查壁纸**——那是 komari 默认主题，没有 Glass 壁纸元素。
 
 ### 第 1 步：确认壁纸 URL 配置
 
@@ -16,15 +16,15 @@ Glass 主题在 `https://stat.357561.xyz/`（根路径），komari 内置 admin 
 
 | 字段 | 当前值 | 说明 |
 |------|--------|------|
-| 静态壁纸 URL | `https://img.357561.xyz/image-wallpaper.png` | PNG 静态底图（3840×2160） |
-| 动态壁纸 URL | `https://img.357561.xyz/wallpaper.mp4` | MP4 视频（17MB, H.264, 15s 循环） |
+| 静态壁纸 URL | `https://img.<用户域名>/image-wallpaper.png` | PNG 静态底图（3840×2160） |
+| 动态壁纸 URL | `https://img.<用户域名>/wallpaper.mp4` | MP4 视频（17MB, H.264, 15s 循环） |
 
 两个 URL 都能通过 `curl -sI` 确认 HTTP 200。
 
 ### 第 2 步：检查视频源是否可达
 
 ```bash
-curl -sI "https://img.357561.xyz/wallpaper.mp4"
+curl -sI "https://img.<用户域名>/wallpaper.mp4"
 # → HTTP/2 200, content-type: video/mp4, content-length: 17420091
 ```
 
@@ -89,7 +89,7 @@ CSS 在 `@media (max-width: 767px)` 中隐藏了视频：
 
 ```bash
 # 下载检查（ffprobe）
-curl -sL "https://img.357561.xyz/wallpaper.mp4" -o /tmp/w.mp4
+curl -sL "https://img.<用户域名>/wallpaper.mp4" -o /tmp/w.mp4
 ffprobe -v quiet -show_format -show_streams /tmp/w.mp4
 # 关注: duration, avg_frame_rate
 ```
@@ -99,7 +99,7 @@ ffprobe -v quiet -show_format -show_streams /tmp/w.mp4
 | 场景 | 原因 | 处理方式 |
 |------|------|---------|
 | 手机端（≤767px） | CSS `display: none` | 设计如此，静态图足够 |
-| 用户偏好 WebM | 当前用 MP4，R2 上无 `.webm` 文件 | 如果要切 WebM，在 img.357561.xyz 上传 `/video/wallpaper.webm` 并改 theme_settings |
+| 用户偏好 WebM | 当前用 MP4，R2 上无 `.webm` 文件 | 如果要切 WebM，在 img.<用户域名> 上传 `/video/wallpaper.webm` 并改 theme_settings |
 | 截图工具说"静态" | vision 工具只取一帧，无法感知运动 | 以 console 数据为准 |
 | 浏览器自动播放策略 | 某些浏览器要求用户先交互才允许 autoplay | 检查 `v.paused` 和 `v.muted` |
 

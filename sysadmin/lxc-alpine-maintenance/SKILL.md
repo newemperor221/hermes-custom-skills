@@ -86,7 +86,7 @@ chmod +x /opt/komari/agent
 ```bash
 # Rust agent 用 --http-server + --tls，不是旧 Go agent 的 -e/--endpoint
 nohup /opt/komari/agent \
-  --http-server https://stat.357561.xyz \
+  --http-server https://<监控面板域名> \
   --tls \
   -t <TOKEN> \
   --disable-network-statistics \
@@ -103,7 +103,7 @@ Alpine LXC 没有 systemd，用 `/etc/local.d/` 实现开机自启：
 cat > /etc/local.d/komari-agent.start << 'EOF'
 #!/bin/sh
 /opt/komari/agent \
-  --http-server https://stat.357561.xyz \
+  --http-server https://<监控面板域名> \
   --tls \
   -t <TOKEN> \
   --disable-network-statistics \
@@ -126,7 +126,7 @@ mv /opt/komari/agent /opt/komari/agent-go.bak
 # 然后下载 Rust agent 到 /opt/komari/agent（见上方安装命令）
 
 # 3. 启动新 agent
-nohup /opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &
+nohup /opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &
 
 # 4. 验证
 tail -f /tmp/komari-agent.log

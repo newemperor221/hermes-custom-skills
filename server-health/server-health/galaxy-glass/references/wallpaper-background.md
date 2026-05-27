@@ -25,8 +25,8 @@
 
 ```js
 // 先设 fallback 保底，再被 API 覆盖
-$('poster').src = 'https://img.357561.xyz/image-wallpaper2.png';
-$('bg-video').src = 'https://img.357561.xyz/wallpaper1.mp4';
+$('poster').src = 'https://img.<用户域名>/image-wallpaper2.png';
+$('bg-video').src = 'https://img.<用户域名>/wallpaper1.mp4';
 
 // 从 API 覆盖
 if (siteData && siteData.theme_settings) {
@@ -59,9 +59,9 @@ loadData().then(function(){
 
 ## 当前使用的壁纸文件
 
-- Poster: `https://img.357561.xyz/image-wallpaper2.png` (5.4MB PNG)
-- Video:  `https://img.357561.xyz/wallpaper1.mp4` (17MB MP4)
-- 都托管在 WebDAV 网盘 `drive.357561.xyz` 的 img 子域名下
+- Poster: `https://img.<用户域名>/image-wallpaper2.png` (5.4MB PNG)
+- Video:  `https://img.<用户域名>/wallpaper1.mp4` (17MB MP4)
+- 都托管在 WebDAV 网盘 `drive.<用户域名>` 的 img 子域名下
 
 ## Next.js 版（WallpaperBackground 组件，2026-05-16）
 

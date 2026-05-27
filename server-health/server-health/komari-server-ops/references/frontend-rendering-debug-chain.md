@@ -19,7 +19,7 @@
 
 Komari 的双机部署架构：
 - **本地机器**（开发机/维护机）— 文件修改后不自动生效
-- **波兰主控**（<荷兰_IP>:46748）— 通过 cloudflared 隧道 → Cloudflare → stat.357561.xyz 实际提供公网服务
+- **波兰主控**（<荷兰_IP>:46748）— 通过 cloudflared 隧道 → Cloudflare → <监控面板域名> 实际提供公网服务
 - 请求链路：`浏览器 → Cloudflare → cloudflared tunnel → 波兰主控:25774 → Python proxy → /opt/komari/data/theme/index.html`
 
 **验证方法：**
@@ -43,7 +43,7 @@ scp -P 46748 -i ~/.ssh/hermes_admin \
 ⚠️ **但 SCP 同步可能仍然不够！** 如果远程机器跑的是 komari 直连（native 模式，无 galaxy-proxy），komari 使用的是内嵌主题，不读磁盘文件。必须切换架构：部署 galaxy-proxy.py 替代 komari 直接服务端口。详见 `komari-server-ops` 技能中「从 native 模式切换到 proxy 模式」。
 
 **如果不一致则修改未生效。始终在做以下事情前先确认：**
-1. stat.357561.xyz 指向哪个服务器？（Cloudflare → cloudflared tunnel → ?）
+1. <监控面板域名> 指向哪个服务器？（Cloudflare → cloudflared tunnel → ?）
 2. 我改的机器是开发机还是实际服务机？
 3. 需要同步到远程吗？
 4. ⚠️ 远程机的端口是谁在监听？（komari → 内嵌主题; python3 → 读磁盘）
@@ -81,7 +81,7 @@ ssh -p PORT user@HOST "curl -s http://127.0.0.1:25774/index.html | grep -o 'node
 
 ```bash
 # 确认 API 返回的数据不含脏数据
-curl -s https://stat.357561.xyz/api/nodes | python3 -c "
+curl -s https://<监控面板域名>/api/nodes | python3 -c "
 import json,sys
 data = json.load(sys.stdin)
 for n in data.get('data',[]) or []:
@@ -97,7 +97,7 @@ for n in data.get('data',[]) or []:
 
 ```bash
 # 通过 Cloudflare（正常域名）
-curl -s 'https://stat.357561.xyz/?_nocache=1' | grep -o 'node-name\">[^<]*<' | head -5
+curl -s 'https://<监控面板域名>/?_nocache=1' | grep -o 'node-name\">[^<]*<' | head -5
 
 # 对比直连 origin（如果可用）
 curl -s 'http://ORIGIN_IP:PORT/?_nocache=1' | grep -o 'node-name\">[^<]*<' | head -5
@@ -180,7 +180,7 @@ ssh -p 46748 -i ~/.ssh/hermes_admin root@<荷兰_IP> \
 curl -s http://localhost:25774/index.html | grep -o 'node-name">[^<]*<' | head -3
 
 # 5. 通过 Cloudflare 验证
-curl -s 'https://stat.357561.xyz/?v='$(date +%s) | grep -o 'node-name">[^<]*<' | head -3
+curl -s 'https://<监控面板域名>/?v='$(date +%s) | grep -o 'node-name">[^<]*<' | head -3
 
 # 6. 浏览器验证（清缓存或硬刷新后再看）
 ```
@@ -225,7 +225,7 @@ curl -s 'https://stat.357561.xyz/?v='$(date +%s) | grep -o 'node-name">[^<]*<' |
 # 确认 proxy 的 THEME_DIR 路径
 grep -n "THEME_DIR" /opt/komari/*.py
 
-# 确认哪个 komari 进程监听在 stat.357561.xyz 的实际端口
+# 确认哪个 komari 进程监听在 <监控面板域名> 的实际端口
 ss -tlnp | grep 25774
 ```
 
@@ -247,8 +247,8 @@ ps aux | grep cloudflared
 ps aux | grep galaxy-proxy
 # → 可能同时有本地和远程实例
 
-# 3. 查 stat.357561.xyz 的 DNS 指向
-dig +short stat.357561.xyz
+# 3. 查 <监控面板域名> 的 DNS 指向
+dig +short <监控面板域名>
 # → 104.21.x.x / 172.67.x.x — Cloudflare IP
 # Cloudflare → cloudflared tunnel → 远程机 → 远程机上的 proxy 或 komari
 

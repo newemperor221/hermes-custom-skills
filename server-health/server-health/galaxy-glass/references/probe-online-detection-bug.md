@@ -76,7 +76,7 @@ sqlite3 /opt/komari/data/komari.db \
 **注意：如果某节点 `seconds_ago > 120` 但在面板上仍显示绿色"在线"，说明修复仍有问题。**
 
 **浏览器端验证：**
-1. 打开 stat.357561.xyz
+1. 打开 <监控面板域名>
 2. F12 → Console → `nodesList.filter(n => n.online).length / nodesList.filter(n => !n.online).length`
 3. 手动构造旧数据测试：在 Console 中 `mergeNodeData({uuid:'test'}, [{updated_at: new Date(Date.now()-180_000).toISOString()}]).online` 应返回 false
 

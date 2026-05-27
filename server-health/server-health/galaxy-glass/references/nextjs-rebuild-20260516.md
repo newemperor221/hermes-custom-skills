@@ -12,7 +12,7 @@
 ## 架构
 
 ```
-用户浏览器 → stat.357561.xyz
+用户浏览器 → <监控面板域名>
   → Cloudflare CDN (tunnel)
   → galaxy-proxy.py (波兰主控 <荷兰_IP>:25774)
   → 静态文件: /opt/komari/data/theme/
@@ -134,7 +134,7 @@ sshpass -p 'PASSWORD' ssh -p PORT -f root@HOST \
 
 双层壁纸 + 暗色覆盖层，完全尊重用户「壁纸极暗」的原有偏好：
 
-- Poster (`img.357561.xyz/image-wallpaper2.png`) + Video (`wallpaper1.mp4`)
+- Poster (`img.<用户域名>/image-wallpaper2.png`) + Video (`wallpaper1.mp4`)
 - `filter: brightness(0.35)` 降低壁纸亮度
 - `rgba(2,2,3,0.55)` 暗色覆盖层（与 `--bg-deepest` 同色系）
 - Video 通过 `onCanPlay` 回调淡入（opacity 0→1, 600ms 过渡）

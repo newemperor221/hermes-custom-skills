@@ -105,4 +105,4 @@ getFiltered() → renderCard() / renderRow()
 |------|------|
 | 服务器 | `root@<洛杉矶2_IP>:/opt/komari/data/theme/GalaxyGlass/dist/` |
 | GitHub | `https://github.com/newemperor221/nodeget-galaxy-glass` |
-| 访问地址 | `http://stat.357561.xyz` |
+| 访问地址 | `http://<监控面板域名>` |

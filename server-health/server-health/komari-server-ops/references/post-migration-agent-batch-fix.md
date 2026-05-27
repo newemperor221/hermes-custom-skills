@@ -24,7 +24,7 @@ curl -sL https://github.com/komari-monitor/komari-agent/releases/download/1.2.0/
 chmod +x /opt/komari/agent
 
 # 3. Start with correct endpoint
-nohup /opt/komari/agent -e https://stat.357561.xyz -t <TOKEN> --disable-web-ssh > /opt/komari/agent.log 2>&1 &
+nohup /opt/komari/agent -e https://<监控面板域名> -t <TOKEN> --disable-web-ssh > /opt/komari/agent.log 2>&1 &
 ```
 
 ## Avoiding nohup/& Blocks

@@ -25,13 +25,13 @@ Komari 的 SSO 实现采用 **两步绑定机制**：
 - ✅ Provider 选择 `github`
 - ✅ GitHub Client ID 已填写
 - ✅ GitHub Client Secret 已填写
-- ✅ Callback URL 显示：`https://stat.357561.xyz/api/oauth_callback`
+- ✅ Callback URL 显示：`https://<监控面板域名>/api/oauth_callback`
 
 ### 2. 确认 GitHub OAuth App 配置
 
 在 GitHub Developer Settings 中：
-- **Homepage URL**: `https://stat.357561.xyz`
-- **Authorization callback URL**: `https://stat.357561.xyz/api/oauth_callback`
+- **Homepage URL**: `https://<监控面板域名>`
+- **Authorization callback URL**: `https://<监控面板域名>/api/oauth_callback`
 - 两者必须完全一致（包括协议 `https://`）
 
 ### 3. 执行绑定流程

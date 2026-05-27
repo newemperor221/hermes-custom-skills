@@ -33,14 +33,14 @@ ps aux | grep komari       # 无进程
 
 # 4. 从面板获取正确的安装命令
 # 面板 → Server → 搜索"台湾" → Install command →
-# wget -qO- ... install.sh | sudo bash -s -- -e https://stat.357561.xyz -t gcp-us-agent
+# wget -qO- ... install.sh | sudo bash -s -- -e https://<监控面板域名> -t gcp-us-agent
 
 # 5. Alpine 无 bash，直接启动现有二进制
-nohup /opt/komari/agent -e https://stat.357561.xyz -t gcp-us-agent > /opt/komari/agent.log 2>&1 &
+nohup /opt/komari/agent -e https://<监控面板域名> -t gcp-us-agent > /opt/komari/agent.log 2>&1 &
 # Agent 1.2.0 启动成功，获取 IPV4 <台湾_IP> 和 IPV6
 
 # 6. 设置开机自启（Alpine OpenRC 方式）
-echo '/opt/komari/agent -e https://stat.357561.xyz -t gcp-us-agent > /opt/komari/agent.log 2>&1 &' > /etc/local.d/komari.start
+echo '/opt/komari/agent -e https://<监控面板域名> -t gcp-us-agent > /opt/komari/agent.log 2>&1 &' > /etc/local.d/komari.start
 chmod +x /etc/local.d/komari.start
 rc-update add local default
 ```

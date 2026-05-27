@@ -1,14 +1,14 @@
 # Komari 1.2.0 主题系统部署实录
 
 日期：2026-05-19
-场景：将 GalaxyGlass 静态版部署到线上 stat.357561.xyz
+场景：将 GalaxyGlass 静态版部署到线上 <监控面板域名>
 
 ## 核心发现
 
 ### 架构
 
 ```
-用户浏览器 → stat.357561.xyz (Cloudflare CDN)
+用户浏览器 → <监控面板域名> (Cloudflare CDN)
   ↓
 cloudflared tunnel (从 ccs-la2 SSH 到波兰 Master 执行)
   ↓

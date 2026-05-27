@@ -2,7 +2,7 @@
 
 ## 当前 komari server
 - **Host**: 56idc-la (<洛杉矶2_IP>:42185, root, Alpine + OpenRC)
-- **Panel**: https://stat.357561.xyz (cloudflared → localhost:20241 → komari :25774)
+- **Panel**: https://<监控面板域名> (cloudflared → localhost:20241 → komari :25774)
 - **cloudflared token**: `eyJhIjoiYzFkMTgwNGNiNTA3NGM2YTYwNGU1NDc0YjZjNTA4MTYiLCJ0IjoiYmE0ZThlYTctZThlMS00MTE1LTg0MGItNjRiODdlMTUyYjg1IiwicyI6IllqRmtOR1l6TW1VdE16WmlOUzAwWXpNNUxUZzBZakV0TldReU1qTTROakk1WWpFMSJ9`
 
 ## 全部节点一览（2026-05-08 添加）
@@ -27,7 +27,7 @@
 ### root 用户（systemd）
 ```bash
 curl -fsSL https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | bash -s -- \
-  -e 'https://stat.357561.xyz' \
+  -e 'https://<监控面板域名>' \
   -t '<TOKEN>' \
   --disable-web-ssh
 
@@ -36,7 +36,7 @@ systemctl enable komari-agent && systemctl restart komari-agent
 
 ### 非 root 用户（woioeow + sudo）
 ```bash
-echo '4561834' | sudo -S bash -c 'curl -fsSL https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | bash -s -- -e https://stat.357561.xyz -t <TOKEN> --disable-web-ssh'
+echo '4561834' | sudo -S bash -c 'curl -fsSL https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | bash -s -- -e https://<监控面板域名> -t <TOKEN> --disable-web-ssh'
 
 sudo systemctl enable komari-agent && sudo systemctl restart komari-agent
 ```
@@ -44,7 +44,7 @@ sudo systemctl enable komari-agent && sudo systemctl restart komari-agent
 ### Alpine OpenRC（56idc-la / 将军鸡）
 ```bash
 curl -fsSL https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sh -s -- \
-  -e 'https://stat.357561.xyz' \
+  -e 'https://<监控面板域名>' \
   -t '<TOKEN>' \
   --disable-web-ssh
 
@@ -80,14 +80,14 @@ tail -50 /var/log/komari.log | grep -E '200|reconnect success|token'
 sqlite3 /opt/komari/data/komari.db "select name, ipv4, ipv6, region, updated_at from clients order by name;"
 
 # 检查面板 12/12 在线
-curl -s https://stat.357561.xyz/api/v1/status | head -c 100
+curl -s https://<监控面板域名>/api/v1/status | head -c 100
 ```
 
 ## 关键教训
 
 1. **非 root + sudo 环境**：ccs-la2 和 racknerd-atlanta 是 woioeow 用户，sudo 需要 `-S` 从 stdin 读密码，或用 `ssh -t` 分配 pty
 2. **install.sh 对 Debian/Alpine 的检测**：install.sh 会自动检测 systemd/OpenRC 并创建对应 init 脚本，参数 `-e` 和 `-t` 能正确传入
-3. **所有节点统一用 HTTPS 域名 endpoint**：`https://stat.357561.xyz`，不要用 IP（将军鸡 IPv6 only 走不了 IPv4 NAT 端口映射）
+3. **所有节点统一用 HTTPS 域名 endpoint**：`https://<监控面板域名>`，不要用 IP（将军鸡 IPv6 only 走不了 IPv4 NAT 端口映射）
 4. **token 冲突**：每台机器必须独立 token，共用 token 会导致数据混淆
 5. **批量生成 token 后必须同步写入远程数据库**：install.sh 每次运行生成新的随机 token，若数据库里存的是旧 token，agent 会 401 且不会自动恢复
 6. **401 错误处理流程**：

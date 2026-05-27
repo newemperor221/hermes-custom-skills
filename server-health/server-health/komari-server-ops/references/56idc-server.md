@@ -19,7 +19,7 @@
 ## Cloudflared 隧道
 - 运行方式：Quick Tunnel（token 认证）
 - 命令：`/usr/local/bin/cloudflared tunnel run --token <token>`
-- 旧域名 `mon.357561.xyz`（指向 DediRock）已废弃
+- 旧域名 `mon.<用户域名>`（指向 DediRock）已废弃
 
 ## 密码重置命令
 ```bash

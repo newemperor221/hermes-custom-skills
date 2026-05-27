@@ -2,7 +2,7 @@
 
 ## 现象
 
-桌面端 stat.357561.xyz 主页 4 个统计卡片（stats-grid）显示为 1 列，但对线上文件发现 `.stats-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }` 是正确的 4 列 CSS。
+桌面端 <监控面板域名> 主页 4 个统计卡片（stats-grid）显示为 1 列，但对线上文件发现 `.stats-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }` 是正确的 4 列 CSS。
 
 ## 排查路径
 
@@ -43,11 +43,11 @@ ssh ... "ls /opt/komari/data/theme/styles/"
 ssh ... "ls /opt/komari/data/theme/scripts/"
 
 # 2. 验证 CSS 可访问
-curl -sI "https://stat.357561.xyz/styles/components.css?v=3" | head -3
+curl -sI "https://<监控面板域名>/styles/components.css?v=3" | head -3
 
 # 3. 验证渲染
-curl -s "https://stat.357561.xyz" | grep -c 'stats-grid'  # 应 >0
-curl -s "https://stat.357561.xyz" | grep -o 'v=[0-9]'    # 检查版本号
+curl -s "https://<监控面板域名>" | grep -c 'stats-grid'  # 应 >0
+curl -s "https://<监控面板域名>" | grep -o 'v=[0-9]'    # 检查版本号
 
 # 4. 浏览器验证 grid layout
 document.querySelector('.stats-grid')

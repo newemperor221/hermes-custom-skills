@@ -398,14 +398,14 @@ systemctl daemon-reload && systemctl enable --now cloudflared
 ```bash
 # 查看 cloudflared 收到的配置（含 hostname → port 映射）
 journalctl -u cloudflared --no-pager | grep "Updated to new configuration"
-# 输出示例: "ingress":[{"hostname":"ng.357561.xyz","service":"http://localhost:2211"},...]
+# 输出示例: "ingress":[{"hostname":"ng.<用户域名>","service":"http://localhost:2211"},...]
 
 # 验证 WebSocket 是否通（应返回 101）
 curl -s -o /dev/null -w "%{http_code}" \
   -H "Connection: Upgrade" -H "Upgrade: websocket" \
   -H "Sec-WebSocket-Version: 13" -H "Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==" \
   -H "Sec-WebSocket-Protocol: nodeget-jsonrpc" \
-  https://statapi.357561.xyz/
+  https://statapi.<用户域名>/
 # 101 = 正常，200 = 被 CF challenge 拦截
 ```
 

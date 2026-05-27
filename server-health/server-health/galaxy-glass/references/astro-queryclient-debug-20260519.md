@@ -10,7 +10,7 @@ After deploying GalaxyGlass Astro build, the page showed a blank dark screen ins
 - The running theme was `GalaxyGlass` (confirmed via API: `"theme":"GalaxyGlass"`)
 - Files must go in `/opt/komari/data/theme/GalaxyGlass/dist/`
 - deploy.sh was putting files in `/opt/komari/data/theme/` (root) → komari ignored them
-- Result: curl to stat.357561.xyz returned OLD HTML even though new files existed on disk
+- Result: curl to <监控面板域名> returned OLD HTML even though new files existed on disk
 
 **Fix**: Updated deploy.sh to extract into `GalaxyGlass/dist/` subdirectory.
 
@@ -27,7 +27,7 @@ After deploying GalaxyGlass Astro build, the page showed a blank dark screen ins
 
 ### 1. Verify HTML is served correctly
 ```bash
-curl -s https://stat.357561.xyz/ | grep -o 'DashboardContent\.\w*'
+curl -s https://<监控面板域名>/ | grep -o 'DashboardContent\.\w*'
 # If hash is OLD, deployment path is wrong
 ```
 

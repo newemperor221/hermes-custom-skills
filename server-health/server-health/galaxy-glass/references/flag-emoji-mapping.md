@@ -1,6 +1,6 @@
 ## Debugging in SPA Mode
 
-As of 2026-05-18, stat.357561.xyz loads a Vite Svelte SPA (`entry-index-CN3NDSn4.js`) alongside legacy scripts. In this mode, `flagEmoji` is NOT on `window` scope:
+As of 2026-05-18, <监控面板域名> loads a Vite Svelte SPA (`entry-index-CN3NDSn4.js`) alongside legacy scripts. In this mode, `flagEmoji` is NOT on `window` scope:
 
 ```js
 typeof window.flagEmoji  // → 'undefined' (function exists but not in global scope)

@@ -8,7 +8,7 @@
 ## 背景
 
 - 将军鸡是 NAT 小鸡，只有 HE 隧道 IPv6（`2001:470:e2db:100::/64`），无原生 IPv4/IPv6
-- 56idc-la 有 komari server（`stat.357561.xyz`），将军鸡无法直接用 IPv4 连接
+- 56idc-la 有 komari server（`<监控面板域名>`），将军鸡无法直接用 IPv4 连接
 - 两台机器都有 HE IPv6，但 HE endpoint 地址（`2001:470:e2db::2`）不能直接用于 agent 连接
 
 ## 连接方案演变
@@ -22,7 +22,7 @@ nc -6 -zv 2001:470:e2db::2 25774
 **原因**：HE 隧道 endpoint 地址不是机器的可路由 IPv6，komari server 监听的 `:::25774` 含 HE 网卡，但 agent 直接连 endpoint 会失败。
 
 ### 方案 B（成功）：公网 HTTPS 域名连接
-将军鸡 agent 连接 `https://stat.357561.xyz`（cloudflared 隧道暴露的 komari 服务），不依赖直接 IPv4/IPv6 互通。
+将军鸡 agent 连接 `https://<监控面板域名>`（cloudflared 隧道暴露的 komari 服务），不依赖直接 IPv4/IPv6 互通。
 
 ## 操作步骤
 
@@ -46,7 +46,7 @@ cat > /etc/init.d/komari-agent << 'EOF'
 name=komari-agent
 description="Komari Agent"
 command="/opt/komari/agent"
-command_args="-e https://stat.357561.xyz -t 207c22bb50597a5b27e72e57c66f3cd9"
+command_args="-e https://<监控面板域名> -t 207c22bb50597a5b27e72e57c66f3cd9"
 command_background=true
 pidfile="/run/${RC_SVCNAME}.pid"
 output_log="/var/log/komari-agent.log"
@@ -62,7 +62,7 @@ rc-update add komari-agent default
 ```
 
 ### 4. 验证
-等待 10 秒，刷新 stat.357561.xyz，检查将军鸡是否出现且数据非零。
+等待 10 秒，刷新 <监控面板域名>，检查将军鸡是否出现且数据非零。
 
 ## 教训
 

@@ -1,6 +1,6 @@
 ---
 name: cloudflare-tunnel-ops
-description: Cloudflare Zero Trust Tunnel（cloudflared）全栈运维——tunnel 部署、ingress 路由排障、缓存策略、开隧道的步骤。触发："tunnel断了"、"cloudflare 404"、"ingress"、"stat.357561.xyz 打不开"、"cloudflared"。
+description: Cloudflare Zero Trust Tunnel（cloudflared）全栈运维——tunnel 部署、ingress 路由排障、缓存策略、开隧道的步骤。触发："tunnel断了"、"cloudflare 404"、"ingress"、"<监控面板域名> 打不开"、"cloudflared"。
 ---
 
 # Cloudflare Tunnel 运维
@@ -19,14 +19,14 @@ description: Cloudflare Zero Trust Tunnel（cloudflared）全栈运维——tunn
 **荷兰主控** (<荷兰_IP>:46748, Alpine LXC, `~/.ssh/hermes_admin` 密钥)
 | 子域名 | 后端服务 | 端口 |
 |--------|---------|------|
-| `stat.357561.xyz` | galaxy-proxy.py → Komari 面板 | `127.0.0.1:25774` → `127.0.0.1:25776` |
-| `drive.357561.xyz` | WebDAV 网盘 | 配置在 Zero Trust Dashboard |
-| `tz.357561.xyz` | 探针 | 配置在 Zero Trust Dashboard |
+| `<监控面板域名>` | galaxy-proxy.py → Komari 面板 | `127.0.0.1:25774` → `127.0.0.1:25776` |
+| `drive.<用户域名>` | WebDAV 网盘 | 配置在 Zero Trust Dashboard |
+| `tz.<用户域名>` | 探针 | 配置在 Zero Trust Dashboard |
 
 **1c2.5g洛杉矶** (<旧Master_IP>:58193, Debian)
 | 子域名 | 后端服务 | 端口 |
 |--------|---------|------|
-| `ai.357561.xyz` | ds-free-api | `localhost:22217` |
+| `ai.<用户域名>` | ds-free-api | `localhost:22217` |
 
 ### 命令
 
@@ -70,7 +70,7 @@ Cloudflare Tunnel 的 ingress 规则在 [Cloudflare Zero Trust Dashboard](https:
 如果页面显示了旧内容，原因是 Cloudflare 的 **CDN proxy（橙色云 DNS）** 缓存了响应，而不是 cloudflared。
 
 ### 问题
-通过 `stat.357561.xyz`（启用了 Cloudflare proxy）修改 `index.html` 后，用户看到的是旧版本，因为 Cloudflare CDN 边缘节点缓存了页面。
+通过 `<监控面板域名>`（启用了 Cloudflare proxy）修改 `index.html` 后，用户看到的是旧版本，因为 Cloudflare CDN 边缘节点缓存了页面。
 
 cloudflared 直连（DNS only/灰色云模式）不会有此问题。
 
@@ -207,7 +207,7 @@ Token 模式（`--token` 启动）的配置入口在 Dashboard，不在服务器
 
 1. **服务端**：确保新服务已在 localhost 监听（如 `http://127.0.0.1:22217`）
 2. **Dashboard**：登录 https://one.dash.cloudflare.com/ → Networks → Tunnels → 选对应 tunnel → Public Hostname 选项卡 → Add a public hostname
-3. **配 ingress**：填子域名（如 `ai.357561.xyz`），服务指向 `http://localhost:22217`）
+3. **配 ingress**：填子域名（如 `ai.<用户域名>`），服务指向 `http://localhost:22217`）
 4. **保存**：立即生效，无需重启服务器上的 cloudflared
 5. **验证**：`curl https://你的域名/health`
 
@@ -219,10 +219,10 @@ systemctl start ds-free-api
 curl http://127.0.0.1:22217/health   # 确认本地可用
 
 # Dashboard：进入 tunnel ingress 规则 → 添加一行
-#   Hostname: ai.357561.xyz → Service: http://localhost:22217
+#   Hostname: ai.<用户域名> → Service: http://localhost:22217
 
 # 验证外网访问
-curl https://ai.357561.xyz/health
+curl https://ai.<用户域名>/health
 ```
 
 ### ⚠️ Critical Pitfall: SSH Access May Depend on the Tunnel

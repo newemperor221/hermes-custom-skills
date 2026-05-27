@@ -33,7 +33,7 @@ src/
   "site_tokens": [
     {
       "name": "56idc-LA",
-      "backend_url": "wss://statapi.357561.xyz",
+      "backend_url": "wss://statapi.<用户域名>",
       "token": "SUPER_TOKEN:AGENT_TOKEN"
     }
   ]
@@ -519,7 +519,7 @@ git checkout public/config.json
      "site_tokens": [
        {
          "name": "56idc-LA",
-         "backend_url": "wss://statapi.357561.xyz",
+         "backend_url": "wss://statapi.<用户域名>",
          "token": "***"
        }
      ]
@@ -528,7 +528,7 @@ git checkout public/config.json
 2. **Vercel Dashboard**：Settings → Environment Variables，加入
    ```
    SITE_NAME = 银河探针
-   SITE_1    = name="56idc-LA",backend_url="wss://statapi.357561.xyz",token="真实token"
+   SITE_1    = name="56idc-LA",backend_url="wss://statapi.<用户域名>",token="真实token"
    ```
    Production / Preview / Development 全部勾选，Save 后触发重新部署
 3. **构建时**：`build-config.mjs` 读取环境变量，覆盖 `config.json`
@@ -553,7 +553,7 @@ ssh -p PORT root@SERVER_IP "cat /root/.config/nodeget-agent/config.toml | grep -
 ```bash
 curl -s -X POST -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"nodeget-server_list_all_agent_uuid","params":{"token":"真实token"},"id":"1"}' \
-  https://statapi.357561.xyz
+  https://statapi.<用户域名>
 # 返回 {"uuids":[...]} = 可用；返回 error = token 已失效
 ```
 

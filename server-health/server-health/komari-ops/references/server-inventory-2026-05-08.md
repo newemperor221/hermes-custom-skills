@@ -39,9 +39,9 @@
 ## 关键路径
 
 - komari server: 56idc-la:25774
-- stat.357561.xyz → cloudflared tunnel → 56idc-la:25774
+- <监控面板域名> → cloudflared tunnel → 56idc-la:25774
 - cloudflared token: eyJhIjoiYzFkMTgwNGNiNTA3NGM2YTYwNGU1NDc0YjZjNTA4MTYiLCJ0IjoiYmE0ZThlYTctZThlMS00MTE1LTg0MGItNjRiODdlMTUyYjg1IiwicyI6IllqRmtOR1l6TW1VdE16WmlOUzAwWXpNNUxUZzBZakV0TldReU1qTTROakk1WWpFMSJ9
-- komari 面板: https://stat.357561.xyz
+- komari 面板: https://<监控面板域名>
 - admin 账号: admin / Komari@2026
 
 ## komari 版本状态

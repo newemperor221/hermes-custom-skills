@@ -4,7 +4,7 @@
 
 ## 背景
 
-**关键依赖关系（2026-05-10 才发现）**：`pkill komari`（或 `killall komari`）会**连带杀掉 cloudflared**。因为 cloudflared 也是 nohup 启动，与 komari server 共享进程树。重启 komari server 后，所有 agent 连不上 `stat.357561.xyz`，返回 **HTTP 530 / error 1033**。
+**关键依赖关系（2026-05-10 才发现）**：`pkill komari`（或 `killall komari`）会**连带杀掉 cloudflared**。因为 cloudflared 也是 nohup 启动，与 komari server 共享进程树。重启 komari server 后，所有 agent 连不上 `<监控面板域名>`，返回 **HTTP 530 / error 1033**。
 
 ## 完整重启步骤
 
@@ -75,4 +75,4 @@ grep 'reconnect success' /var/log/komari.log | tail -5
 | agent 日志: "530 / error 1033" | cloudflared 隧道挂了 | 重启 cloudflared |
 | agent 日志: "401" | token 不匹配 | 检查 DB token vs agent service 参数 |
 | agent 日志: "reconnect success" 但无数据 | 刚重连，等 15-30 秒 | 等 |
-| `curl localhost:25774` 通但 `stat.357561.xyz` 不通 | tunnel 问题 | 检查 cloudflared 进程和日志 |
+| `curl localhost:25774` 通但 `<监控面板域名>` 不通 | tunnel 问题 | 检查 cloudflared 进程和日志 |

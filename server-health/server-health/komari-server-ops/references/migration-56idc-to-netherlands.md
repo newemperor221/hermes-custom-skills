@@ -41,17 +41,17 @@ tar xzf /tmp/ip-sentinel-migrate.tar.gz -C /opt/
 关键改动：PUBLIC_IP、REGION_CODE/REGION_NAME、NODE_NAME/NODE_ALIAS
 
 ### 更新所有 Agent endpoint（共 9 台）
-旧: `https://stat.357561.xyz`
+旧: `https://<监控面板域名>`
 新: `http://<荷兰_IP>:45774`
 
 对所有 server 执行:
 ```bash
 # systemd:
-sed -i "s|https://stat.357561.xyz|http://<荷兰_IP>:45774|g" /etc/systemd/system/komari-agent.service
+sed -i "s|https://<监控面板域名>|http://<荷兰_IP>:45774|g" /etc/systemd/system/komari-agent.service
 systemctl daemon-reload && systemctl restart komari-agent
 
 # openrc:
-sed -i "s|https://stat.357561.xyz|http://<荷兰_IP>:45774|g" /etc/init.d/komari-agent
+sed -i "s|https://<监控面板域名>|http://<荷兰_IP>:45774|g" /etc/init.d/komari-agent
 rc-service komari-agent restart
 ```
 

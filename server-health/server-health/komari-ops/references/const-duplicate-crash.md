@@ -2,7 +2,7 @@
 
 ## 现象
 
-用户反馈 stat.357561.xyz 一直显示"连接后端中…"（loading spinner 不消失）。API 正常返回 200，服务器文件大小正确，但浏览器 console 有未名 exception。
+用户反馈 <监控面板域名> 一直显示"连接后端中…"（loading spinner 不消失）。API 正常返回 200，服务器文件大小正确，但浏览器 console 有未名 exception。
 
 ## 排查过程
 

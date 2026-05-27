@@ -1,4 +1,4 @@
-# Cloudflared Token 冲突 + stat.357561.xyz 404 排查
+# Cloudflared Token 冲突 + <监控面板域名> 404 排查
 
 **日期**：2026-05-10
 **服务器**：56idc-la（Alpine，<洛杉矶2_IP>:42185）
@@ -7,7 +7,7 @@
 
 ## 现象
 
-`stat.357561.xyz` 公网返回 HTTP 404，但：
+`<监控面板域名>` 公网返回 HTTP 404，但：
 - `curl localhost:25774/` 返回正常 HTML ✅
 - cloudflared 进程在跑，4 个 LAX 连接都注册成功 ✅
 - TLS 握手正常，证书匹配 ✅
@@ -37,19 +37,19 @@ sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "grep -o 'token 
 sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "sqlite3 /opt/komari/data/komari.db 'SELECT value FROM configs WHERE key=\"cloudflare_tunnel_token\";'"
 
 # 3. 本地 Host header 测试
-sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "curl -s -H 'Host: stat.357561.xyz' http://127.0.0.1:25774/ | grep -o 'video.src = [^;]*'"
+sshpass -p 'Y@BU1%wmP#xFs8bK' ssh -p 42185 root@<洛杉矶2_IP> "curl -s -H 'Host: <监控面板域名>' http://127.0.0.1:25774/ | grep -o 'video.src = [^;]*'"
 # 返回带 siteInfo.videoUrl 的行 = 本地 tunnel 通
 
 # 4. 公网测试
-curl -s -I https://stat.357561.xyz/
+curl -s -I https://<监控面板域名>/
 # 404 = tunnel 路由层问题（不是 CDN 缓存）
 
 # 5. DNS 确认
-dig stat.357561.xyz +short
+dig <监控面板域名> +short
 # 应返回 104.21.x.x 或 172.67.x.x
 
 # 6. TLS 握手确认
-curl -sv https://stat.357561.xyz/ 2>&1 | grep -E 'TLS|subject|ALPN'
+curl -sv https://<监控面板域名>/ 2>&1 | grep -E 'TLS|subject|ALPN'
 ```
 
 ## 解法
@@ -66,12 +66,12 @@ killall cloudflared
 
 **如果是 Cloudflare Dashboard 端 tunnel 损坏**：
 - 登录 Cloudflare Dashboard → Zero Trust → Networks → Tunnels
-- 检查 stat.357561.xyz tunnel 是否存在、状态是否 Active
+- 检查 <监控面板域名> tunnel 是否存在、状态是否 Active
 - tunnel 若损坏：删除重建 → 更新 DNS CNAME
 
 ## 教训
 
-- **stat.357561.xyz 是 cloudflared tunnel 模式，没有 CDN 缓存层**。返回 404 一定是 tunnel 路由层的问题。
+- **<监控面板域名> 是 cloudflared tunnel 模式，没有 CDN 缓存层**。返回 404 一定是 tunnel 路由层的问题。
 - v1.2.0 内置 cloudflared tunnel 管理（token 存数据库），不需要手动装 cloudflared binary。
 - 但 v1.2.0 在 Alpine 上 SIGSEGV（glibc 二进制在 musl 环境崩溃），所以 56idc-la 实际跑的是 1.1.9 + 手动 cloudflared。
 - 两个 token 不能共存，否则 Cloudflare 不知道该路由到哪个 tunnel。

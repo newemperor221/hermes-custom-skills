@@ -19,10 +19,10 @@ Komari 二进制页面渲染分两层，两者可能不一致：
 
 ```bash
 # 1. 查看 SSR（初始加载）
-curl -s https://stat.357561.xyz/ | grep -oP 'node-card-header">.*?</div></div>' | head -1
+curl -s https://<监控面板域名>/ | grep -oP 'node-card-header">.*?</div></div>' | head -1
 
 # 2. 查看 JS 模板（数据更新后使用）
-curl -s https://stat.357561.xyz/ | grep -oP "renderCard.*?function" 
+curl -s https://<监控面板域名>/ | grep -oP "renderCard.*?function" 
 ```
 
 ## 已确认的 JS 模板 bug（komari v1.2.0 内嵌）

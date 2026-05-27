@@ -91,6 +91,6 @@ Increased from `y: -3` to `y: -4` for a slightly more pronounced hover effect.
 - `nextjs/src/components/NodeCard.tsx` — all visual changes
 
 ## Verification
-- `curl -sI https://stat.357561.xyz/` returns `HTTP/2 200`
+- `curl -sI https://<监控面板域名>/` returns `HTTP/2 200`
 - All `/_next/static/chunks/` assets return 200
 - Detail page `/detail` renders correctly

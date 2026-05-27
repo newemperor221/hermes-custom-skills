@@ -20,7 +20,7 @@ tags: [komari, monitoring, server, ops, panel]
 
 1. **查 memory** — memory 里有已知的面板机信息（IP、SSH端口、架构模式）。先读 memory 再动工具。
 2. **查 session_search** — 最近操作记录里有迁移/部署的面板机信息。不要凭记忆猜。
-3. **查 DNS** — `dig +short stat.357561.xyz` 确认域名指向 Cloudflare（104.21.x.x / 172.67.x.x）
+3. **查 DNS** — `dig +short <监控面板域名>` 确认域名指向 Cloudflare（104.21.x.x / 172.67.x.x）
 4. **查 cloudflared 进程** — 只有在面板机上才跑 cloudflared tunnel。在疑似机器上查 `ps aux | grep cloudflared`
 5. **最后再 SSH** — 前面三步走完仍不确定，再 SSH 到最可能的机器验证。
 
@@ -80,7 +80,7 @@ sleep 5
 nohup cloudflared tunnel --no-autoupdate run --token TOKEN --url http://127.0.0.1:25774 > /tmp/cf.log 2>&1 &
 
 # 5. 验证
-curl -s -o /dev/null -w '%{http_code}' https://stat.357561.xyz/  # → 200
+curl -s -o /dev/null -w '%{http_code}' https://<监控面板域名>/  # → 200
 ```
 
 ### 历史架构（2026-05-25 ~ 2026-05-27，已被简化替代）
@@ -234,11 +234,11 @@ nohup cloudflared tunnel --no-autoupdate run --token TOKEN --url http://127.0.0.
 
 ## 排查链路故障
 
-当 stat.357561.xyz 打不开时，逐层排查：
+当 <监控面板域名> 打不开时，逐层排查：
 
 ```bash
 # 1. 域名解析
-dig +short stat.357561.xyz
+dig +short <监控面板域名>
 # → 104.21.x.x / 172.67.x.x = Cloudflare CDN（正确）
 
 # 2. cloudflared 隧道
@@ -600,16 +600,16 @@ rc-service cloudflared status
 rc-service cloudflared restart
 
 # 9. ✅ 验证公网
-curl -s -o /dev/null -w '%{http_code}: %{size_download}B' https://stat.357561.xyz/
+curl -s -o /dev/null -w '%{http_code}: %{size_download}B' https://<监控面板域名>/
 # → 200: 98xxxB
 
 # 10. 验证单引号已消失（SSR 渲染的名称不应有 ' 前缀）
-curl -s https://stat.357561.xyz/ | grep -o 'node-name">[^<]*' | head -5
+curl -s https://<监控面板域名>/ | grep -o 'node-name">[^<]*' | head -5
 # → node-name">无聊云 | 洛杉矶   (无前导 ' )
 # → node-name">Acck | 东京        (无前导 ' )
 
 # 验证 JS 模板也修了
-curl -s https://stat.357561.xyz/ | grep -o "n\.name||n\.uuid[^;]*"
+curl -s https://<监控面板域名>/ | grep -o "n\.name||n\.uuid[^;]*"
 # → 应为 ''+(n.name||n.uuid||'—')   (无 \' 前缀)
 ```
 
@@ -844,7 +844,7 @@ if only_records:
 
 ### 入口与登录
 
-1. 访问 `https://stat.357561.xyz`
+1. 访问 `https://<监控面板域名>`
 2. 点击右上角 **「登录」** → 输入用户名 `admin` 和密码（存 memory）
 3. 登录后显示节点卡片仪表盘 = 在线状态一目了然
 
@@ -954,7 +954,7 @@ ssh -o StrictHostKeyChecking=no -p 43590 root@<IP>
 当确认 agent 二进制存在于 `/opt/komari/agent` 但进程不存在时（Alpine Linux LXC）：
 
 **获取 token 和 endpoint：**
-1. 登录面板 admin（`stat.357561.xyz` → 登录）
+1. 登录面板 admin（`<监控面板域名>` → 登录）
 2. 侧栏 → **Server**
 3. 搜索节点名
 4. 点击右列 **Install command** 按钮
@@ -963,7 +963,7 @@ ssh -o StrictHostKeyChecking=no -p 43590 root@<IP>
 **启动 agent（Rust 版，1.2MB）：**
 ```bash
 # Alpine 无 bash/systemctl/journalctl，用 nohup 启动
-nohup /opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &
+nohup /opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &
 
 # 验证
 ps aux | grep agent
@@ -981,7 +981,7 @@ cat /tmp/komari-agent.log
 
 **设置开机自启（Alpine OpenRC 方式）：**
 ```bash
-echo '/opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &' > /etc/local.d/komari.start
+echo '/opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &' > /etc/local.d/komari.start
 chmod +x /etc/local.d/komari.start
 rc-update add local default
 ```
@@ -1015,7 +1015,7 @@ cat /opt/komari/agent.log
 #   "WebSocket connected"           → 实时通道建立
 
 # 3. 面板验证（浏览器）
-# 登录 stat.357561.xyz → 主面板 → 搜索节点名
+# 登录 <监控面板域名> → 主面板 → 搜索节点名
 # 确认节点卡片显示非零的 CPU/内存/硬盘数据
 
 # 4. 验证数据持续上报（等 30-60 秒）
@@ -1042,7 +1042,7 @@ wget -O /opt/komari/agent https://github.com/GenshinMinecraft/komari-monitor-rs/
 chmod +x /opt/komari/agent
 
 # 3. 启动
-nohup /opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &
+nohup /opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN> --disable-network-statistics > /tmp/komari-agent.log 2>&1 &
 
 # 4. 验证架构是否正确
 file /opt/komari/agent
@@ -1140,12 +1140,12 @@ curl -s http://127.0.0.1:25776/admin | grep 'entry-index'
 # → 出现 <script type="module" crossorigin src="/assets/entry-index-..."> → 正确
 
 # 6. 如果 proxy 也配了 /admin 透传，完整的链是：
-#    用户 → stat.357561.xyz/admin → proxy(:25774) → komari(:25776) → admin SPA
+#    用户 → <监控面板域名>/admin → proxy(:25774) → komari(:25776) → admin SPA
 ```
 
 **恢复后效果：**
-- `stat.357561.xyz/` → GalaxyGlass 探针前端（由 Python 代理从 `/opt/komari/data/theme/index.html` 服务）
-- `stat.357561.xyz/admin` → Komari admin 管理后台（由 komari 后端返回默认主题，代理透传）
+- `<监控面板域名>/` → GalaxyGlass 探针前端（由 Python 代理从 `/opt/komari/data/theme/index.html` 服务）
+- `<监控面板域名>/admin` → Komari admin 管理后台（由 komari 后端返回默认主题，代理透传）
 - API 和数据上报不受影响（Python 代理仍然透传 `/api/`）
 
 **原理：** Komari v1.2.0 的二进制同时包含「default」和「GalaxyGlass」两套主题。`theme_configurations` 表决定激活哪个。删除该记录后，komari 回退到内置的默认 admin 主题。GalaxyGlass 前端由 Python 代理独立服务，不受影响。
@@ -1223,15 +1223,15 @@ timeout 3 bash -c 'exec 3<>/dev/tcp/127.0.0.1/25774; echo -e "GET /api/clients/r
 | 数据库是新库/清库后 | 无 agent 流量 | 0 | 刚创建（空白注册） |
 | agent 全挂了 | 无 agent 流量 | 0 | 几小时/天前 |
 
-**现象：** stat.357561.xyz 页面能显示 GalaxyGlass 前端（导航栏、卡片视图），但统计栏显示 `0/0` 在线服务器，卡片区显示 "连接后端中" / "暂无节点"。
+**现象：** <监控面板域名> 页面能显示 GalaxyGlass 前端（导航栏、卡片视图），但统计栏显示 `0/0` 在线服务器，卡片区显示 "连接后端中" / "暂无节点"。
 
-**根因：** stat.357561.xyz 指向 Cloudflare CDN（DNS A 记录 → 104.21.x.x / 172.67.x.x），只承载静态前端文件。后端 Komari API 在荷兰机（<荷兰_IP>:25774 容器内，通过 NAT 端口 45774 暴露），二者之间没有 cloudflared 隧道连接，所以前端的 `/api/*` 请求无法到达后端。
+**根因：** <监控面板域名> 指向 Cloudflare CDN（DNS A 记录 → 104.21.x.x / 172.67.x.x），只承载静态前端文件。后端 Komari API 在荷兰机（<荷兰_IP>:25774 容器内，通过 NAT 端口 45774 暴露），二者之间没有 cloudflared 隧道连接，所以前端的 `/api/*` 请求无法到达后端。
 
 **诊断步骤：**
 
 ```bash
 # 1. 确认 DNS 指向哪里（Cloudflare 还是直连服务器 IP）
-dig +short stat.357561.xyz
+dig +short <监控面板域名>
 # → 104.21.x.x / 172.67.x.x → Cloudflare
 
 # 2. 确认后端面板实际能否访问（绕开前端，直接请求后端）
@@ -1288,10 +1288,10 @@ sqlite3 /opt/komari/data/komari.db "SELECT uuid, name, ipv4, ipv6, updated_at FR
 - 面板机上的公网 IPv6（如 `2a0f:85c1:840:2ce:1::8c`）可能路由不可达
 - SSH 跳板需要双栈机器
 
-**已验证的方案：用 cloudflared 隧道域名作为 agent endpoint**\n\n```bash\n# agent endpoint 直接用面板的 cloudflared 隧道域名（Rust agent）\n/opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN> --disable-network-statistics\n```
+**已验证的方案：用 cloudflared 隧道域名作为 agent endpoint**\n\n```bash\n# agent endpoint 直接用面板的 cloudflared 隧道域名（Rust agent）\n/opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN> --disable-network-statistics\n```
 
 **工作原理：**
-1. stat.357561.xyz 走 Cloudflare CDN，同时有 A（IPv4）和 AAAA（IPv6）记录
+1. <监控面板域名> 走 Cloudflare CDN，同时有 A（IPv4）和 AAAA（IPv6）记录
 2. IPv6-only 探针通过 Cloudflare 的 IPv6 edge 连接
 3. Cloudflare tunnel（cloudflared）将流量转发到面板机的 komari web 端口（25776）
 4. Komari web server 同时处理前端页面和 agent 数据上报 API（`/api/clients/uploadBasicInfo` 等路由）
@@ -1305,12 +1305,12 @@ sqlite3 /opt/komari/data/komari.db "SELECT uuid, name, ipv4, ipv6, updated_at FR
 **验证：**
 ```bash
 # 从 IPv6-only 探针上测试 API 是否可达
-curl -s --connect-timeout 10 https://stat.357561.xyz/api/nodes | head -5
+curl -s --connect-timeout 10 https://<监控面板域名>/api/nodes | head -5
 # → 返回 JSON 节点列表 = 通
 
 # 测试数据上报
 curl -s --connect-timeout 10 -X POST \
-  "https://stat.357561.xyz/api/clients/uploadBasicInfo?token=<TOKEN>" \
+  "https://<监控面板域名>/api/clients/uploadBasicInfo?token=<TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{"cpu_usage":0,"mem_total":0}'
 # → HTTP 500 可接受（数据格式不对），关键是能建立连接
@@ -1393,7 +1393,7 @@ curl -s --connect-timeout 5 http://<IP>:<PORT>/api/clients
 
 当需要添加新探针节点时，可以通过 admin 面板操作：
 
-1. **登录 admin 面板**：访问 `https://stat.357561.xyz/admin`，用户名 `admin`，密码存储在 memory
+1. **登录 admin 面板**：访问 `https://<监控面板域名>/admin`，用户名 `admin`，密码存储在 memory
 2. 点击 **"Add"** 按钮（节点列表上方）
 3. 填入节点名称（如 `Oracle | 首尔`），点击确认
 4. 新节点会出现在列表末尾（IP 和版本为空，待 agent 连接）
@@ -1402,7 +1402,7 @@ curl -s --connect-timeout 5 http://<IP>:<PORT>/api/clients
 
 ```bash
 # 安装命令示例（含 endpoint 和 token）：
-wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sudo bash -s -- -e https://stat.357561.xyz -t <TOKEN>
+wget -qO- https://raw.githubusercontent.com/komari-monitor/komari-agent/refs/heads/main/install.sh | sudo bash -s -- -e https://<监控面板域名> -t <TOKEN>
 ```
 
 7. 在目标机器上运行安装命令。**Alpine 也能用 install.sh**（先 `apk add curl bash wget`，脚本会自动识别 OpenRC 并配置服务）:
@@ -1587,8 +1587,8 @@ sleep 5
 nohup cloudflared tunnel --no-autoupdate run --token 'TOKEN' --url http://127.0.0.1:25774 > /tmp/cf.log 2>&1 &
 
 # 5. 验证
-curl -s -o /dev/null -w '%{http_code}' https://stat.357561.xyz/  # 200
-curl -s -o /dev/null -w '%{http_code}' https://stat.357561.xyz/admin/  # 200
+curl -s -o /dev/null -w '%{http_code}' https://<监控面板域名>/  # 200
+curl -s -o /dev/null -w '%{http_code}' https://<监控面板域名>/admin/  # 200
 ```
 
 **效果：** 省 2 进程、~24MB RSS、少故障点。主题文件在 `/opt/komari/data/theme/{short}/dist/index.html`，修改后需重启 komari。
@@ -1631,7 +1631,7 @@ token 只存在于 `cloudflared tunnel run --token ...` 的进程 cmdline 中。
 /opt/komari/agent --http-server http://127.0.0.1:25774 -t <REAL_TOKEN> --disable-network-statistics
 
 # ❌ 错误：会经过 cloudflared 绕圈子，增加延迟和故障点
-/opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN>
+/opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN>
 ```
 
 **token 必须从数据库查真实的 token：**
@@ -1647,7 +1647,7 @@ sqlite3 /opt/komari/data/komari.db "SELECT name, token FROM clients WHERE name L
 
   ```bash
   # ✅ Rust agent（当前）
-  /opt/komari/agent --http-server https://stat.357561.xyz --tls -t <TOKEN> --disable-network-statistics
+  /opt/komari/agent --http-server https://<监控面板域名> --tls -t <TOKEN> --disable-network-statistics
 
   # ❌ Go agent（旧版，已不可用）
   /opt/komari/agent -e http://面板地址:端口 -t <TOKEN> --disable-web-ssh  # Error: unknown flag
@@ -1769,7 +1769,7 @@ done
 Komari 面板 + IP Sentinel 主控位于 波兰机（玩具波兰 LXC）。
 
 **架构变更（2026-05-13）：**
-- **Cloudflare tunnel 路由**：stat.357561.xyz 通过 DediRock（<旧Master_IP>）的 cloudflared tunnel 连接到波兰主控。DediRock 仅作为 tunnel connector，不直接提供面板服务
+- **Cloudflare tunnel 路由**：<监控面板域名> 通过 DediRock（<旧Master_IP>）的 cloudflared tunnel 连接到波兰主控。DediRock 仅作为 tunnel connector，不直接提供面板服务
 - **Python 代理已部署**：`127.0.0.1:25774` 运行 Python 代理（监听 25774，将 API 透传给 komari 的 25776 端口），服务美化版 GalaxyGlass（14px 基准字体、stat 差异色调、卡片间距优化）。自定义 HTML 在 `/opt/komari/data/theme/index.html`，代理脚本在 `/opt/komari/galaxy-proxy.py`
 - **galaxy-glass 自动缩放** 已删除（不需要自动缩放，要缩放用字体基准调整）
 - **frontend-proxy** 已停止，由 Python 代理替代
@@ -1779,12 +1779,12 @@ Komari 面板 + IP Sentinel 主控位于 波兰机（玩具波兰 LXC）。
 **新加坡主控（isvoro, <新加坡_IP>:10425）：**
 - ARM64 Alpine 3.17 LXC，23GB 宿主机共享内存（~238MB 可用），1GB 磁盘
 - 面板服务：komari 后端 25776 + galaxy-proxy 25774 + cloudflared 隧道 + IP-Sentinel
-- 面板访问：`stat.357561.xyz`（cloudflared tunnel → galaxy-proxy:25774 → komari:25776）
+- 面板访问：`<监控面板域名>`（cloudflared tunnel → galaxy-proxy:25774 → komari:25776）
 - SSH：root + 密码（存 memory）
 - 服务管理：`/etc/local.d/*.start`（Alpine OpenRC local 服务）
 
 **荷兰旧主控（<荷兰_IP>:46748）：**
-- 已降级为纯监控节点，仅运行 komari-agent（指向 stat.357561.xyz）
+- 已降级为纯监控节点，仅运行 komari-agent（指向 <监控面板域名>）
 - 不再运行：komari server / galaxy-proxy / cloudflared / IP-Sentinel
 
 **56idc-la（<洛杉矶2_IP>:42185）：**
@@ -1793,7 +1793,7 @@ Komari 面板 + IP Sentinel 主控位于 波兰机（玩具波兰 LXC）。
 - 不再运行：komari server / ip_sentinel / ip_sentinel_master / cloudflared
 
 **旧面板域名：**
-- mon.357561.xyz（DediRock LA <旧Master_IP>）— 已废弃
-- stat.357561.xyz — 通过 DediRock cloudflared tunnel → Poland Master（<荷兰_IP>:45774）。GalaxyGlass 前端 + API 均正常工作（2026-05-13 验证）
+- mon.<用户域名>（DediRock LA <旧Master_IP>）— 已废弃
+- <监控面板域名> — 通过 DediRock cloudflared tunnel → Poland Master（<荷兰_IP>:45774）。GalaxyGlass 前端 + API 均正常工作（2026-05-13 验证）
 
 **当前注册节点（2026-05-25 更新）：**\n\n| Name | Provider | Location | IP | Status |\n|------|----------|----------|----|--------|\n| `56idc-la` | 无聊云 | 洛杉矶 | <洛杉矶2_IP>:2222 | 在线 |\n| `acck-tokyo` | Acck | 东京 | <东京_IP>:22 | 在线 |\n| `racknerd-ny` | RackNerd | 纽约 | <纽约_IP>:22 | 在线 |\n| `ccs-la1` | ColoCrossing | 洛杉矶 | <洛杉矶1_IP>:22 | 在线 |\n| `hostvds-ks` | HostVDS | 堪萨斯 | <KS_IP>:22 | 在线 |\n| `yecaoyun-hk` | 野草云 | 香港 | <香港_IP>:22 | 在线 |\n| `racknerd-atlanta` | RackNerd | 亚特兰大 | <亚特兰大_IP>:53621 | 在线 |\n| `ccs-la2` | ColoCrossing | 洛杉矶2 | <运维本机_IP>:22 | 在线 |\n| `dedirock` | DediRock | 洛杉矶 | <旧Master_IP>:22 | 在线 |\n| `e8e37179` | 无聊云 | 阿姆斯特丹 | <荷兰_IP>:46748 | 在线 |\n| `gcp-us` | GCP | 台湾 | <台湾_IP>:43590 | 在线 |\n| `isvoro-seoul` | isvoro | 首尔 | <首尔_IP>:22 | 无数据 |\n| `isvoro-sg` | isvoro | 新加坡 | <新加坡_IP>:10425 | 在线 |\n\n**已删除：** 平壤（欢乐云，退款关闭）

@@ -139,7 +139,7 @@ curl -s http://127.0.0.1:25774/api/nodes | grep -c '"uuid"'
 | 代理转发 API | `curl -s http://127.0.0.1:25774/api/nodes \| python3 -c '...'` | `Nodes: 13` |
 | 代理处理 POST | `curl -X POST http://127.0.0.1:25774/api/nodes -w '%{http_code}' -o /dev/null` | 200 or 404（非501） |
 | 探针数据写入 | `curl -s http://127.0.0.1:25774/api/recent/ccs-la2 \| python3 -c '...'` | `pts > 0` |
-| 线上域名 | `curl -sL https://stat.357561.xyz \| grep 'font-size'` | `font-size: 14px` |
+| 线上域名 | `curl -sL https://<监控面板域名> \| grep 'font-size'` | `font-size: 14px` |
 | 静态文件目录 | `ls /opt/komari/data/theme/` | `index.html` |
 
 ## Cloudflare 缓存注意事项

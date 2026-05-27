@@ -54,7 +54,7 @@ ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/user_key -p 10425 root@<新加坡_
 # 应看到: 25774 → python3 (proxy), 25776 → komari
 
 # 验证主题 JSON
-curl -s "https://stat.357561.xyz/themes/Glass/komari-theme.json" | grep wallpaper
+curl -s "https://<监控面板域名>/themes/Glass/komari-theme.json" | grep wallpaper
 # 应返回 静态壁纸 URL / 动态壁纸 URL 字段
 ```
 

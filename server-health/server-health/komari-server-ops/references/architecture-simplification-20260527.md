@@ -41,8 +41,8 @@ sleep 5
 nohup cloudflared tunnel --no-autoupdate run --token 'TOKEN' --url http://127.0.0.1:25774 > /tmp/cf.log 2>&1 &
 
 # 5. 验证
-curl -s -o /dev/null -w '%{http_code}' https://stat.357561.xyz/  # 200
-curl -s -o /dev/null -w '%{http_code}' https://stat.357561.xyz/admin/  # 200
+curl -s -o /dev/null -w '%{http_code}' https://<监控面板域名>/  # 200
+curl -s -o /dev/null -w '%{http_code}' https://<监控面板域名>/admin/  # 200
 ```
 
 ## 效果

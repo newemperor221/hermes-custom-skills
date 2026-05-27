@@ -2,7 +2,7 @@
 
 ## 触发条件
 
-当需要改 stat.357561.xyz 主题时，先确认当前线上跑的是什么：
+当需要改 <监控面板域名> 主题时，先确认当前线上跑的是什么：
 - 单 HTML → NodeGetGlass（vanilla JS，`/opt/komari/data/theme/NodeGetGlass/dist/index.html`）
 - 新构建 → GalaxyGlass Next.js（`/home/woioeow/galaxy-glass/nextjs/`）
 

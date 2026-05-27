@@ -6,7 +6,7 @@ triggers:
   - Glass 主题开发
   - komari 主题打包
   - 探针面板部署
-  - stat.357561.xyz
+  - <监控面板域名>
   - komari 后台设置标签页
   - managed configuration
   - 视频壁纸转换
@@ -697,7 +697,7 @@ file preview.png
 
 ### 字体自托管流程（galaxy-proxy + VPS）
 
-stat.357561.xyz 的架构是：Cloudflare → cloudflared → galaxy-proxy.py(:25774) → Komari(:25776)
+<监控面板域名> 的架构是：Cloudflare → cloudflared → galaxy-proxy.py(:25774) → Komari(:25776)
 
 galaxy-proxy.py 是 Python 写的反向代理，负责静态文件服务 + WebSocket 转发。要自托管字体需修改它：
 
@@ -742,7 +742,7 @@ rc-service galaxy-proxy restart
 # 本地验证
 curl -sI "http://127.0.0.1:25774/fonts/Inter-400.ttf" -o /dev/null -w "CT: %{content_type}"
 # 通过 Cloudflare 验证（加 ?v=1 bypass 缓存）
-curl -sI "https://stat.357561.xyz/fonts/Inter-400.ttf?v=1" -o /dev/null -w "CT: %{content_type}"
+curl -sI "https://<监控面板域名>/fonts/Inter-400.ttf?v=1" -o /dev/null -w "CT: %{content_type}"
 # 都应返回 CT: font/ttf
 ```
 
@@ -960,7 +960,7 @@ var v=document.getElementById('bg-video');JSON.stringify({
 
 4. **确认文件通过公网可访问**
    ```bash
-   curl -sI https://stat.357561.xyz/video/wallpaper.webm | grep -i 'content-type\\|200'
+   curl -sI https://<监控面板域名>/video/wallpaper.webm | grep -i 'content-type\\|200'
    # → video/webm ✅   |   404 → proxy 路由没配 /video/（检查 galaxy-proxy.py do_GET 的静态文件 block）
    ```
    ⚠️ **404 的根因**：`galaxy-proxy.py` 的 `do_GET` 方法中，静态文件路由 block（`/styles/`, `/scripts/` 等）需要追加 `or clean_path.startswith("/video/")`。否则 `/video/` 请求会落到通用路由，尝试找 `video/wallpaper.webm.html`，找不到就返回 200 `index.html`（文件是 HTML 但 Content-Type 错误）。排查：`curl -s -o /dev/null -w '%{content_type}' http://localhost:25774/video/wallpaper.webm` 返回 `text/html` 说明走了 fallback，不是 proxy 路由问题就是文件不存在。
@@ -1010,14 +1010,14 @@ git remote set-url origin https://github.com/newemperor221/glass.git
 
 **修复**：
 1. **浏览器硬刷新**：`Ctrl+F5` 或 `location.reload(true)`（devtools → Network → Disable cache）
-2. **URL 加查询参数避缓存**：`https://stat.357561.xyz/?t=N`（N 递增）
-3. **Cloudflare Dashboard 手动清除**：Caching → Purge Everything，或 API 单独清除 `https://stat.357561.xyz/`
+2. **URL 加查询参数避缓存**：`https://<监控面板域名>/?t=N`（N 递增）
+3. **Cloudflare Dashboard 手动清除**：Caching → Purge Everything，或 API 单独清除 `https://<监控面板域名>/`
 
 **验证方法**：
 ```bash
 # 对比两个结果的行数
-curl -s "https://stat.357561.xyz/" | wc -c
-curl -s "https://stat.357561.xyz/?v=$(date +%s)" | wc -c
+curl -s "https://<监控面板域名>/" | wc -c
+curl -s "https://<监控面板域名>/?v=$(date +%s)" | wc -c
 # 不同 = Cloudflare 缓存了旧版
 ```
 

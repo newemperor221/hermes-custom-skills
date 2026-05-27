@@ -11,7 +11,7 @@
 ### Step 1: 确认 DNS 解析
 
 ```bash
-dig +short app.357561.xyz
+dig +short app.<用户域名>
 ```
 
 期望结果：返回 `172.67.x.x` 或 `104.21.x.x`（Cloudflare Anycast IP）。  
@@ -28,7 +28,7 @@ Cloudflare CDN 只支持以下端口：
 用 `curl` 测试端口可达性：
 
 ```bash
-curl -svo /dev/null --connect-timeout 15 https://app.357561.xyz:443/
+curl -svo /dev/null --connect-timeout 15 https://app.<用户域名>:443/
 ```
 
 ### Step 3: 理解 525 错误
@@ -48,8 +48,8 @@ mkdir -p /etc/sing-box
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
   -keyout /etc/sing-box/key.pem \
   -out /etc/sing-box/cert.pem \
-  -subj '/CN=app.357561.xyz' \
-  -addext 'subjectAltName=DNS:app.357561.xyz'
+  -subj '/CN=app.<用户域名>' \
+  -addext 'subjectAltName=DNS:app.<用户域名>'
 ```
 
 注意：`-addext` 中的 CN 和 SAN 要与域名匹配，否则"完全（严格）"模式会报 526。
@@ -58,7 +58,7 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
 
 ```bash
 # 连上不求返回正常内容，不报 5xx 就行
-curl -svo /dev/null --connect-timeout 15 https://app.357561.xyz/ 2>&1 | grep -E 'SSL|TLS|HTTP|error'
+curl -svo /dev/null --connect-timeout 15 https://app.<用户域名>/ 2>&1 | grep -E 'SSL|TLS|HTTP|error'
 ```
 
 - `HTTP/2 200` → 正常（sing-box 返回的也不是 HTTP，但连接建立了）
@@ -73,7 +73,7 @@ curl -sv --connect-timeout 15 \
   -H "Upgrade: websocket" \
   -H "Sec-WebSocket-Version: 13" \
   -H "Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==" \
-  https://app.357561.xyz/ 2>&1 | tail -10
+  https://app.<用户域名>/ 2>&1 | tail -10
 ```
 
 期望：`HTTP 101 Switching Protocols` 或 sing-box 的 VLESS 响应（可能是 4xx 但不会 timeout）。  
@@ -97,8 +97,8 @@ CF WebSocket 默认开启，无需手动配置。
 mkdir -p /etc/sing-box
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
   -keyout /etc/sing-box/key.pem -out /etc/sing-box/cert.pem \
-  -subj '/CN=app.357561.xyz' \
-  -addext 'subjectAltName=DNS:app.357561.xyz'
+  -subj '/CN=app.<用户域名>' \
+  -addext 'subjectAltName=DNS:app.<用户域名>'
 
 # 3. 写 config.json（见 SKILL.md 方案 B）
 # 4. 开 UFW

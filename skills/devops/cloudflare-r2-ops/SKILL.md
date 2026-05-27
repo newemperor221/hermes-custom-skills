@@ -1,13 +1,13 @@
 ---
 name: cloudflare-r2-ops
-description: Cloudflare R2 存储桶全栈操作 — rclone/AWS CLI 配置、文件上传列出删除、预签名 URL 生成、批量迁移。触发："R2"、"r2 上传"、"img.357561.xyz"、"存储桶"、"rclone R2"。
+description: Cloudflare R2 存储桶全栈操作 — rclone/AWS CLI 配置、文件上传列出删除、预签名 URL 生成、批量迁移。触发："R2"、"r2 上传"、"img.<用户域名>"、"存储桶"、"rclone R2"。
 ---
 
 # Cloudflare R2 存储桶运维
 
 ## 适用场景
 
-- 向 `img.357561.xyz` (R2 桶) 上传/管理文件
+- 向 `img.<用户域名>` (R2 桶) 上传/管理文件
 - 列出桶内文件、删除旧文件
 - 批量上传目录
 - 生成临时访问链接（预签名 URL）
@@ -142,7 +142,7 @@ rclone sync /data/images/ r2:<bucket-name>/images/ --progress --checksum
 ### 设置公开访问
 
 若桶需要可公开访问的文件，在 R2 Dashboard → 桶 → 设置 → 打开 "Public Access"，
-然后绑定自定义域名（如 `img.357561.xyz`）。
+然后绑定自定义域名（如 `img.<用户域名>`）。
 
 ### 检查桶用量
 

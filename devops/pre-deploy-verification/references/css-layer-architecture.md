@@ -40,6 +40,6 @@ GalaxyGlass 探针页面是单一 HTML 文件（~680 行），所有 CSS 在 `<s
 ## 实施方法
 
 使用 `sed` 精确替换整个 `<style>...</style>` 块：
-1. 从公网 `curl -s https://stat.357561.xyz/` 抓取当前部署版
+1. 从公网 `curl -s https://<监控面板域名>/` 抓取当前部署版
 2. 在本地按 6 层重组
 3. `scp -P 46748` 直推至远程

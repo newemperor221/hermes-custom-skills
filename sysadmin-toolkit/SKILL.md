@@ -339,7 +339,7 @@ scp file user@host:/actual/serving/path/
 
 核心规则：
 - **本机 vs 他机**：先确认当前在哪个服务器上再回答问题。执行 `hostname`、`free -h`、`df -h /` 确认后再引用记忆
-- **域名 → 物理机映射**：ai.357561.xyz ≠ ccs-la2（在 DediRock）。stat.357561.xyz ≠ 本机（在 56idc-la + Cloudflared）。每台 VPS 的 IP、规格、跑的服务都要单独记忆，不要张冠李戴
+- **域名 → 物理机映射**：ai.<用户域名> ≠ ccs-la2（在 DediRock）。<监控面板域名> ≠ 本机（在 56idc-la + Cloudflared）。每台 VPS 的 IP、规格、跑的服务都要单独记忆，不要张冠李戴
 - **不要擅自启动服务**：在 SSH 到一台服务器启动任何服务前，务必先确认：
   1. 该服务是否已经在另一台服务器上运行（查记忆 + `ps aux` + `ss -tlnp`）
   2. 当前机器是否应当运行此服务

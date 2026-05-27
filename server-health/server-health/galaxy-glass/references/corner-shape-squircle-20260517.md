@@ -58,7 +58,7 @@ corner-shape: superellipse(infinity);  /* = square */
 
 ## 历史（为什么之前走了弯路）
 
-2026-05-17 session 中，用户要求给 stat.357561.xyz 的卡片加 Squircle 圆角。
+2026-05-17 session 中，用户要求给 <监控面板域名> 的卡片加 Squircle 圆角。
 
 **尝试过的方案（时间顺序）：**
 

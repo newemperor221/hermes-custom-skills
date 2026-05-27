@@ -1,10 +1,10 @@
 # cloudflared 隧道架构参考（2026-05-10 修订）
 
-## stat.357561.xyz 当前架构
+## <监控面板域名> 当前架构
 
 ```
 Internet (HTTPS 443)
-  → Cloudflare Edge (SNI: stat.357561.xyz)
+  → Cloudflare Edge (SNI: <监控面板域名>)
     → cloudflared tunnel (进程在 56idc-la，token 模式)
       → localhost:25774 (komari server)
 ```
@@ -18,7 +18,7 @@ Internet (HTTPS 443)
 | Init script token | `eyJhIj...` | `/etc/init.d/cloudflared` | 旧 cloudflared 进程（OpenRC 管理） |
 | DB token | `hmcSeFny...` | `komari.db → configs.cloudflare_tunnel_token` | v1.2.0 内置 tunnel 管理 |
 
-**两 token 不能共存**，同时跑会导致 tunnel 路由混乱，stat.357561.xyz 返回 404。
+**两 token 不能共存**，同时跑会导致 tunnel 路由混乱，<监控面板域名> 返回 404。
 
 ## 当前状态（2026-05-10）
 
@@ -55,12 +55,12 @@ killall cloudflared; sleep 2
 tail /var/log/cloudflared.err | grep "Registered tunnel connection"
 ```
 
-## stat.357561.xyz 404 排查
+## <监控面板域名> 404 排查
 
-1. `curl -s -I https://stat.357561.xyz/` → TLS 握手成功 + HTTP 404 = tunnel 路由损坏
-2. `dig stat.357561.xyz +short` → 确认 DNS 指向 Cloudflare IP
-3. 本地验证：`curl -s -H "Host: stat.357561.xyz" http://127.0.0.1:25774/` 返回 HTML = komari 正常，tunnel 问题
-4. Cloudflare Dashboard → Zero Trust → Networks → Tunnels → 检查 stat.357561.xyz tunnel 是否 Active
+1. `curl -s -I https://<监控面板域名>/` → TLS 握手成功 + HTTP 404 = tunnel 路由损坏
+2. `dig <监控面板域名> +short` → 确认 DNS 指向 Cloudflare IP
+3. 本地验证：`curl -s -H "Host: <监控面板域名>" http://127.0.0.1:25774/` 返回 HTML = komari 正常，tunnel 问题
+4. Cloudflare Dashboard → Zero Trust → Networks → Tunnels → 检查 <监控面板域名> tunnel 是否 Active
 
 ## v1.2.0 内置 tunnel 管理
 

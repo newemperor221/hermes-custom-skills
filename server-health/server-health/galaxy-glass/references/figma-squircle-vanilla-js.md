@@ -190,4 +190,4 @@ vanilla 版需要自己实现 2 和 3，但很简单（~20 行）。
 
 ## GalaxyGlass 实际实施
 
-具体在 stat.357561.xyz 上的集成过程、代码、踩坑（特别是 tagged template 参数错位导致路径截断的 bug）详见 `references/figma-squircle-vanilla-js-implementation-20260517.md`。
+具体在 <监控面板域名> 上的集成过程、代码、踩坑（特别是 tagged template 参数错位导致路径截断的 bug）详见 `references/figma-squircle-vanilla-js-implementation-20260517.md`。

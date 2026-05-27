@@ -41,7 +41,7 @@ git push -u origin main
 
 ### 3. 绑定自定义域
 - 部署成功后 → 自定义域 → 添加子域名
-- 例：`stat.357561.xyz`（StatusShow）、`dash.357561.xyz`（Board）
+- 例：`<监控面板域名>`（StatusShow）、`dash.<用户域名>`（Board）
 
 ### 4. 环境变量配置
 

@@ -42,7 +42,7 @@ curl -s -o /dev/null -w '%{http_code}' http://localhost:25774/
 ### 2. 提取 inline script 并用 node 验证
 
 ```bash
-curl -s 'https://stat.357561.xyz/' -o /tmp/gg.html
+curl -s 'https://<监控面板域名>/' -o /tmp/gg.html
 python3 -c "
 import re
 html = open('/tmp/gg.html').read()

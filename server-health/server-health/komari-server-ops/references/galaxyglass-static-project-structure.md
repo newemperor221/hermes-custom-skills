@@ -1,6 +1,6 @@
 # GalaxyGlass 静态版工程结构与工作流
 
-> 适用于 `stat.357561.xyz` 的 Komari 探针面板。静态版 = 纯前端单页应用，无框架依赖，源码拆分在 `src/` 目录，编译为单文件 `index.html` 部署。
+> 适用于 `<监控面板域名>` 的 Komari 探针面板。静态版 = 纯前端单页应用，无框架依赖，源码拆分在 `src/` 目录，编译为单文件 `index.html` 部署。
 
 ## 工程架构
 
@@ -57,7 +57,7 @@ HTML 中 CSS 和 JS 的加载顺序不可调换：
 ## 部署架构
 
 ```
-用户浏览器 → stat.357561.xyz (Cloudflare)
+用户浏览器 → <监控面板域名> (Cloudflare)
   → Cloudflare Tunnel (cloudflared on 波兰机)
     → Komari server (127.0.0.1:25774)
       → 从 /opt/komari/data/theme/GalaxyGlass/dist/index.html 服务静态页面

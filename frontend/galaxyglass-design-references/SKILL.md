@@ -6,7 +6,7 @@ tags: [galaxyglass, design, css, dark-theme, dashboard, glassmorphism]
 
 # Glass 设计参考
 
-> stat.357561.xyz 深色毛玻璃探针面板的设计弹药库
+> <监控面板域名> 深色毛玻璃探针面板的设计弹药库
 
 ## 本地已获取的设计系统 DESIGN.md
 
